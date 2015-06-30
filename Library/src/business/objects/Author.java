@@ -1,4 +1,4 @@
-package mpp.project.library.business.objects;
+package business.objects;
 
 public class Author extends Person {
 	private String credentials;

@@ -1,4 +1,4 @@
-package mpp.project.library.business.objects;
+package business.objects;
 
 public class Person {
 	private String firstName;
