@@ -18,8 +18,6 @@ public class DataAccessFacade implements DataAccess {
 			+ "\\src\\business\\dataaccess\\storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
 	
-	private BookList bookList = new BookList();
-	
 	public void saveLibraryMember(String name, LibraryMember member) {
 		ObjectOutputStream out = null;
 		try {
@@ -57,11 +55,13 @@ public class DataAccessFacade implements DataAccess {
 	
 	public void saveBook(Book book) {
 		ObjectOutputStream out = null;
+		BookList booklist = BookList.getInstance();
 		try {
-			bookList.addBook(book);
+			//bookList = this.getBookList();
+			booklist.addBook(book);
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
 			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(bookList);
+			out.writeObject(booklist);
 		} catch(IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -75,6 +75,8 @@ public class DataAccessFacade implements DataAccess {
 	
 	public Book getBookByTitle(String title) {
 		ObjectInputStream in = null;
+		BookList bookList = null;
+		Book bk = null;
 		try {
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
 			in = new ObjectInputStream(Files.newInputStream(path));
@@ -82,7 +84,7 @@ public class DataAccessFacade implements DataAccess {
 			
 			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
 				if (book.getTitle().equalsIgnoreCase(title)) {
-					return book;
+					bk = book;					
 				}
 			}
 		} catch(Exception e) {
@@ -95,15 +97,18 @@ public class DataAccessFacade implements DataAccess {
 			}
 		}
 
-		return null;
-	}
+		return bk;
+	}  
 	
 	public BookList getBookList() {
 		ObjectInputStream in = null;
+		BookList bookList = null;
 		try {
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
 			in = new ObjectInputStream(Files.newInputStream(path));
 			bookList = (BookList)in.readObject();
+			
+			//System.out.println(bookList.toString());
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
