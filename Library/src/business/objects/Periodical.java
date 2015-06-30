@@ -6,6 +6,13 @@ public class Periodical extends Publication{
 		super(title);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Periodical(String title, String issueNo, int maxcheck) {
+		this(title);
+		this.issueNo = issueNo;
+		this.maxcheckoutlength = maxcheck;
+	}
+	
 	private String issueNo;
 	private int maxcheckoutlength;
 	
