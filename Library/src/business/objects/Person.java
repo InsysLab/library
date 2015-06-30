@@ -1,6 +1,13 @@
 package business.objects;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3460297249840624268L;
+	
 	private String firstName;
 	private String lastName;
 	private String phone;

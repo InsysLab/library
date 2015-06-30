@@ -2,8 +2,14 @@ package business.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public abstract class Publication {
+public abstract class Publication implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2747962880993378844L;
+	
 	private String title;
 	private List<Copy> copyList;
 	

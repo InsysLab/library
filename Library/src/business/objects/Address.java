@@ -1,6 +1,12 @@
 package business.objects;
+import java.io.Serializable;
 
-public class Address {
+public class Address implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3780502667384855198L;
+	
 	private String street;
 	private String city;
 	private String state;
@@ -36,5 +42,11 @@ public class Address {
 	}
 	public void setZip(String zip) {
 		this.zip = zip;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Street: " + street + ", City: " + city + ", State: " + state + ", Zip: " + zip;
 	}
 }

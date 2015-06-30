@@ -2,8 +2,14 @@ package business.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class LibraryMember extends Person {
+public class LibraryMember extends Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7641841468211440963L;
+	
 	private String memberID;
 	private List<Copy> copyList;
 	

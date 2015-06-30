@@ -2,8 +2,14 @@ package business.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Book extends Publication {
+public class Book extends Publication implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8027177673089581575L;
+	
 	private String ISBN;
 	private int maxcheckoutlength;
 	private List<Author> authorlist;

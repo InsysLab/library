@@ -1,6 +1,13 @@
 package business.objects;
 
-public class Copy {
+import java.io.Serializable;
+
+public class Copy implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -954451322069238619L;
+	
 	private String copyNo;
 	private Publication publication;
 	
@@ -26,5 +33,9 @@ public class Copy {
 		this.publication = publication;
 	}
 	
-
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return publication.toString();
+	}
 }

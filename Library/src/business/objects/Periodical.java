@@ -1,7 +1,14 @@
 package business.objects;
 
-public class Periodical extends Publication{
+import java.io.Serializable;
+
+public class Periodical extends Publication implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5023957423709300489L;
+
 	public Periodical(String title) {
 		super(title);
 		// TODO Auto-generated constructor stub
