@@ -1,13 +1,21 @@
 package view;
 
+import java.io.IOException;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class AddLibraryMember extends VBox {
 	
 	public AddLibraryMember() {
-		Text text = new Text("AddLibraryMember");
-		this.getChildren().add(text);
+    	try {
+    		Parent root = FXMLLoader.load(getClass().getResource("AddLibraryMember.fxml"));
+    		this.getChildren().add(root);
+    	} catch (IOException io) {
+    		System.out.println(io.getStackTrace());
+    	}		
 	}
 	
 }
