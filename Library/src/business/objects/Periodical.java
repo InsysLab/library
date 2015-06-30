@@ -9,13 +9,8 @@ public class Periodical extends Publication implements Serializable {
 	 */
 	private static final long serialVersionUID = 5023957423709300489L;
 
-	public Periodical(String title) {
-		super(title);
-		// TODO Auto-generated constructor stub
-	}
-	
 	public Periodical(String title, String issueNo, int maxcheck) {
-		this(title);
+		super(title);
 		this.issueNo = issueNo;
 		this.maxcheckoutlength = maxcheck;
 	}

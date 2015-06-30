@@ -23,5 +23,11 @@ public class Author extends Person implements Serializable {
 	public void setCredentials(String credentials) {
 		this.credentials = credentials;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Credentials" + credentials + "," + super.toString();
+	}
 
 }

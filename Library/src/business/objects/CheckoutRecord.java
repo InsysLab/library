@@ -10,14 +10,9 @@ public class CheckoutRecord implements Serializable {
 	 */
 	private static final long serialVersionUID = -3168413735714016878L;
 	
-	private List<CheckoutRecordEntry> entrylist;
+	private List<CheckoutRecordEntry> entrylist= new ArrayList<>();
 	private LibraryMember member;
-	
-	public CheckoutRecord()
-	{
-		this.entrylist = new ArrayList<CheckoutRecordEntry>();
-	}
-	
+		
 	public LibraryMember getMember() {
 		return member;
 	}
@@ -38,5 +33,8 @@ public class CheckoutRecord implements Serializable {
 		this.entrylist.add(entry);
 	}
 	
+	public String toString() {
+		return entrylist.toString();
+	}
 
 }

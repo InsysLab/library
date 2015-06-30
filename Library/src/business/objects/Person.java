@@ -46,5 +46,11 @@ public class Person implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Firstname: " + firstName + ", Lastname: " + lastName + ", Phone: " + phone + ", Address: " + address;
+	}
 
 }

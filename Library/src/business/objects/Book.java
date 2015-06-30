@@ -12,17 +12,11 @@ public class Book extends Publication implements Serializable {
 	
 	private String ISBN;
 	private int maxcheckoutlength;
-	private List<Author> authorlist;
-	
-	public Book(String title)
-	{
-		super(title);
-		this.authorlist = new ArrayList<Author>();		
-	}
+	private List<Author> authorlist = new ArrayList<Author>();
 	
 	public Book(String isbn, int maxcheck, String title)
 	{
-		this(title);
+		super(title);
 		this.ISBN = isbn;
 		this.maxcheckoutlength = maxcheck;
 	}
