@@ -10,42 +10,42 @@
 <AnchorPane prefHeight="411.0" prefWidth="466.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <!-- TODO Add Nodes -->
   <children>
-    <GridPane layoutX="10.0" layoutY="60.0" prefHeight="295.0" prefWidth="418.0">
+    <GridPane layoutX="1.0" layoutY="50.0" prefHeight="295.0" prefWidth="319.0">
       <children>
-        <Label prefHeight="24.0" prefWidth="82.0" text="        Firstname" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label prefHeight="24.0" prefWidth="82.0" text="    Firstname" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <font>
             <Font size="12.0" fx:id="x1" />
           </font>
         </Label>
         <TextField prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label font="$x1" prefWidth="145.0" text="        Lastname" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label font="$x1" prefWidth="145.0" text="    Lastname" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label font="$x1" prefWidth="145.0" text="             Street" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label font="$x1" prefWidth="145.0" text="         Street" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <TextField prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <TextField prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <TextField prefHeight="33.0" prefWidth="136.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <TextField prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Label font="$x1" prefWidth="94.0" text="                City" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label font="$x1" prefWidth="94.0" text="              State" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <Label font="$x1" prefWidth="94.0" text="                 Zip" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label font="$x1" prefWidth="94.0" text="             Phone" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <TextField prefHeight="33.0" prefWidth="290.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <Label font="$x1" prefWidth="94.0" text="            City" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label font="$x1" prefWidth="94.0" text="          State" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label font="$x1" prefWidth="94.0" text="             Zip" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label font="$x1" prefWidth="94.0" text="         Phone" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="6" />
       </children>
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="94.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.0" minWidth="10.0" prefWidth="304.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="71.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.0" minWidth="10.0" prefWidth="228.0" />
       </columnConstraints>
       <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </padding>
       <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
     <Label layoutX="20.0" layoutY="11.0" prefHeight="33.0" prefWidth="126.0" text="New Member">
@@ -53,6 +53,6 @@
         <Font size="16.0" />
       </font>
     </Label>
-    <Button layoutX="338.0" layoutY="364.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="76.0" text="Save" />
+    <Button layoutX="234.0" layoutY="342.0" mnemonicParsing="false" prefHeight="33.000099999997474" prefWidth="76.0" text="Save" />
   </children>
 </AnchorPane>
