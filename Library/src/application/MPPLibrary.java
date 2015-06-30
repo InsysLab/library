@@ -159,7 +159,7 @@ public class MPPLibrary extends Application {
 		ManagePub.setLayoutY(91);
 		
 		AddPublication ap = new AddPublication();
-		ManageLibMem.setOnAction(new EventHandler<ActionEvent>() {
+		ManagePub.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
 		    public void handle(ActionEvent e) {
 		    	if (vbWorkArea.getChildren().size() == 1) {
