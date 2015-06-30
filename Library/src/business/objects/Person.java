@@ -6,6 +6,14 @@ public class Person {
 	private String phone;
 	private Address address;
 	
+	public Person(String firstname, String lastname, String phonenum, Address addr)
+	{
+		this.firstName = firstname;
+		this.lastName = lastname;
+		this.phone = phonenum;
+		this.address = addr;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}

@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryMember extends Person {
+	private String memberID;
+	private List<Copy> copyList;
 	
-	public LibraryMember()
+	public LibraryMember(String memberid, String firstname, String lastname, String phone, Address addr)
 	{
+		super(firstname, lastname, phone, addr);
+		this.memberID = memberid;
 		this.copyList = new ArrayList<Copy>();
 	}
-	
-	private String memberID;
+		
 	public String getMemberID() {
 		return memberID;
 	}
@@ -28,5 +31,5 @@ public class LibraryMember extends Person {
 	{
 		this.copyList.add(copy);
 	}
-	private List<Copy> copyList;
+	
 }
