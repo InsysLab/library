@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutRecord {
+	private List<CheckoutRecordEntry> entrylist;
+	private LibraryMember member;
 	
 	public CheckoutRecord()
 	{
 		this.entrylist = new ArrayList<CheckoutRecordEntry>();
 	}
 	
-
-	private List<CheckoutRecordEntry> entrylist;
+	public LibraryMember getMember() {
+		return member;
+	}
+	public void setMember(LibraryMember member) {
+		this.member = member;
+	}
 
 	public List<CheckoutRecordEntry> getEntry() {
 		return entrylist;

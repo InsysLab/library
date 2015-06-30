@@ -4,8 +4,7 @@ import java.time.LocalDate;
 
 public class CheckoutRecordEntry {
 	private LocalDate checkoutDate;
-	private LocalDate dueDate;
-	private LibraryMember member;
+	private LocalDate dueDate;	
 	private Copy copy;
 	
 	public LocalDate getCheckoutDate() {
@@ -21,19 +20,11 @@ public class CheckoutRecordEntry {
 		this.dueDate = dueDate;
 	}	
 	
-	public LibraryMember getMember() {
-		return member;
-	}
-	public void setMember(LibraryMember member) {
-		this.member = member;
-	}
 	public Copy getCopy() {
 		return copy;
 	}
 	public void setCopy(Copy copy) {
 		this.copy = copy;
 	}
-
 	
-
 }
