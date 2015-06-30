@@ -1,13 +1,16 @@
 package application;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
@@ -31,160 +34,18 @@ public class MPPLibrary extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			//Arrange nodes vertically
-			VBox root = new VBox();
-			root.setPrefHeight(600);
-			root.setPrefWidth(800);
-			//Top section contains the heading
-			root.getChildren().add(getTop());
-			//Middle section contains the menus
-			root.getChildren().add(getMiddle());
-			
+			Parent root = FXMLLoader.load(getClass().getResource("LibraryMainView.fxml"));
 			Scene scene = new Scene(root,800,600);			
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("MPP Library System");
 			primaryStage.setResizable(true);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch (IOException io) {
+			System.out.println(io.getStackTrace());
 		}
 	}
 	
-	private Node getTop() {
-		HBox top = new HBox();
-		top.setAlignment(Pos.CENTER);
-		top.prefHeight(100);
-		Text heading = new Text("MPP Library");
-		heading.setFont(new Font("System Bold", 24));
-		top.getChildren().add(heading);
-		return top;
-	}
-	
-	private Node getMiddle() {
-		HBox hLibMenu = new HBox();
-		hLibMenu.setPrefHeight(500);
-
-		SplitPane spMenuContent = new SplitPane();
-		spMenuContent.setPrefWidth(200);
-		spMenuContent.setPrefHeight(500);
-		
-		hLibMenu.getChildren().add(spMenuContent);
-		
-		VBox vbWorkArea = new VBox();
-		vbWorkArea.setPrefWidth(500);
-		vbWorkArea.setPadding(new Insets(5,5,5,5));
-		
-		hLibMenu.getChildren().add(vbWorkArea);
-		
-		Accordion menuContent = new Accordion();
-		TitledPane menuSearch = new TitledPane();
-		menuSearch.setAnimated(false);
-		menuSearch.setText("Search");
-		
-		AnchorPane apSearch = new AnchorPane();
-		apSearch.setPrefWidth(200);
-		apSearch.setPrefHeight(200);
-		
-		//Library Member Button
-		Button searchLibMem = new Button("Library Member");
-		searchLibMem.setPrefWidth(180);
-		searchLibMem.setLayoutX(18);
-		searchLibMem.setLayoutY(124);
-		
-		SearchLibraryMember slm = new SearchLibraryMember();
-		searchLibMem.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-		    	if (vbWorkArea.getChildren().size() == 1) {
-		    		vbWorkArea.getChildren().remove(0);
-		    	}
-		    	vbWorkArea.getChildren().add(slm);
-		    }
-		});
-		
-		apSearch.getChildren().add(searchLibMem);
-		
-		// Publication Button
-		Button searchPub = new Button("Publication");
-		searchPub.setPrefWidth(180);
-		searchPub.setLayoutX(19);
-		searchPub.setLayoutY(91);
-		
-		SearchPublication sp = new SearchPublication();
-		searchPub.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-		    	if (vbWorkArea.getChildren().size() == 1) {
-		    		vbWorkArea.getChildren().remove(0);
-		    	}
-		    	vbWorkArea.getChildren().add(sp);
-		    }
-		});
-		
-		apSearch.getChildren().add(searchPub);
-        
-        menuSearch.setContent(apSearch);
-		menuContent.getPanes().add(menuSearch);
-		
-		TitledPane menuManage = new TitledPane();
-		menuManage.setAnimated(false);
-		menuManage.setText("Manage");
-		
-		AnchorPane apManage = new AnchorPane();
-		apManage.setPrefWidth(200);
-		apManage.setPrefHeight(200);
-		
-		//Add Member Button
-		Button ManageLibMem = new Button("Add Member");
-		ManageLibMem.setPrefWidth(180);
-		ManageLibMem.setLayoutX(18);
-		ManageLibMem.setLayoutY(124);
-		
-		AddLibraryMember am = new AddLibraryMember();
-		ManageLibMem.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-		    	if (vbWorkArea.getChildren().size() == 1) {
-		    		vbWorkArea.getChildren().remove(0);
-		    	}
-		    	vbWorkArea.getChildren().add(am);
-		    }
-		});
-		
-		apManage.getChildren().add(ManageLibMem);
-		
-		Button ManagePub = new Button("Add Publication");
-		ManagePub.setPrefWidth(180);
-		ManagePub.setLayoutX(19);
-		ManagePub.setLayoutY(91);
-		
-		AddPublication ap = new AddPublication();
-		ManagePub.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-		    	if (vbWorkArea.getChildren().size() == 1) {
-		    		vbWorkArea.getChildren().remove(0);
-		    	}
-		    	vbWorkArea.getChildren().add(ap);
-		    }
-		});
-		
-		apManage.getChildren().add(ManagePub);
-		
-		menuManage.setContent(apManage);
-		
-		menuContent.getPanes().add(menuManage);
-		
-		spMenuContent.getItems().add(menuContent);
-		
-
-		
-		return hLibMenu;
-	}
-	
-
 	public static void main(String[] args) {
 		launch(args);
 	}
