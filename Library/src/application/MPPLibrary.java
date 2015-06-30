@@ -1,5 +1,7 @@
 package application;
 
+import java.util.HashMap;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,9 +18,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import view.AddLibraryMember;
+import view.AddPublication;
+import view.SearchLibraryMember;
+import view.SearchPublication;
 
 public class MPPLibrary extends Application {
-	
+    //Holds the screens to be displayed
+    private HashMap<String, Node> screens = new HashMap<>();
+    
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -61,6 +69,13 @@ public class MPPLibrary extends Application {
 		spMenuContent.setPrefWidth(200);
 		spMenuContent.setPrefHeight(500);
 		
+		hLibMenu.getChildren().add(spMenuContent);
+		
+		VBox vbWorkArea = new VBox();
+		vbWorkArea.setPrefWidth(500);
+		
+		hLibMenu.getChildren().add(vbWorkArea);
+		
 		Accordion menuContent = new Accordion();
 		TitledPane menuSearch = new TitledPane();
 		menuSearch.setAnimated(false);
@@ -70,17 +85,41 @@ public class MPPLibrary extends Application {
 		apSearch.setPrefWidth(200);
 		apSearch.setPrefHeight(200);
 		
+		//Library Member Button
 		Button searchLibMem = new Button("Library Member");
 		searchLibMem.setPrefWidth(180);
 		searchLibMem.setLayoutX(18);
 		searchLibMem.setLayoutY(124);
 		
+		SearchLibraryMember slm = new SearchLibraryMember();
+		searchLibMem.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent e) {
+		    	if (vbWorkArea.getChildren().size() == 1) {
+		    		vbWorkArea.getChildren().remove(0);
+		    	}
+		    	vbWorkArea.getChildren().add(slm);
+		    }
+		});
+		
 		apSearch.getChildren().add(searchLibMem);
 		
+		// Publication Button
 		Button searchPub = new Button("Publication");
 		searchPub.setPrefWidth(180);
 		searchPub.setLayoutX(19);
 		searchPub.setLayoutY(91);
+		
+		SearchPublication sp = new SearchPublication();
+		searchPub.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent e) {
+		    	if (vbWorkArea.getChildren().size() == 1) {
+		    		vbWorkArea.getChildren().remove(0);
+		    	}
+		    	vbWorkArea.getChildren().add(sp);
+		    }
+		});
 		
 		apSearch.getChildren().add(searchPub);
         
@@ -95,10 +134,22 @@ public class MPPLibrary extends Application {
 		apManage.setPrefWidth(200);
 		apManage.setPrefHeight(200);
 		
+		//Add Member Button
 		Button ManageLibMem = new Button("Add Member");
 		ManageLibMem.setPrefWidth(180);
 		ManageLibMem.setLayoutX(18);
 		ManageLibMem.setLayoutY(124);
+		
+		AddLibraryMember am = new AddLibraryMember();
+		ManageLibMem.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent e) {
+		    	if (vbWorkArea.getChildren().size() == 1) {
+		    		vbWorkArea.getChildren().remove(0);
+		    	}
+		    	vbWorkArea.getChildren().add(am);
+		    }
+		});
 		
 		apManage.getChildren().add(ManageLibMem);
 		
@@ -106,6 +157,17 @@ public class MPPLibrary extends Application {
 		ManagePub.setPrefWidth(180);
 		ManagePub.setLayoutX(19);
 		ManagePub.setLayoutY(91);
+		
+		AddPublication ap = new AddPublication();
+		ManagePub.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent e) {
+		    	if (vbWorkArea.getChildren().size() == 1) {
+		    		vbWorkArea.getChildren().remove(0);
+		    	}
+		    	vbWorkArea.getChildren().add(ap);
+		    }
+		});
 		
 		apManage.getChildren().add(ManagePub);
 		
@@ -115,7 +177,8 @@ public class MPPLibrary extends Application {
 		
 		spMenuContent.getItems().add(menuContent);
 		
-		hLibMenu.getChildren().add(spMenuContent);
+
+		
 		return hLibMenu;
 	}
 	
