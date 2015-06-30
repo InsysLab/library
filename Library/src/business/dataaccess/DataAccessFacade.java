@@ -18,7 +18,7 @@ public class DataAccessFacade implements DataAccess {
 			+ "\\src\\business\\dataaccess\\storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
 	
-	private BookList bookList = new BookList();
+	private static BookList bookList = new BookList();
 	
 	public void saveLibraryMember(String name, LibraryMember member) {
 		ObjectOutputStream out = null;

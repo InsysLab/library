@@ -60,6 +60,12 @@ public class Book extends Publication implements Serializable {
 		// TODO Auto-generated method stub
 		return maxcheckoutlength;
 	}
+
+	@Override
+	public String toString() {
+		return "Book [ISBN=" + ISBN + ", maxcheckoutlength="
+				+ maxcheckoutlength + ", getTitle()=" + getTitle() + "]";
+	}
 	
 
 }
