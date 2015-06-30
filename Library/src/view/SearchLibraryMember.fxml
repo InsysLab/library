@@ -10,7 +10,7 @@
 <AnchorPane prefHeight="628.0000999999975" prefWidth="877.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <!-- TODO Add Nodes -->
   <children>
-    <GridPane layoutX="14.0" layoutY="45.0" prefHeight="60.0" prefWidth="217.0">
+    <GridPane layoutX="16.0" layoutY="45.0" prefHeight="60.0" prefWidth="217.0">
       <children>
         <Label prefHeight="20.0" prefWidth="67.0" text=" Member ID" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField prefHeight="34.0" prefWidth="126.0" promptText="Enter member ID" GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -23,7 +23,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <GridPane layoutX="-10.0" layoutY="87.0" prefHeight="295.0" prefWidth="334.0">
+    <GridPane layoutX="-8.0" layoutY="87.0" prefHeight="295.0" prefWidth="334.0">
       <children>
         <Label prefHeight="24.0" prefWidth="82.0" text="        Firstname" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <font>
@@ -63,12 +63,11 @@
       </rowConstraints>
     </GridPane>
     <Button layoutX="232.0" layoutY="59.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="82.0" text="Search" />
-    <Button layoutX="97.0" layoutY="381.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="95.0" text="Update Member" />
-    <Label layoutX="13.0" layoutY="11.0" prefHeight="33.0" prefWidth="126.0" text="Search Member">
+    <Button layoutX="220.0" layoutY="381.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="95.0" text="Update" />
+    <Label layoutX="15.0" layoutY="11.0" prefHeight="33.0" prefWidth="165.0" text="Search Member">
       <font>
-        <Font size="16.0" />
+        <Font size="20.0" />
       </font>
     </Label>
-    <Button layoutX="195.0" layoutY="381.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="118.9998779296875" text="New Checkout" />
   </children>
 </AnchorPane>

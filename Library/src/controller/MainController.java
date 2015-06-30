@@ -7,12 +7,14 @@ import view.AddLibraryMember;
 import view.AddPublication;
 import view.SearchLibraryMember;
 import view.SearchPublication;
+import view.MemberCheckout;
 
 public class MainController {
 	private final AddLibraryMember addLibraryMember = new AddLibraryMember();
 	private final AddPublication addPublication = new AddPublication();
 	private final SearchLibraryMember searchLibraryMember = new SearchLibraryMember();
 	private final SearchPublication searchPublication = new SearchPublication();
+	private final MemberCheckout memberCheckout = new MemberCheckout();
 	
 	@FXML private VBox vBoxWorkArea;
 	
@@ -43,4 +45,11 @@ public class MainController {
     	}
 		vBoxWorkArea.getChildren().add(addLibraryMember);
 	}
+	
+	@FXML protected void handleCheckoutBtnAction(ActionEvent event) {
+		if (vBoxWorkArea.getChildren().size() == 1) {
+			vBoxWorkArea.getChildren().remove(0);
+    	}
+		vBoxWorkArea.getChildren().add(memberCheckout);
+	}	
 }
