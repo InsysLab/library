@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -54,7 +55,7 @@ public class MPPLibrary extends Application {
 	private Node getTop() {
 		HBox top = new HBox();
 		top.setAlignment(Pos.CENTER);
-		top.prefHeight(50);
+		top.prefHeight(100);
 		Text heading = new Text("MPP Library");
 		heading.setFont(new Font("System Bold", 24));
 		top.getChildren().add(heading);
@@ -73,6 +74,7 @@ public class MPPLibrary extends Application {
 		
 		VBox vbWorkArea = new VBox();
 		vbWorkArea.setPrefWidth(500);
+		vbWorkArea.setPadding(new Insets(5,5,5,5));
 		
 		hLibMenu.getChildren().add(vbWorkArea);
 		
@@ -182,24 +184,7 @@ public class MPPLibrary extends Application {
 		return hLibMenu;
 	}
 	
-	private Node getBottom() {
-		VBox vBottom = new VBox();
-		vBottom.setMinHeight(50);
-		Button btnSubmit = new Button("Submit");
-		btnSubmit.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-//		    	System.out.println(userTextField.getText());
-//		    	System.out.println(streetTextField.getText());
-//		    	System.out.println(cityTextField.getText() + ", " + stateTextField.getText() + " " + zipTextField.getText());
-		    	System.out.println("");
-		    }
-		});
-		vBottom.setAlignment(Pos.BOTTOM_CENTER);
-		vBottom.getChildren().add(btnSubmit);
-		return vBottom;
-	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
