@@ -41,7 +41,6 @@ public class SearchLibraryMemberController {
 		} else {
 			Alert alert = new Alert(AlertType.ERROR, "Cannot find member id " + tfMemberID.getText(), ButtonType.OK);
 			alert.setTitle("Search Library Member");
-			alert.setContentText("Error");
 			alert.show();
 		}
 		
