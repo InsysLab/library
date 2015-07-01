@@ -12,7 +12,7 @@
   <children>
     <HBox alignment="CENTER" prefHeight="50.0">
       <children>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MPP Library">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whizdom">
           <font>
             <Font name="System Bold" size="24.0" />
           </font>
