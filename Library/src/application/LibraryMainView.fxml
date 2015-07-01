@@ -32,8 +32,8 @@
                   <content>
                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                       <children>
-                        <Button layoutX="18.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleSearchLibraryMemberBtnAction" prefWidth="180.0" text="Library Member" />
-                        <Button layoutX="19.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleSearchPublicationBtnAction" prefWidth="180.0" text="Publication" />
+                        <Button layoutX="13.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSearchLibraryMemberBtnAction" prefWidth="180.0" text="Library Member" />
+                        <Button layoutX="14.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleSearchPublicationBtnAction" prefWidth="180.0" text="Publication" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -42,8 +42,9 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <Button layoutX="20.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleAddPublicationBtnAction" prefWidth="180.0" text="Add Publication" />
-                        <Button layoutX="20.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleAddMemberBtnAction" prefWidth="180.0" text="Add Member" />
+                        <Button layoutX="10.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleAddPublicationBtnAction" prefWidth="180.0" text="Add Publication" />
+                        <Button layoutX="10.0" layoutY="72.0" mnemonicParsing="false" onAction="#handleAddMemberBtnAction" prefWidth="180.0" text="Add Member" />
+                        <Button layoutX="10.0" layoutY="105.0" mnemonicParsing="false" onAction="#handleCheckoutBtnAction" prefWidth="180.0" text="Checkout" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -52,7 +53,7 @@
             </Accordion>
           </items>
         </SplitPane>
-        <VBox prefWidth="500.0" fx:id="vBoxWorkArea">
+        <VBox fx:id="vBoxWorkArea" prefWidth="500.0">
           <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
           </padding>
