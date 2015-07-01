@@ -10,12 +10,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Book;
-import business.objects.BookList;
 
 public class SearchPublicationController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -23,6 +23,7 @@ public class SearchPublicationController {
 	@FXML private ComboBox cbTitle;
 	@FXML private Label lblSearchStatus;
 	@FXML private HBox hbSearchResult;
+	@FXML private TextField tfSearchText;
 	
     @FXML // This method is called by the FXMLLoader when initialization is complete
    void initialize() {
@@ -34,17 +35,32 @@ public class SearchPublicationController {
     	cbTitle.getItems().addAll("Title","ISBN");
     	cbTitle.setValue("Title");
    }
-	@FXML protected void onSearchBtnAction(ActionEvent event) {
-		BookList list = dao.getBookList();
+	
+   @FXML protected void onSearchBtnAction(ActionEvent event) {
+	    ArrayList<Book> list = null;
+		if (cbPublication.getValue().equals("Book") && cbPublication.getValue().equals("Title")) {
+			list = dao.wildSearchBookByTitle(tfSearchText.getText());
+		}
 
 		if (hbSearchResult.getChildren().size() == 1) {
 			hbSearchResult.getChildren().remove(0);
 		}
-		if (list.getBooks().size() > 0) {
+		if (list!=null && list.size() > 0) {
 			lblSearchStatus.setText("Search result...");
-			hbSearchResult.getChildren().add(getBookTable((ArrayList<Book>)list.getBooks()));
+			hbSearchResult.getChildren().add(getBookTable(list));
 		} else {
 			lblSearchStatus.setText("Search did not find anything...");
+		}
+	}
+	@FXML protected void onSearchComboPubAction(ActionEvent event) {
+		if (cbPublication.getValue().equals("Book")) {
+	    	cbTitle.getItems().clear();
+	    	cbTitle.getItems().addAll("Title","ISBN");
+	    	cbTitle.setValue("Title");
+		} else {
+	    	cbTitle.getItems().clear();
+	    	cbTitle.getItems().addAll("Title","Issue No");
+	    	cbTitle.setValue("Title");
 		}
 	}
 	

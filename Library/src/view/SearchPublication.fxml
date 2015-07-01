@@ -22,8 +22,8 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <TextField />
-            <ComboBox fx:id="cbPublication" prefWidth="70.0" promptText="Book"/>
+            <TextField fx:id="tfSearchText" />
+            <ComboBox fx:id="cbPublication" prefWidth="70.0" promptText="Book" onAction="#onSearchComboPubAction"/>
             <ComboBox fx:id="cbTitle" prefWidth="70.0" promptText="Title" />
             <Button mnemonicParsing="false" onAction="#onSearchBtnAction" prefWidth="70.0" text="Search" />
          </children>

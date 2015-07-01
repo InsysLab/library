@@ -122,4 +122,18 @@ public class DataAccessFacade implements DataAccess {
 		return bookList;
 	}
 	
+	public ArrayList<Book> wildSearchBookByTitle(String title) {
+		BookList bookList =  getBookList();
+		if (bookList != null && bookList.getBooks().size() > 0) {
+			ArrayList<Book> list = new ArrayList<Book>();
+			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
+				if (book.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1) {
+					list.add(book);					
+				}
+			}
+			return list;
+		}
+		return null;
+	}
+	
 }
