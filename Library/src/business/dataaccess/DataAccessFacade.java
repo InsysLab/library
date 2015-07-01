@@ -15,7 +15,8 @@ import business.objects.LibraryMember;
 import business.objects.MemberList;
 import business.objects.Periodical;
 import business.objects.PeriodicalList;
-
+import business.objects.CheckoutRecord;
+import business.objects.CheckoutRecordEntry;
 
 
 public class DataAccessFacade implements DataAccess {
@@ -322,6 +323,20 @@ public class DataAccessFacade implements DataAccess {
 		return periodicalList;
 	}
 	
+	public Periodical searchPeriodicalByIssueNo(String issueNo){
+		PeriodicalList periodicalList =  getPeriodicalList();
+		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
+			Periodical periodical = null;
+			for (Periodical p: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
+				if (p.getIssueNo() == issueNo) {
+					periodical = p;
+				}
+			}
+			return periodical;
+		}
+		return null;		
+	}
+	
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title) {
 		PeriodicalList periodicalList =  getPeriodicalList();
 		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
@@ -398,5 +413,53 @@ public class DataAccessFacade implements DataAccess {
 				} catch(Exception e) {}
 			}
 		}
+	}
+	
+	@Override
+	public CheckoutRecord getCheckoutRecord(){
+		// TODO Auto-generated method stub
+		ObjectInputStream in = null;
+		CheckoutRecord checkoutRecord = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "CheckoutRecord");
+			in = new ObjectInputStream(Files.newInputStream(path));
+			checkoutRecord = (CheckoutRecord)in.readObject();
+			
+			//System.out.println(checkoutRecord.toString());
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(Exception e) {}
+			}
+		}
+
+		return checkoutRecord;		
+	}
+	
+	@Override
+	public void saveCheckoutRecord(CheckoutRecordEntry entry){
+		// TODO Auto-generated method stub
+		ObjectOutputStream out = null;
+		CheckoutRecord records = getCheckoutRecord();
+		try {
+			if (records == null) {
+				records = CheckoutRecord.getInstance();
+			}
+			records.addEntry(entry);
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "CheckoutRecord");
+			out = new ObjectOutputStream(Files.newOutputStream(path));
+			out.writeObject(records);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch(Exception e) {}
+			}
+		}		
 	}
 }

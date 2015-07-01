@@ -58,13 +58,7 @@
       </font>
     </Label>
     <Button fx:id="btnAddCheckout" disable="true" layoutX="305.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleAddCheckoutBtnAction" prefHeight="33.0" prefWidth="165.0" text="Add to Checkout" textFill="BLACK" visible="true" />
-    <TableView fx:id="tblCheckout" layoutX="39.0" layoutY="297.0" prefHeight="157.0" prefWidth="431.0">
-      <columns>
-        <TableColumn prefWidth="75.0" text="Type" fx:id="tblCheckoutPerType" />
-        <TableColumn editable="false" prefWidth="75.0" text="ISBN/Issue#" fx:id="tblCheckoutPerID" />
-        <TableColumn editable="false" prefWidth="75.0" text="Title" fx:id="tblCheckoutPerTitle" />
-      </columns>
-    </TableView>
+    <TableView fx:id="tblCheckout" layoutX="39.0" layoutY="297.0" prefHeight="157.0" prefWidth="431.0" />
     <Button fx:id="btnSubmitCheckout" disable="true" layoutX="305.0" layoutY="463.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="165.0" text="Submit Checkout" textFill="BLACK" />
   </children>
 </AnchorPane>

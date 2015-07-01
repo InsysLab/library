@@ -10,6 +10,8 @@ import business.objects.LibraryMember;
 import business.objects.MemberList;
 import business.objects.Periodical;
 import business.objects.PeriodicalList;
+import business.objects.CheckoutRecord;
+import business.objects.CheckoutRecordEntry;
 
 public interface DataAccess {
 	
@@ -30,11 +32,14 @@ public interface DataAccess {
 	
 	public PeriodicalList getPeriodicalList();
 	public void savePeriodical(Periodical periodical);
+	public Periodical searchPeriodicalByIssueNo(String issueNo);
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
 	
 	public LibraryMember searchLibraryMemberByID(int idNo);
 	public void saveUpdateMember(LibraryMember member);
 	
+	public CheckoutRecord getCheckoutRecord();
+	public void saveCheckoutRecord(CheckoutRecordEntry checkoutRecord);
 	
 }
