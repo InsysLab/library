@@ -22,7 +22,7 @@ public interface DataAccess {
 	public AuthorList getAuthorList();
 	public void saveMember(LibraryMember member);
 	public MemberList getMemberList();
-	public void savePeriodic(Periodical periodical);
+	public void savePeriodical(Periodical periodical);
 	public PeriodicalList getPeriodicalList();
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN);
 }

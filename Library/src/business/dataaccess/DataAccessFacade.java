@@ -63,6 +63,9 @@ public class DataAccessFacade implements DataAccess {
 		BookList booklist = getBookList();
 		try {
 			//bookList = this.getBookList();
+			if (booklist == null) {
+				booklist = BookList.getInstance();
+			}
 			booklist.addBook(book);
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
 			out = new ObjectOutputStream(Files.newOutputStream(path));
@@ -242,11 +245,14 @@ public class DataAccessFacade implements DataAccess {
 		return memberList;
 	}
 	@Override
-	public void savePeriodic(Periodical periodical) {
+	public void savePeriodical (Periodical periodical) {
 		// TODO Auto-generated method stub
 		ObjectOutputStream out = null;
-		PeriodicalList plist = PeriodicalList.getInstance();
+		PeriodicalList plist = getPeriodicalList();
 		try {
+			if (plist == null) {
+				plist = PeriodicalList.getInstance();
+			}
 			plist.addPeriodical(periodical);
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "PeriodicalList");
 			out = new ObjectOutputStream(Files.newOutputStream(path));
