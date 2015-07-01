@@ -1,5 +1,7 @@
 package controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -12,11 +14,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import table.objects.CheckoutRecordTable;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
+import business.objects.Address;
 import business.objects.Book;
 import business.objects.CheckoutRecord;
 import business.objects.CheckoutRecordEntry;
+import business.objects.Copy;
+import business.objects.LibraryMember;
 
 public class SearchCheckoutRecordController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -31,31 +37,62 @@ public class SearchCheckoutRecordController {
    }
 	
    @FXML protected void onSearchBtnAction(ActionEvent event) {
-	   //CheckoutRecord cr = new CheckoutRecord();
+	   CheckoutRecord cr = new CheckoutRecord();
+	   Book pub1 = new Book("123", 1, "Java");
+	   Copy copy = new Copy("1", pub1);
+	   LocalDate loc = LocalDate.now();
+	   CheckoutRecordEntry crEntry = new CheckoutRecordEntry(copy, loc, loc.plusDays(pub1.getMaxcheckoutlength()));
+	   LibraryMember member = new LibraryMember(12, "Jesus", "Sadang", "1234", new Address("1","1","1","1"));
+	   cr.setMember(member);
+	   
+	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
+	   CheckoutRecordTable chkRec = new CheckoutRecordTable();
+	   chkRec.setTitle(pub1.getTitle());
+	   chkRec.setNumber(pub1.getISBN());
+	   chkRec.setBorrowedDate(crEntry.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+	   chkRec.setDueDate(crEntry.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
 	   //CheckoutRecordEntry en1 = new CheckoutRecordEntry();
+	   
+	   list.add(chkRec);
+	   if (hbSearchResult.getChildren().size() == 1) {
+			hbSearchResult.getChildren().remove(0);
+		}
+		if (list!=null && list.size() > 0) {
+			lblSearchStatus.setText("Search result...");
+			hbSearchResult.getChildren().add(getCheckoutTable(list));
+		} else {
+			lblSearchStatus.setText("Search did not find anything...");
+		}
 	}
 	
 	
-	private TableView getBookTable(ArrayList<Book> books) {
+	private TableView getCheckoutTable(ArrayList<CheckoutRecordTable> list) {
 		TableView table = new TableView();
 		table.setPrefWidth(500);
 		TableColumn colTitle = new TableColumn("Title");
 		colTitle.setPrefWidth(125);
 		colTitle.setCellValueFactory(
-                new PropertyValueFactory<Book, String>("title"));
-		TableColumn colISBN = new TableColumn("ISBN");
+                new PropertyValueFactory<CheckoutRecordTable, String>("title"));
+		
+		TableColumn colISBN = new TableColumn("ISBN/Issue No");
 		colISBN.setPrefWidth(125);
 		colISBN.setCellValueFactory(
-                new PropertyValueFactory<Book, String>("ISBN"));
-		TableColumn colMax = new TableColumn("Max Checkout");
-		colMax.setPrefWidth(125);
-		colMax.setCellValueFactory(
-                new PropertyValueFactory<Book, String>("maxcheckoutlength"));
+                new PropertyValueFactory<CheckoutRecordTable, String>("number"));
+		
+		TableColumn colBorrowedDate = new TableColumn("Borrowed Date");
+		colBorrowedDate.setPrefWidth(125);
+		colBorrowedDate.setCellValueFactory(
+                new PropertyValueFactory<CheckoutRecordTable, String>("borrowedDate"));
+		
+		TableColumn colDueDate = new TableColumn("Due Date");
+		colDueDate.setPrefWidth(125);
+		colDueDate.setCellValueFactory(
+                new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));
 
-		ObservableList<Book> data = FXCollections.observableArrayList();
-		data.addAll(books);
+		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
+		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colMax);
+		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate);
 		
 		return table;
 	}
