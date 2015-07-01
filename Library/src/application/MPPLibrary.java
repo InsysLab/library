@@ -1,35 +1,14 @@
 package application;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import view.AddLibraryMember;
-import view.AddPublication;
-import view.SearchLibraryMember;
-import view.SearchPublication;
 
 public class MPPLibrary extends Application {
-    //Holds the screens to be displayed
-    private HashMap<String, Node> screens = new HashMap<>();
     
 	@Override
 	public void start(Stage primaryStage) {
