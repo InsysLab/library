@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane gridLinesVisible="false" hgap="10.0" prefHeight="548.0" prefWidth="763.999977929685" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.AuthorController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+      <children>
+        <Button id="addToList" mnemonicParsing="false" onAction="#handleMoveToRigth" text="&gt;&gt;" />
+        <Button id="removeFromList" mnemonicParsing="false" onAction="#handleRemoveFromLeft" text="&lt;&lt;" />
+      </children>
+      <padding>
+        <Insets left="20.0" top="100.0" />
+      </padding>
+    </VBox>
+    <ScrollPane prefHeight="275.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+      <content>
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="285.0">
+          <children>
+            <ListView id="fullListAuthor" layoutX="0.0" layoutY="0.0" pickOnBounds="true" prefHeight="260.0" prefWidth="271.0" />
+          </children>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+    <ScrollPane prefHeight="275.0000999999975" prefWidth="278.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+      <content>
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="287.0">
+          <children>
+            <ListView id="selectedList" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="271.0" />
+          </children>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+    <Pane id="paneAuthor" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
+      <children>
+        <GridPane gridLinesVisible="false" hgap="5.0" layoutX="0.0" layoutY="0.0" prefHeight="134.0" prefWidth="713.0" vgap="5.0">
+          <children>
+            <Button id="saveAuthor" mnemonicParsing="false" onAction="#handleSaveAuthor" text="Save Author" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Label text="FirstName:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label text="Street:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Label text="LastName:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Label text="Credentials:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Label text="City:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="State:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label text="Zip:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField id="firstName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <TextField id="lastName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField id="phone" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField id="credentials" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField id="street" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <TextField id="city" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextField id="state" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField id="zip" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="123.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="196.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="113.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="213.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints maxHeight="23.0" minHeight="5.0" prefHeight="23.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="24.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="3.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="31.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </children>
+    </Pane>
+    <Button id="SetAuthor" mnemonicParsing="false" onAction="#handleSetAuthor" text="Set Authors" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+    <Button id="AddAuthor" mnemonicParsing="false" onAction="#handleAddAuthor" text="Add Author" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+  </children>
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="286.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="10.0" prefWidth="119.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="288.0" />
+  </columnConstraints>
+  <padding>
+    <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+  </padding>
+  <rowConstraints>
+    <RowConstraints maxHeight="275.0" minHeight="10.0" prefHeight="275.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="162.0" minHeight="10.0" prefHeight="162.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+</GridPane>

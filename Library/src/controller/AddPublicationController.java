@@ -1,25 +1,31 @@
 package controller;
 
+import view.AddAuthor;
+import view.MemberCheckout;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
+import business.objects.Author;
 import business.objects.Book;
 import business.objects.Periodical;
 
 public class AddPublicationController {
 	private final DataAccess dao = new DataAccessFacade();
-
+	
+	
 	@FXML private TextField perTitle;
 	@FXML private TextField perIssueNum;
 	@FXML private TextField perMaxCODays;
 	@FXML private TextField tfBookTitle;
 	@FXML private TextField tfISBN;
 	@FXML private TextField tfBookMaxCODays;
+	@FXML private ListView<Author> authorList;
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
@@ -35,5 +41,10 @@ public class AddPublicationController {
 		Alert alert = new Alert(AlertType.INFORMATION, tfBookTitle.getText() + " is now saved!", ButtonType.OK);
 		alert.setTitle("Book Saved");
 		alert.show();
+	}
+	
+	@FXML protected void handlebtnEditAuthor(ActionEvent event) {
+		//Call Author window and
+		final AddAuthor addAuthor = new AddAuthor(this);		
 	}
 }
