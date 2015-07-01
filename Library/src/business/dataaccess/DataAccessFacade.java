@@ -141,6 +141,20 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 	
+	public ArrayList<Book> wildSearchBookByISBN(String ISBN) {
+		BookList bookList =  getBookList();
+		if (bookList != null && bookList.getBooks().size() > 0) {
+			ArrayList<Book> list = new ArrayList<Book>();
+			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
+				if (book.getISBN().indexOf(ISBN.toUpperCase())!=-1) {
+					list.add(book);					
+				}
+			}
+			return list;
+		}
+		return null;
+	}
+	
 	@Override
 	public void saveAuthor(Author author) {
 		// TODO Auto-generated method stub
