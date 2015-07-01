@@ -11,10 +11,18 @@ import business.objects.Address;
 public class SearchLibraryMemberController {
 	private final DataAccess dao = new DataAccessFacade();
 
-	@FXML private TextField tfID;
+	@FXML private TextField tfMemberID;
+	@FXML private TextField tfFirstName;
+	@FXML private TextField tfLastName;
+	@FXML private TextField tfStreet;
+	@FXML private TextField tfCity;
+	@FXML private TextField tfState;
+	@FXML private TextField tfZip;
+	@FXML private TextField tfPhone;
 	
 	@FXML protected void handleSearchMemberBtnAction(ActionEvent event) {
 		
-		//dao.saveMember(member);
+
 	}
 }
+
