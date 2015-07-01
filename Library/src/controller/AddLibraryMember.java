@@ -2,7 +2,10 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.LibraryMember;
@@ -33,5 +36,9 @@ public class AddLibraryMember {
 												 address);
 		
 		dao.saveMember(member);
+		
+		Alert alert = new Alert(AlertType.INFORMATION, tfFirstname.getText() + " is now saved!", ButtonType.OK);
+		alert.setTitle("New Member Saved");
+		alert.show();		
 	}
 }

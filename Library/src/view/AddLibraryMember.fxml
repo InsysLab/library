@@ -10,7 +10,7 @@
 <AnchorPane prefHeight="411.0" prefWidth="466.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.AddLibraryMember">
   <!-- TODO Add Nodes -->
   <children>
-    <GridPane layoutX="4.0" layoutY="81.0" prefHeight="295.0" prefWidth="319.0">
+    <GridPane layoutX="4.0" layoutY="52.0" prefHeight="295.0" prefWidth="319.0">
       <children>
         <Label prefHeight="24.0" prefWidth="82.0" text="    Firstname" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="1">
           <font>
@@ -56,6 +56,6 @@
         <Font size="20.0" />
       </font>
     </Label>
-    <Button id="btnSave" layoutX="237.0" layoutY="373.0" mnemonicParsing="false" onAction="#handleSaveMemberBtnAction" prefHeight="33.000099999997474" prefWidth="76.0" text="Save" />
+    <Button id="btnSave" layoutX="237.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleSaveMemberBtnAction" prefHeight="33.000099999997474" prefWidth="76.0" text="Save" />
   </children>
 </AnchorPane>
