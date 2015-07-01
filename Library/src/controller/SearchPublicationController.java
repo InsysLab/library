@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Book;
+import business.objects.Periodical;
 
 public class SearchPublicationController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -34,25 +35,45 @@ public class SearchPublicationController {
     	cbTitle.getItems().clear();
     	cbTitle.getItems().addAll("Title","ISBN");
     	cbTitle.setValue("Title");
+    	cbTitle.setPrefWidth(100);
    }
 	
    @FXML protected void onSearchBtnAction(ActionEvent event) {
-	    ArrayList<Book> list = null;
-		if (cbPublication.getValue().equals("Book") && cbTitle.getValue().equals("Title")) {
-			list = dao.wildSearchBookByTitle(tfSearchText.getText());
-		} else if (cbPublication.getValue().equals("Book") && cbTitle.getValue().equals("ISBN")) {
-			list = dao.wildSearchBookByISBN(tfSearchText.getText());
-		}
+	   if (cbPublication.getValue().equals("Book")) {
+		    ArrayList<Book> list = null;
+			if (cbTitle.getValue().equals("Title")) {
+				list = dao.wildSearchBookByTitle(tfSearchText.getText());
+			} else if (cbTitle.getValue().equals("ISBN")) {
+				list = dao.wildSearchBookByISBN(tfSearchText.getText());
+			}
 
-		if (hbSearchResult.getChildren().size() == 1) {
-			hbSearchResult.getChildren().remove(0);
-		}
-		if (list!=null && list.size() > 0) {
-			lblSearchStatus.setText("Search result...");
-			hbSearchResult.getChildren().add(getBookTable(list));
-		} else {
-			lblSearchStatus.setText("Search did not find anything...");
-		}
+			if (hbSearchResult.getChildren().size() == 1) {
+				hbSearchResult.getChildren().remove(0);
+			}
+			if (list!=null && list.size() > 0) {
+				lblSearchStatus.setText("Search result...");
+				hbSearchResult.getChildren().add(getBookTable(list));
+			} else {
+				lblSearchStatus.setText("Search did not find anything...");
+			}
+	   } else {
+		    ArrayList<Periodical> list = null;
+			if (cbTitle.getValue().equals("Title")) {
+				list = dao.wildSearchPeriodicalByTitle(tfSearchText.getText());
+			} else if (cbTitle.getValue().equals("Issue No")) {
+				list = dao.wildSearchPeriodicalByIssueNo(tfSearchText.getText());
+			}
+
+			if (hbSearchResult.getChildren().size() == 1) {
+				hbSearchResult.getChildren().remove(0);
+			}
+			if (list!=null && list.size() > 0) {
+				lblSearchStatus.setText("Search result...");
+				hbSearchResult.getChildren().add(getPeriodicalTable(list));
+			} else {
+				lblSearchStatus.setText("Search did not find anything...");
+			}
+	   }
 	}
 	@FXML protected void onSearchComboPubAction(ActionEvent event) {
 		if (cbPublication.getValue().equals("Book")) {
@@ -86,6 +107,30 @@ public class SearchPublicationController {
 		data.addAll(books);
 		table.setItems(data);
 		table.getColumns().addAll(colTitle,colISBN, colMax);
+		
+		return table;
+	}
+	
+	private TableView getPeriodicalTable(ArrayList<Periodical> periodicals) {
+		TableView table = new TableView();
+		table.setPrefWidth(500);
+		TableColumn colTitle = new TableColumn("Title");
+		colTitle.setPrefWidth(125);
+		colTitle.setCellValueFactory(
+                new PropertyValueFactory<Periodical, String>("title"));
+		TableColumn colIssueNo = new TableColumn("Issue No");
+		colIssueNo.setPrefWidth(125);
+		colIssueNo.setCellValueFactory(
+                new PropertyValueFactory<Periodical, String>("issueNo"));
+		TableColumn colMax = new TableColumn("Max Checkout");
+		colMax.setPrefWidth(125);
+		colMax.setCellValueFactory(
+                new PropertyValueFactory<Periodical, String>("maxcheckoutlength"));
+
+		ObservableList<Periodical> data = FXCollections.observableArrayList();
+		data.addAll(periodicals);
+		table.setItems(data);
+		table.getColumns().addAll(colTitle,colIssueNo, colMax);
 		
 		return table;
 	}

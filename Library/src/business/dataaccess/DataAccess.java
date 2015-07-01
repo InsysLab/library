@@ -26,4 +26,5 @@ public interface DataAccess {
 	public PeriodicalList getPeriodicalList();
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN);
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
+	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
 }

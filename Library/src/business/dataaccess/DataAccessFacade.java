@@ -304,4 +304,18 @@ public class DataAccessFacade implements DataAccess {
 		}
 		return null;
 	}
+	
+	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo) {
+		PeriodicalList periodicalList =  getPeriodicalList();
+		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
+			ArrayList<Periodical> list = new ArrayList<Periodical>();
+			for (Periodical periodical: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
+				if (periodical.getIssueNo().toUpperCase().indexOf(issueNo.toUpperCase())!=-1) {
+					list.add(periodical);					
+				}
+			}
+			return list;
+		}
+		return null;
+	}
 }
