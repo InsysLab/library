@@ -27,7 +27,7 @@ public class Author extends Person implements Serializable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Credentials" + credentials + "," + super.toString();
+		return "Credentials: " + credentials + ", " + super.toString();
 	}
 
 }

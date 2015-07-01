@@ -6,6 +6,10 @@ import java.util.List;
 
 public class BookList implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 754543427664653729L;
 	private static BookList instance = null;
 	   protected BookList() {
 	      // Exists only to defeat instantiation.
@@ -19,7 +23,7 @@ public class BookList implements Serializable {
 	   
 	private List<Book> books = new ArrayList<>();
 
-	public List getBooks() {
+	public List<Book> getBooks() {
 		return books;
 	}
 	

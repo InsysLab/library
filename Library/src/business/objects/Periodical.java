@@ -36,5 +36,11 @@ public class Periodical extends Publication implements Serializable {
 		// TODO Auto-generated method stub
 		return maxcheckoutlength;
 	}
+	
+	@Override
+	public String toString() {
+		return "Periodical> IssueNo: " + issueNo + ", maxcheckoutlength: "
+				+ maxcheckoutlength + ", Title: " + getTitle();
+	}
 
 }

@@ -57,8 +57,8 @@ public class Book extends Publication implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Book [ISBN=" + ISBN + ", maxcheckoutlength="
-				+ maxcheckoutlength + ", getTitle()=" + getTitle() + "]";
+		return "Book > ISBN: " + ISBN + ", maxcheckoutlength: "
+				+ maxcheckoutlength + ", Title: =" + getTitle();
 	}
 	
 
