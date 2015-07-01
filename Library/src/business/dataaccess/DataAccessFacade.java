@@ -152,7 +152,7 @@ public class DataAccessFacade implements DataAccess {
 			}
 			return list;
 		}
-		return null;
+		return null; //Comment
 	}
 	
 	@Override
