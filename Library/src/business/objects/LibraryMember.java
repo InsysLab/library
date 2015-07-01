@@ -13,12 +13,10 @@ public class LibraryMember extends Person implements Serializable {
 	private int memberID;
 	private CheckoutRecord record = new CheckoutRecord();
 	
-	public LibraryMember(String firstname, String lastname, String phone, Address addr)
+	public LibraryMember(int id, String firstname, String lastname, String phone, Address addr)
 	{
 		super(firstname, lastname, phone, addr);
-		
-		Random rand = new Random();
-		this.memberID = rand.nextInt(5);
+		this.memberID = id;
 	}
 	
 	public void checkout(Copy copy, LocalDate checkoutDate, LocalDate dueDate) {

@@ -11,6 +11,7 @@ import business.objects.Address;
 public class AddLibraryMember {
 	private final DataAccess dao = new DataAccessFacade();
 
+	@FXML private TextField tfID;
 	@FXML private TextField tfFirstname;
 	@FXML private TextField tfLastname;
 	@FXML private TextField tfStreet;
@@ -25,7 +26,8 @@ public class AddLibraryMember {
 									  tfState.getText(), 
 									  tfZip.getText());
 		
-		LibraryMember member = new LibraryMember(tfFirstname.getText(), 
+		LibraryMember member = new LibraryMember( Integer.parseInt(tfID.getText()),
+												 tfFirstname.getText(), 
 												 tfLastname.getText(), 
 												 tfPhone.getText(), 
 												 address);
