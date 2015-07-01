@@ -28,4 +28,5 @@ public interface DataAccess {
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
 	public LibraryMember searchLibraryMemberByID(int idNo);
+	public void saveUpdateMember(LibraryMember member);
 }

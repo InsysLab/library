@@ -334,4 +334,35 @@ public class DataAccessFacade implements DataAccess {
 		}
 		return null;
 	}
+	
+	@Override
+	public void saveUpdateMember(LibraryMember member) {
+		// TODO Auto-generated method stub
+		ObjectOutputStream out = null;
+		MemberList memberlist = getMemberList();
+		try {
+			if (memberlist == null) {
+				memberlist = MemberList.getInstance();
+			}	
+			
+			if (memberlist != null && memberlist.getMembers().size() > 0) {
+				for (LibraryMember mem: (ArrayList<LibraryMember>) memberlist.getMembers()) {
+					if (member.getMemberID() == mem.getMemberID()) {
+						mem = member;					
+					}
+				}
+			}
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
+			out = new ObjectOutputStream(Files.newOutputStream(path));
+			out.writeObject(memberlist);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch(Exception e) {}
+			}
+		}
+	}
 }
