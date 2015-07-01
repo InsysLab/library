@@ -22,7 +22,7 @@
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="285.0">
           <children>
-            <ListView id="fullListAuthor" layoutX="0.0" layoutY="0.0" pickOnBounds="true" prefHeight="260.0" prefWidth="271.0" />
+            <ListView fx:id="fullListAuthor" layoutX="0.0" layoutY="0.0" pickOnBounds="true" prefHeight="260.0" prefWidth="271.0" />
           </children>
         </AnchorPane>
       </content>
@@ -31,12 +31,12 @@
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="287.0">
           <children>
-            <ListView id="selectedList" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="271.0" />
+            <ListView fx:id="selectedList" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="271.0" />
           </children>
         </AnchorPane>
       </content>
     </ScrollPane>
-    <Pane id="paneAuthor" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
+    <Pane fx:id="paneAuthor" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
       <children>
         <GridPane gridLinesVisible="false" hgap="5.0" layoutX="0.0" layoutY="0.0" prefHeight="134.0" prefWidth="713.0" vgap="5.0">
           <children>
@@ -49,14 +49,14 @@
             <Label text="City:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label text="State:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label text="Zip:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField id="firstName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <TextField id="lastName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField id="phone" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField id="credentials" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField id="street" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-            <TextField id="city" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <TextField id="state" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <TextField id="zip" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextField fx:id="firstName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <TextField fx:id="lastName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="phone" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="credentials" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="street" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <TextField fx:id="city" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextField fx:id="state" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField fx:id="zip" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="123.0" />

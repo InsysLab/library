@@ -2,6 +2,7 @@ package controller;
 
 import view.AddAuthor;
 import view.MemberCheckout;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -25,7 +26,7 @@ public class AddPublicationController {
 	@FXML private TextField tfBookTitle;
 	@FXML private TextField tfISBN;
 	@FXML private TextField tfBookMaxCODays;
-	@FXML private ListView<Author> authorList;
+	@FXML private ListView authorList;
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
@@ -46,5 +47,10 @@ public class AddPublicationController {
 	@FXML protected void handlebtnEditAuthor(ActionEvent event) {
 		//Call Author window and
 		final AddAuthor addAuthor = new AddAuthor(this);		
+	}
+	
+	public void setAuthorList(ObservableList value)
+	{
+		authorList.setItems(value);
 	}
 }
