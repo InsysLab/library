@@ -10,7 +10,16 @@ public class Copy implements Serializable {
 	
 	private String copyNo;
 	private Publication publication;
+	private boolean isAvailable;
 	
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
 	public Copy(String copyno, Publication pub)
 	{
 		this.copyNo = copyno;
