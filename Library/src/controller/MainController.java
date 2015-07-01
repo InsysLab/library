@@ -31,6 +31,13 @@ public class MainController {
     	}
 		vBoxWorkArea.getChildren().add(searchPublication);
 	}
+	
+	@FXML protected void handleSearchCheckoutBtnAction(ActionEvent event) {
+		if (vBoxWorkArea.getChildren().size() == 1) {
+			vBoxWorkArea.getChildren().remove(0);
+    	}
+		vBoxWorkArea.getChildren().add(searchPublication);
+	}
 
 	@FXML protected void handleAddPublicationBtnAction(ActionEvent event) {
 		if (vBoxWorkArea.getChildren().size() == 1) {

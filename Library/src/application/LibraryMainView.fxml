@@ -31,7 +31,7 @@
                       <children>
                         <Button layoutX="13.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSearchLibraryMemberBtnAction" prefWidth="180.0" text="Library Member" />
                         <Button layoutX="14.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleSearchPublicationBtnAction" prefWidth="180.0" text="Publication" />
-                        <Button layoutX="14.0" layoutY="98.0" mnemonicParsing="false" prefWidth="180.0" text="Checkout Records" />
+                        <Button layoutX="14.0" layoutY="98.0" mnemonicParsing="false" onAction="#handleSearchCheckoutBtnAction" prefWidth="180.0" text="Checkout Records" />
                       </children>
                     </AnchorPane>
                   </content>
