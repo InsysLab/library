@@ -7,9 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import business.objects.Author;
+import business.objects.AuthorList;
 import business.objects.Book;
 import business.objects.BookList;
 import business.objects.LibraryMember;
+import business.objects.MemberList;
+import business.objects.Periodical;
+import business.objects.PeriodicalList;
 
 
 
@@ -136,4 +141,133 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 	
+	@Override
+	public void saveAuthor(Author author) {
+		// TODO Auto-generated method stub
+		ObjectOutputStream out = null;
+		AuthorList authorlist = AuthorList.getInstance();
+		try {
+			authorlist.addAuthor(author);
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "AuthorList");
+			out = new ObjectOutputStream(Files.newOutputStream(path));
+			out.writeObject(authorlist);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch(Exception e) {}
+			}
+		}
+	}
+	@Override
+	public AuthorList getAuthorList() {
+		// TODO Auto-generated method stub
+		ObjectInputStream in = null;
+		AuthorList authorList = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "AuthorList");
+			in = new ObjectInputStream(Files.newInputStream(path));
+			authorList = (AuthorList)in.readObject();
+			
+			//System.out.println(bookList.toString());
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(Exception e) {}
+			}
+		}
+
+		return authorList;
+	}
+	@Override
+	public void saveMember(LibraryMember member) {
+		// TODO Auto-generated method stub
+		ObjectOutputStream out = null;
+		MemberList memberlist = MemberList.getInstance();
+		try {
+			memberlist.addMember(member);
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
+			out = new ObjectOutputStream(Files.newOutputStream(path));
+			out.writeObject(memberlist);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch(Exception e) {}
+			}
+		}
+	}
+	@Override
+	public MemberList getMemberList() {
+		// TODO Auto-generated method stub
+		ObjectInputStream in = null;
+		MemberList memberList = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
+			in = new ObjectInputStream(Files.newInputStream(path));
+			memberList = (MemberList)in.readObject();
+			
+			//System.out.println(bookList.toString());
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(Exception e) {}
+			}
+		}
+
+		return memberList;
+	}
+	@Override
+	public void savePeriodic(Periodical periodical) {
+		// TODO Auto-generated method stub
+		ObjectOutputStream out = null;
+		PeriodicalList plist = PeriodicalList.getInstance();
+		try {
+			plist.addPeriodical(periodical);
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "PeriodicalList");
+			out = new ObjectOutputStream(Files.newOutputStream(path));
+			out.writeObject(plist);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch(Exception e) {}
+			}
+		}
+	}
+	@Override
+	public PeriodicalList getPeriodicalList() {
+		// TODO Auto-generated method stub
+		ObjectInputStream in = null;
+		PeriodicalList periodicalList = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "PeriodicalList");
+			in = new ObjectInputStream(Files.newInputStream(path));
+			periodicalList = (PeriodicalList)in.readObject();
+			
+			//System.out.println(bookList.toString());
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(Exception e) {}
+			}
+		}
+
+		return periodicalList;
+	}
 }
