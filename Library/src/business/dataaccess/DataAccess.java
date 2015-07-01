@@ -27,4 +27,5 @@ public interface DataAccess {
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN);
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
+	public LibraryMember searchLibraryMemberByID(int idNo);
 }

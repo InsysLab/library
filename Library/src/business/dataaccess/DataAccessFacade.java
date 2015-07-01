@@ -322,4 +322,16 @@ public class DataAccessFacade implements DataAccess {
 		}
 		return null;
 	}
+	
+	public LibraryMember searchLibraryMemberByID(int idNo) {
+		MemberList list =  getMemberList();
+		if (list != null && list.getMembers().size() > 0) {
+			for (LibraryMember member: (ArrayList<LibraryMember>) list.getMembers()) {
+				if (member.getMemberID() == idNo) {
+					return member;					
+				}
+			}
+		}
+		return null;
+	}
 }
