@@ -24,7 +24,7 @@ public class SearchLibraryMemberController {
 	@FXML private TextField tfPhone;
 	
 	@FXML protected void handleSearchMemberBtnAction(ActionEvent event) {
-		
+
 		LibraryMember member = dao.searchLibraryMemberByID(Integer.parseInt(tfMemberID.getText()));
 		if (member != null) {
 			tfMemberID.setText(""+member.getMemberID());
@@ -43,8 +43,25 @@ public class SearchLibraryMemberController {
 			alert.setTitle("Search Library Member");
 			alert.show();
 		}
+	}
+	
+	@FXML protected void handleUpdateMemberBtnAction(ActionEvent event) {
+		int id = -1;
+		try {
+			 id = Integer.parseInt(tfMemberID.getText());
+		} catch (NumberFormatException nfe) {
+			return;
+		}
+		LibraryMember mem = dao.searchLibraryMemberByID(id);
+		if (mem != null) {
+			Address address = new Address(tfStreet.getText(), tfCity.getText(), tfState.getText(), tfZip.getText());
+			LibraryMember member = new LibraryMember(id, tfFirstName.getText(), tfLastName.getText(), tfPhone.getText(), address);
+			dao.saveUpdateMember(member);
+			Alert alert = new Alert(AlertType.INFORMATION, "Member details has been updated!", ButtonType.OK);
+			alert.setTitle("Update Library Member");
+			alert.show();
+		}
 		
-
 	}
 }
 

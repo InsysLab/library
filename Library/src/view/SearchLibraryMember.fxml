@@ -63,7 +63,7 @@
       </rowConstraints>
     </GridPane>
     <Button layoutX="232.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleSearchMemberBtnAction" prefHeight="33.0" prefWidth="82.0" text="Search" />
-    <Button layoutX="220.0" layoutY="381.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="95.0" text="Update" />
+    <Button layoutX="220.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleUpdateMemberBtnAction" prefHeight="33.0" prefWidth="95.0" text="Update" />
     <Label layoutX="15.0" layoutY="11.0" prefHeight="33.0" prefWidth="165.0" text="Search Member">
       <font>
         <Font size="20.0" />
