@@ -40,6 +40,8 @@ public class SearchPublicationController {
 	    ArrayList<Book> list = null;
 		if (cbPublication.getValue().equals("Book") && cbTitle.getValue().equals("Title")) {
 			list = dao.wildSearchBookByTitle(tfSearchText.getText());
+		} else if (cbPublication.getValue().equals("Book") && cbTitle.getValue().equals("ISBN")) {
+			list = dao.wildSearchBookByISBN(tfSearchText.getText());
 		}
 
 		if (hbSearchResult.getChildren().size() == 1) {
