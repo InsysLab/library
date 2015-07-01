@@ -11,12 +11,12 @@ public abstract class Publication implements Serializable {
 	private static final long serialVersionUID = 2747962880993378844L;
 	
 	private String title;
-	//private List<Copy> copyList;
+	private List<Copy> copyList;
 	
 	public Publication(String title)
 	{
 		this.title = title;
-	//	this.copyList = new ArrayList<Copy>();
+		this.copyList = new ArrayList<Copy>();
 	}
 		
 	abstract int getMaxCheckoutLength();
@@ -28,7 +28,7 @@ public abstract class Publication implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-/*
+
 	public List<Copy> getCopyList() {
 		return copyList;
 	}
@@ -40,5 +40,5 @@ public abstract class Publication implements Serializable {
 	public void addCopy(Copy copy) {
 		this.copyList.add(copy);
 	}
-	*/
+
 }
