@@ -38,7 +38,7 @@ public class SearchPublicationController {
 	
    @FXML protected void onSearchBtnAction(ActionEvent event) {
 	    ArrayList<Book> list = null;
-		if (cbPublication.getValue().equals("Book") && cbPublication.getValue().equals("Title")) {
+		if (cbPublication.getValue().equals("Book") && cbTitle.getValue().equals("Title")) {
 			list = dao.wildSearchBookByTitle(tfSearchText.getText());
 		}
 
