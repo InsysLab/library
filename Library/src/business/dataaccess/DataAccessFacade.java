@@ -108,6 +108,33 @@ public class DataAccessFacade implements DataAccess {
 		return bk;
 	}  
 	
+	public Book getBookByISBN(String isbn){
+		ObjectInputStream in = null;
+		BookList bookList = null;
+		Book bk = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
+			in = new ObjectInputStream(Files.newInputStream(path));
+			bookList = (BookList)in.readObject();
+			
+			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
+				if (book.getISBN().equals(isbn)) {
+					bk = book;					
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(Exception e) {}
+			}
+		}
+
+		return bk;		
+	}
+	
 	public BookList getBookList() {
 		ObjectInputStream in = null;
 		BookList bookList = null;

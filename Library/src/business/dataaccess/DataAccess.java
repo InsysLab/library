@@ -20,6 +20,7 @@ public interface DataAccess {
 	
 	public void saveBook(Book book);
 	public Book getBookByTitle(String title);
+	public Book getBookByISBN(String isbn);
 	public BookList getBookList();
 	public ArrayList<Book> wildSearchBookByTitle(String title);
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN);

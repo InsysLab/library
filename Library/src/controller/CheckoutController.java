@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,6 +15,8 @@ import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.CheckoutRecord;
 import business.objects.LibraryMember;
+import business.objects.Book;
+import business.objects.Periodical;
 
 public class CheckoutController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -38,15 +42,58 @@ public class CheckoutController {
 		alert.setTitle("Checkout");
 		
 		if( member == null ){
-			alert.show();			
+			alert.show();	
+			tfMemberName.clear();		
 			return;
 		}
 		
 		tfMemberName.setText(member.getFirstName() + " " + member.getLastName());
+		Boolean found = false;
 		
 		if( ! isbn.isEmpty() ){
-			
+			Book bk = dao.getBookByISBN(isbn);
+			if( bk != null ){
+				tfBookTitle.setText(bk.getTitle());
+				found = true;
+			}
+		} else if( ! issue.isEmpty() ){
+			ArrayList<Periodical> periodicals = dao.wildSearchPeriodicalByIssueNo(issue);
+			if( periodicals != null ){
+				tfBookTitle.setText(periodicals.get(0).getTitle());
+				found = true;
+			}		
+		} else if( ! title.isEmpty() ) {
+			ArrayList<Book> books = dao.wildSearchBookByTitle(title);
+			if( books != null ){
+				Book b = books.get(0);
+				tfISBN.setText(b.getISBN());
+				tfBookTitle.setText(b.getTitle());
+				tfIssueNumber.clear();		
+				found = true;
+			} else {
+				ArrayList<Periodical> periodicals = dao.wildSearchPeriodicalByTitle(title);
+				if( periodicals != null ){
+					Periodical p = periodicals.get(0);
+					tfBookTitle.setText(p.getTitle());
+					tfIssueNumber.setText(p.getIssueNo());
+					tfISBN.clear();
+					found = true;
+				}
+			}			
 		}
+		
+		if( found ){
+			btnAddCheckout.setDisable(false);
+		} else {
+			alert.setContentText("Cannot find the publication.");
+			alert.show();
+			btnAddCheckout.setDisable(true);
+			
+			//tfISBN.clear();
+			//tfBookTitle.clear();
+			//tfIssueNumber.clear();
+		}
+		
 	}	
 	
 	@FXML protected void handleAddCheckoutBtnAction(ActionEvent event) {
