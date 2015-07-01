@@ -60,7 +60,7 @@ public class DataAccessFacade implements DataAccess {
 	
 	public void saveBook(Book book) {
 		ObjectOutputStream out = null;
-		BookList booklist = BookList.getInstance();
+		BookList booklist = getBookList();
 		try {
 			//bookList = this.getBookList();
 			booklist.addBook(book);

@@ -16,6 +16,9 @@ public class AddPublicationController {
 	@FXML private TextField perTitle;
 	@FXML private TextField perIssueNum;
 	@FXML private TextField perMaxCODays;
+	@FXML private TextField tfBookTitle;
+	@FXML private TextField tfISBN;
+	@FXML private TextField tfBookMaxCODays;
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		
@@ -36,5 +39,10 @@ public class AddPublicationController {
 		BookList list = dao.getBookList();
 		System.out.println(list.toString());
 		
+	}
+	
+	@FXML protected void handleSaveBookBtnAction(ActionEvent event) {
+		Book book = new Book(tfISBN.getText(), Integer.parseInt(tfBookMaxCODays.getText()), tfBookTitle.getText());
+		dao.saveBook(book);
 	}
 }
