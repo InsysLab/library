@@ -5,9 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import view.AddLibraryMember;
 import view.AddPublication;
+import view.MemberCheckout;
+import view.SearchCheckoutRecord;
 import view.SearchLibraryMember;
 import view.SearchPublication;
-import view.MemberCheckout;
 
 public class MainController {
 	private final AddLibraryMember addLibraryMember = new AddLibraryMember();
@@ -15,6 +16,7 @@ public class MainController {
 	private final SearchLibraryMember searchLibraryMember = new SearchLibraryMember();
 	private final SearchPublication searchPublication = new SearchPublication();
 	private final MemberCheckout memberCheckout = new MemberCheckout();
+	private final SearchCheckoutRecord searchCheckoutRecord = new SearchCheckoutRecord();
 	
 	@FXML private VBox vBoxWorkArea;
 	
@@ -36,7 +38,7 @@ public class MainController {
 		if (vBoxWorkArea.getChildren().size() == 1) {
 			vBoxWorkArea.getChildren().remove(0);
     	}
-		vBoxWorkArea.getChildren().add(searchPublication);
+		vBoxWorkArea.getChildren().add(searchCheckoutRecord);
 	}
 
 	@FXML protected void handleAddPublicationBtnAction(ActionEvent event) {
