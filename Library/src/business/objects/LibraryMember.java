@@ -2,6 +2,7 @@ package business.objects;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Random;
 
 public class LibraryMember extends Person implements Serializable {
 	/**
@@ -9,13 +10,15 @@ public class LibraryMember extends Person implements Serializable {
 	 */
 	private static final long serialVersionUID = -7641841468211440963L;
 	
-	private String memberID;
+	private int memberID;
 	private CheckoutRecord record = new CheckoutRecord();
 	
-	public LibraryMember(String memberid, String firstname, String lastname, String phone, Address addr)
+	public LibraryMember(String firstname, String lastname, String phone, Address addr)
 	{
 		super(firstname, lastname, phone, addr);
-		this.memberID = memberid;
+		
+		Random rand = new Random();
+		this.memberID = rand.nextInt(5);
 	}
 	
 	public void checkout(Copy copy, LocalDate checkoutDate, LocalDate dueDate) {
@@ -27,11 +30,11 @@ public class LibraryMember extends Person implements Serializable {
 		return "Checkout record for library member " + memberID + ": " + super.toString() + ", "+ record;
 	}
 	
-		
-	public String getMemberID() {
+	public int getMemberID() {
 		return memberID;
 	}
-	public void setMemberID(String memberID) {
+	
+	public void setMemberID(int memberID) {
 		this.memberID = memberID;
 	}
 	

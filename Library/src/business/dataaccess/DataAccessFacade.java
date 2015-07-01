@@ -205,8 +205,12 @@ public class DataAccessFacade implements DataAccess {
 	public void saveMember(LibraryMember member) {
 		// TODO Auto-generated method stub
 		ObjectOutputStream out = null;
-		MemberList memberlist = MemberList.getInstance();
+		MemberList memberlist = getMemberList();
 		try {
+			if (memberlist == null) {
+				memberlist = MemberList.getInstance();
+			}	
+			
 			memberlist.addMember(member);
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
 			out = new ObjectOutputStream(Files.newOutputStream(path));
