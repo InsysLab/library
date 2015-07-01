@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="628.0000999999975" prefWidth="877.0000999999975" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchLibraryMemberController">
+<AnchorPane prefHeight="628.0000999999975" prefWidth="877.0000999999975" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.SearchLibraryMemberController">
   <!-- TODO Add Nodes -->
   <children>
     <GridPane layoutX="16.0" layoutY="45.0" prefHeight="60.0" prefWidth="217.0">
@@ -63,7 +63,7 @@
       </rowConstraints>
     </GridPane>
     <Button layoutX="232.0" layoutY="59.0" mnemonicParsing="false" onAction="#handleSearchMemberBtnAction" prefHeight="33.0" prefWidth="82.0" text="Search" />
-    <Button layoutX="220.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleUpdateMemberBtnAction" prefHeight="33.0" prefWidth="95.0" text="Update" />
+    <Button fx:id="btnUpdate" disable="false" layoutX="220.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleUpdateMemberBtnAction" prefHeight="33.0" prefWidth="95.0" text="Update" />
     <Label layoutX="15.0" layoutY="11.0" prefHeight="33.0" prefWidth="165.0" text="Search Member">
       <font>
         <Font size="20.0" />
