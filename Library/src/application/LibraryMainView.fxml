@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MainController">
   <children>
     <HBox alignment="CENTER" prefHeight="50.0">
       <children>
@@ -31,6 +31,7 @@
                       <children>
                         <Button layoutX="13.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSearchLibraryMemberBtnAction" prefWidth="180.0" text="Library Member" />
                         <Button layoutX="14.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleSearchPublicationBtnAction" prefWidth="180.0" text="Publication" />
+                        <Button layoutX="14.0" layoutY="98.0" mnemonicParsing="false" prefWidth="180.0" text="Checkout Records" />
                       </children>
                     </AnchorPane>
                   </content>
