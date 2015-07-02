@@ -56,9 +56,11 @@ public class CheckoutDialogController {
 		//Check if a copy is available
 		Copy aCopy = pub.getAvailableCopy();
 		if( aCopy == null ){
-			Alert alert = new Alert(AlertType.INFORMATION, "There is no available copy for that item!", ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "There is no available copy for that item!", ButtonType.OK);
+			alert.setHeaderText(null);
 			alert.setTitle("Checkout");
 			alert.show();
+			isCheckout = false;
 			return;
 		}
 
@@ -69,6 +71,7 @@ public class CheckoutDialogController {
 		dao.saveCheckoutRecordEntry(entry);
 	
 		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
+		alert.setHeaderText(null);
 		alert.setTitle("Checkout");
 		alert.show();
 		

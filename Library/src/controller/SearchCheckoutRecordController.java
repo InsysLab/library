@@ -61,11 +61,21 @@ public class SearchCheckoutRecordController {
 		   return;
 	   }
 	   
-	   int memberId = Integer.parseInt(tfSearchID.getText());
+	   int memberId = -1;
+	   try {
+		   memberId = Integer.parseInt(tfSearchID.getText());
+	   } catch (NumberFormatException nfe) {
+		   Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
+		   alert.setHeaderText(null);
+		   alert.setTitle("Checkout Record");
+		   alert.show();
+		   return;
+	   }
 	   LibraryMember member = dao.searchLibraryMemberByID(memberId);
 	   
 	   if( member == null ){
-			Alert alert = new Alert(AlertType.INFORMATION, "Member ID does not exist", ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "Member ID does not exist", ButtonType.OK);
+			alert.setHeaderText(null);
 			alert.setTitle("Checkout Record");
 			alert.show();
 			
