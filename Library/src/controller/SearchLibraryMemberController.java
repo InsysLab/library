@@ -28,6 +28,15 @@ public class SearchLibraryMemberController {
 	
 	@FXML protected void handleSearchMemberBtnAction(ActionEvent event) {
 
+		try {
+			Integer.parseInt(tfMemberID.getText());
+		} catch (NumberFormatException nfe) {
+			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Checkout Record");
+			alert.show();
+			return;
+		}
 		LibraryMember member = dao.searchLibraryMemberByID(Integer.parseInt(tfMemberID.getText()));
 		
 		if (member != null) {
@@ -51,7 +60,8 @@ public class SearchLibraryMemberController {
 		} else {
 			this.memberId = 0;
 			
-			Alert alert = new Alert(AlertType.INFORMATION, "Cannot find member id " + tfMemberID.getText(), ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "Cannot find member id " + tfMemberID.getText(), ButtonType.OK);
+			alert.setHeaderText(null);
 			alert.setTitle("Search Library Member");
 			alert.show();
 
@@ -77,6 +87,7 @@ public class SearchLibraryMemberController {
 		
 		if( this.memberId != id ){
 			Alert alert = new Alert(AlertType.ERROR, "Member ID is not editable", ButtonType.OK);
+			alert.setHeaderText(null);
 			alert.setTitle("Member Update");
 			alert.show();	
 			return;
@@ -90,6 +101,7 @@ public class SearchLibraryMemberController {
 			dao.saveUpdateMember(member);
 			
 			Alert alert = new Alert(AlertType.INFORMATION, "Member details has been updated!", ButtonType.OK);
+			alert.setHeaderText(null);
 			alert.setTitle("Update Library Member");
 			alert.show();
 		} 
