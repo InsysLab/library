@@ -31,7 +31,7 @@ public class AddPublicationController {
 	@FXML private TextField tfBookTitle;
 	@FXML private TextField tfISBN;
 	@FXML private TextField tfBookMaxCODays;
-	@FXML private ListView authorList;
+	@FXML private ListView<Author> authorList;
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
@@ -56,10 +56,12 @@ public class AddPublicationController {
 		//Call Author window and
 		
 		final AddAuthor addAuthor = new AddAuthor(this);		
+		
 	}
 	
-	public void setAuthorList(ObservableList value)
+	public void setAuthorList(ObservableList<Author> value)
 	{
+		System.out.println("print List: " + value);
 		authorList.setItems(value);
 	}
 	
