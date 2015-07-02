@@ -23,7 +23,7 @@ public class AuthorList implements Serializable {
 	   
 	private List<Author> authors = new ArrayList<>();
 
-	public List<Author> getBooks() {
+	public List<Author> getAuthors() {
 		return authors;
 	}
 	

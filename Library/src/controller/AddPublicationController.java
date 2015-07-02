@@ -17,7 +17,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.AddAuthor;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Author;
@@ -64,26 +63,19 @@ public class AddPublicationController {
 	
 	@FXML protected void handlebtnEditAuthor(ActionEvent event) {
 		//Call Author window and
-		
-		final AddAuthor addAuthor = new AddAuthor(this);		
-		
-	}
-	
-	public void setAuthorList(ObservableList<Author> value)
-	{
-		System.out.println("print List: " + value);
-		authorList.setItems(value);
+		ObservableList<Author> data = FXCollections.observableArrayList();
+		data.addAll(showAuthorDialog(authorList.getItems(), event));
 	}
 	
 	@FXML protected void handleAddAuthPerBtnAction(ActionEvent event) {
 		ObservableList<String> data = FXCollections.observableArrayList();
-		data.add(showAuthorDialog("Test", event));
+	//	data.add(showAuthorDialog("Test", event));
 		//lvAuthors.setItems(data);
 	}
 	
-	public String showAuthorDialog(String input, ActionEvent event) {
+	public ObservableList<Author> showAuthorDialog(ObservableList<Author> list, ActionEvent event) {
 		try {
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("AddAuthorTest.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Author.fxml"));
     		Parent root = loader.load();
     	    Stage dialogStage = new Stage();
     	    dialogStage.setTitle("Select Author");
@@ -93,13 +85,13 @@ public class AddPublicationController {
     	    dialogStage.setScene(scene);
 
     	    // Set the person into the controller
-    	    AddAuthorController controller = loader.getController();
+    	    AuthorController controller = loader.getController();
     	    controller.setDialogStage(dialogStage);
-    	    controller.getTfName().setText("Testing");
+    	    controller.setSelectedList(list);
 
     	    // Show the dialog and wait until the user closes it
     	    dialogStage.showAndWait();
-    	    return controller.getTfName().getText();
+    	    return controller.getSelectedList().getItems();
 
     	} catch (IOException io) {
     		System.out.println(io.getStackTrace());
