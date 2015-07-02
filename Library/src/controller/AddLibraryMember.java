@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,6 +12,7 @@ import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.LibraryMember;
 import business.objects.Address;
+import business.objects.MemberList;
 
 public class AddLibraryMember {
 	private final DataAccess dao = new DataAccessFacade();
@@ -34,11 +37,29 @@ public class AddLibraryMember {
 												 tfLastname.getText(), 
 												 tfPhone.getText(), 
 												 address);
+		MemberList mlist = dao.getMemberList();
+		List<LibraryMember> memberList = mlist.getMembers();
 		
-		dao.saveMember(member);
+		boolean nonexistmember = true;
 		
-		Alert alert = new Alert(AlertType.INFORMATION, tfFirstname.getText() + " is now saved!", ButtonType.OK);
-		alert.setTitle("New Member Saved");
-		alert.show();		
+		for(LibraryMember lm: memberList)
+		{
+			if(lm.getMemberID() == member.getMemberID()) nonexistmember = false;
+		}
+		
+		if(nonexistmember){
+			dao.saveMember(member);
+			
+			Alert alert = new Alert(AlertType.INFORMATION, tfFirstname.getText() + " is now saved!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("New Member Saved");
+			alert.show();		
+		}
+		else {
+			Alert alert = new Alert(AlertType.INFORMATION, tfID.getText() + " member already exist!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Duplicated member ID");
+			alert.show();	
+		}
 	}
 }
