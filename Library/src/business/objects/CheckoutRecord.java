@@ -11,6 +11,15 @@ public class CheckoutRecord implements Serializable {
 	private static final long serialVersionUID = -3168413735714016878L;
 	private List<CheckoutRecordEntry> entrylist= new ArrayList<>();
 		
+	private static CheckoutRecord instance = null;
+
+    public static CheckoutRecord getInstance() {
+        if(instance == null) {
+           instance = new CheckoutRecord();
+        }
+        return instance;
+    }	
+	
 	public List<CheckoutRecordEntry> getEntry() {
 		return entrylist;
 	}

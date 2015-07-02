@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.ArrayList;
 
 import business.objects.Author;
@@ -418,10 +419,11 @@ public class DataAccessFacade implements DataAccess {
 	@Override
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo){
 		CheckoutRecord checkoutRecord = getCheckoutRecord();
+		List<CheckoutRecordEntry> entryList = checkoutRecord.getEntry();
 		ArrayList<CheckoutRecordEntry> list = null;
 		
-		if (checkoutRecord != null ) {
-			for (CheckoutRecordEntry entry: (ArrayList<CheckoutRecordEntry>) checkoutRecord.getEntry()) {
+		if (checkoutRecord != null && entryList.size() > 0) {
+			for (CheckoutRecordEntry entry: entryList) {
 				if (entry.getMember().getMemberID() == idNo) {
 					list.add(entry);					
 				}
@@ -463,6 +465,10 @@ public class DataAccessFacade implements DataAccess {
 		ObjectOutputStream out = null;
 		CheckoutRecord checkoutRecord = getCheckoutRecord();
 		try {
+			if(checkoutRecord == null){
+				checkoutRecord = CheckoutRecord.getInstance();
+			}
+			
 			checkoutRecord.addEntry(entry);
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "CheckoutRecord");
 			out = new ObjectOutputStream(Files.newOutputStream(path));
