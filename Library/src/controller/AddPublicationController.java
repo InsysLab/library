@@ -1,10 +1,14 @@
 package controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import view.AddAuthor;
 import view.MemberCheckout;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -46,6 +50,7 @@ public class AddPublicationController {
 	
 	@FXML protected void handlebtnEditAuthor(ActionEvent event) {
 		//Call Author window and
+		
 		final AddAuthor addAuthor = new AddAuthor(this);		
 	}
 	
@@ -53,4 +58,5 @@ public class AddPublicationController {
 	{
 		authorList.setItems(value);
 	}
+
 }
