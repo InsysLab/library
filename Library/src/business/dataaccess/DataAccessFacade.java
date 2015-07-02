@@ -250,52 +250,24 @@ public class DataAccessFacade implements DataAccess {
 	
 	@Override
 	public CheckoutRecord getCheckoutRecord(){
-		// TODO Auto-generated method stub
-		ObjectInputStream in = null;
-		CheckoutRecord checkoutRecord = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "CheckoutRecord");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			checkoutRecord = (CheckoutRecord)in.readObject();
-			
-			//System.out.println(checkoutRecord.toString());
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
-			}
-		}
-
+		CheckoutRecord checkoutRecord = (CheckoutRecord)readFromStorage(StorageType.CheckoutRecord);
 		return checkoutRecord;		
 	}
 	
 	@Override
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry){
-		// TODO Auto-generated method stub
-		ObjectOutputStream out = null;
 		CheckoutRecord checkoutRecord = getCheckoutRecord();
-		try {
-			if(checkoutRecord == null){
-				checkoutRecord = CheckoutRecord.getInstance();
-			}
-			
-			checkoutRecord.addEntry(entry);
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "CheckoutRecord");
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(checkoutRecord);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
-		}		
+
+		if(checkoutRecord == null){
+			checkoutRecord = CheckoutRecord.getInstance();
+		}
+		
+		checkoutRecord.addEntry(entry);
+
+		saveToStorage(StorageType.CheckoutRecord, checkoutRecord);	
 	}
+	
+	
 	
 	public static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;
