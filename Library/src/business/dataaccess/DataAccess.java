@@ -18,7 +18,7 @@ public interface DataAccess {
 	public void saveMember(LibraryMember member);
 	public MemberList getMemberList();
 	public LibraryMember readLibraryMember(String name);
-	public void saveLibraryMember(String name, LibraryMember member);
+	//public void saveLibraryMember(String name, LibraryMember member);
 	
 	public void saveBook(Book book);
 	public Book getBookByTitle(String title);

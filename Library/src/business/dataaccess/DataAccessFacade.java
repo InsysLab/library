@@ -21,11 +21,15 @@ import business.objects.CheckoutRecordEntry;
 
 
 public class DataAccessFacade implements DataAccess {
+	enum StorageType {
+		BookList, PeriodicalList, MemberList, CheckoutRecord, AuthorList;
+	}
+	
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
 			+ "\\src\\business\\dataaccess\\storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
 	
-	public void saveLibraryMember(String name, LibraryMember member) {
+	/*public void saveLibraryMember(String name, LibraryMember member) {
 		ObjectOutputStream out = null;
 		try {
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, name);
@@ -41,6 +45,7 @@ public class DataAccessFacade implements DataAccess {
 			}
 		}
 	}
+	*/
 	public LibraryMember readLibraryMember(String name) {
 		ObjectInputStream in = null;
 		LibraryMember member = null;
@@ -230,97 +235,40 @@ public class DataAccessFacade implements DataAccess {
 
 		return authorList;
 	}
+	
 	@Override
 	public void saveMember(LibraryMember member) {
-		// TODO Auto-generated method stub
-		ObjectOutputStream out = null;
 		MemberList memberlist = getMemberList();
-		try {
-			if (memberlist == null) {
-				memberlist = MemberList.getInstance();
-			}	
-			
-			memberlist.addMember(member);
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(memberlist);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
-		}
+
+		if (memberlist == null) {
+			memberlist = MemberList.getInstance();
+		}		
+		
+		memberlist.addMember(member);
+		saveToStorage(StorageType.MemberList, memberlist);			
 	}
+	
 	@Override
 	public MemberList getMemberList() {
-		// TODO Auto-generated method stub
-		ObjectInputStream in = null;
-		MemberList memberList = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			memberList = (MemberList)in.readObject();
-			
-			//System.out.println(bookList.toString());
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
-			}
-		}
-
+		MemberList memberList = (MemberList)readFromStorage(StorageType.MemberList);
 		return memberList;
 	}
+	
 	@Override
 	public void savePeriodical (Periodical periodical) {
-		// TODO Auto-generated method stub
-		ObjectOutputStream out = null;
 		PeriodicalList plist = getPeriodicalList();
-		try {
-			if (plist == null) {
-				plist = PeriodicalList.getInstance();
-			}
-			plist.addPeriodical(periodical);
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "PeriodicalList");
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(plist);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
-		}
+
+		if (plist == null) {
+			plist = PeriodicalList.getInstance();
+		}		
+		
+		plist.addPeriodical(periodical);;
+		saveToStorage(StorageType.PeriodicalList, plist);			
 	}
+	
 	@Override
 	public PeriodicalList getPeriodicalList() {
-		// TODO Auto-generated method stub
-		ObjectInputStream in = null;
-		PeriodicalList periodicalList = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "PeriodicalList");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			periodicalList = (PeriodicalList)in.readObject();
-			
-			//System.out.println(bookList.toString());
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
-			}
-		}
-
+		PeriodicalList periodicalList = (PeriodicalList)readFromStorage(StorageType.PeriodicalList);
 		return periodicalList;
 	}
 	
@@ -482,4 +430,40 @@ public class DataAccessFacade implements DataAccess {
 			}
 		}		
 	}
+	
+	public static void saveToStorage(StorageType type, Object ob) {
+		ObjectOutputStream out = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
+			out = new ObjectOutputStream(Files.newOutputStream(path));
+			out.writeObject(ob);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch(Exception e) {}
+			}
+		}
+	}
+	
+	public static Object readFromStorage(StorageType type) {
+		ObjectInputStream in = null;
+		Object retVal = null;
+		try {
+			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
+			in = new ObjectInputStream(Files.newInputStream(path));
+			retVal = in.readObject();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch(Exception e) {}
+			}
+		}
+		return retVal;
+	}	
 }
