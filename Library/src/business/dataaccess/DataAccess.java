@@ -40,6 +40,7 @@ public interface DataAccess {
 	public void saveUpdateMember(LibraryMember member);
 	
 	public CheckoutRecord getCheckoutRecord();
-	public void saveCheckoutRecord(CheckoutRecordEntry checkoutRecord);
+	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
+	public CheckoutRecordEntry getCheckoutRecordEntryByMemberID(int idNo);
 	
 }

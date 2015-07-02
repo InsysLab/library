@@ -43,7 +43,7 @@ public class SearchCheckoutRecordController {
 	   LocalDate loc = LocalDate.now();
 	   CheckoutRecordEntry crEntry = new CheckoutRecordEntry(copy, loc, loc.plusDays(pub1.getMaxcheckoutlength()));
 	   LibraryMember member = new LibraryMember(12, "Jesus", "Sadang", "1234", new Address("1","1","1","1"));
-	   cr.setMember(member);
+	   crEntry.setMember(member);
 	   
 	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
 	   CheckoutRecordTable chkRec = new CheckoutRecordTable();

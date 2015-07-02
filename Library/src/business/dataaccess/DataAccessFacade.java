@@ -416,6 +416,19 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	@Override
+	public CheckoutRecordEntry getCheckoutRecordEntryByMemberID(int idNo){
+		CheckoutRecord checkoutRecord = getCheckoutRecord();
+		if (checkoutRecord != null ) {
+			for (CheckoutRecordEntry entry: (ArrayList<CheckoutRecordEntry>) checkoutRecord.getEntry()) {
+				if (entry.getMember().getMemberID() == idNo) {
+					return entry;					
+				}
+			}
+		}
+		return null;		
+	}
+	
+	@Override
 	public CheckoutRecord getCheckoutRecord(){
 		// TODO Auto-generated method stub
 		ObjectInputStream in = null;
@@ -440,18 +453,15 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	@Override
-	public void saveCheckoutRecord(CheckoutRecordEntry entry){
+	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry){
 		// TODO Auto-generated method stub
 		ObjectOutputStream out = null;
-		CheckoutRecord records = getCheckoutRecord();
+		CheckoutRecord checkoutRecord = getCheckoutRecord();
 		try {
-			if (records == null) {
-				records = CheckoutRecord.getInstance();
-			}
-			records.addEntry(entry);
+			checkoutRecord.addEntry(entry);
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "CheckoutRecord");
 			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(records);
+			out.writeObject(checkoutRecord);
 		} catch(IOException e) {
 			e.printStackTrace();
 		} finally {

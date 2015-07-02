@@ -11,6 +11,7 @@ public class CheckoutRecordEntry implements Serializable {
 	 */
 	private static final long serialVersionUID = -7867212047222496038L;
 	
+	private LibraryMember member;
 	private LocalDate checkoutDate;
 	private LocalDate dueDate;	
 	private Copy copy;
@@ -19,6 +20,14 @@ public class CheckoutRecordEntry implements Serializable {
 		this.copy = copy;
 		this.checkoutDate = checkoutDate;
 		this.dueDate = dueDate;
+	}
+	
+	public void setMember(LibraryMember member){
+		this.member = member;
+	}
+
+	public LibraryMember getMember(){
+		return this.member;
 	}
 	
 	public LocalDate getCheckoutDate() {

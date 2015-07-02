@@ -9,27 +9,8 @@ public class CheckoutRecord implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3168413735714016878L;
-	private static CheckoutRecord instance = null;
-	   protected CheckoutRecord() {
-		      // Exists only to defeat instantiation.
-		   }
-		   public static CheckoutRecord getInstance() {
-		      if(instance == null) {
-		         instance = new CheckoutRecord();
-		      }
-		      return instance;
-		   }	
-	
 	private List<CheckoutRecordEntry> entrylist= new ArrayList<>();
-	private LibraryMember member;
 		
-	public LibraryMember getMember() {
-		return member;
-	}
-	public void setMember(LibraryMember member) {
-		this.member = member;
-	}
-
 	public List<CheckoutRecordEntry> getEntry() {
 		return entrylist;
 	}
