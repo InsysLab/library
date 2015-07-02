@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -140,7 +141,16 @@ public class CheckoutController {
 		entry.setMember(member);
 		
 		dao.saveCheckoutRecordEntry(entry);
-	
+		
+		//Update publication copy
+		pub.checkoutACopy(1);
+		
+		if(pub.getClass().getName().contains("Book")){
+			dao.saveBook( (Book)pub );
+		} else {
+			dao.savePeriodical( (Periodical)pub );
+		}
+		
 		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
 		alert.setTitle("Checkout");
 		alert.show();

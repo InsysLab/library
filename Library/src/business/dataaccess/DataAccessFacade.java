@@ -263,7 +263,7 @@ public class DataAccessFacade implements DataAccess {
 		}
 		
 		checkoutRecord.addEntry(entry);
-
+		
 		saveToStorage(StorageType.CheckoutRecord, checkoutRecord);	
 	}
 	

@@ -53,5 +53,24 @@ public abstract class Publication implements Serializable {
 		return null;
 	}
 	
+	public void checkoutACopy(int numCopies){
+		List<Copy> copies = this.getCopyList();
+		
+		int i = 1;
+		for(Copy c : this.getCopyList()){
+			if(c.isAvailable()){
+				c.setAvailable(false);
+			}
+			
+			if( i == numCopies ){
+				break;
+			}
+			
+			i++;
+		}		
+		
+		this.setCopyList(copies);
+	}
+	
 	public abstract String getNumber();
 }

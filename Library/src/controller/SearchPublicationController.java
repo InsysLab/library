@@ -105,7 +105,7 @@ public class SearchPublicationController {
 		colISBN.setPrefWidth(125);
 		colISBN.setCellValueFactory(
                 new PropertyValueFactory<Book, String>("ISBN"));
-		TableColumn colMax = new TableColumn("Max Checkout");
+		TableColumn colMax = new TableColumn("Max Checkout Days");
 		colMax.setPrefWidth(125);
 		colMax.setCellValueFactory(
                 new PropertyValueFactory<Book, String>("maxcheckoutlength"));
