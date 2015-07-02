@@ -18,24 +18,8 @@
         <Insets left="20.0" top="100.0" />
       </padding>
     </VBox>
-    <ScrollPane prefHeight="275.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-      <content>
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="285.0">
-          <children>
-            <ListView fx:id="fullListAuthor" layoutX="0.0" layoutY="0.0" pickOnBounds="true" prefHeight="260.0" prefWidth="271.0" />
-          </children>
-        </AnchorPane>
-      </content>
-    </ScrollPane>
-    <ScrollPane prefHeight="275.0000999999975" prefWidth="278.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
-      <content>
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="287.0">
-          <children>
-            <ListView fx:id="selectedList" layoutX="0.0" layoutY="0.0" prefHeight="260.0" prefWidth="271.0" />
-          </children>
-        </AnchorPane>
-      </content>
-    </ScrollPane>
+    <ListView fx:id="fullListAuthor" pickOnBounds="true" prefHeight="260.0" prefWidth="271.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <ListView fx:id="selectedList" prefHeight="260.0" prefWidth="271.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
     <Pane fx:id="paneAuthor" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
       <children>
         <GridPane gridLinesVisible="false" hgap="5.0" layoutX="0.0" layoutY="1.0" prefHeight="134.0" prefWidth="593.0" vgap="5.0">
