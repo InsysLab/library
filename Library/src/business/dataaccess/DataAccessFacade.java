@@ -329,7 +329,7 @@ public class DataAccessFacade implements DataAccess {
 		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
 			Periodical periodical = null;
 			for (Periodical p: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
-				if (p.getIssueNo() == issueNo) {
+				if (p.getIssueNo().equals(issueNo)) {
 					periodical = p;
 				}
 			}

@@ -77,7 +77,7 @@ public class CheckoutController {
 			}		
 		} else if( ! title.isEmpty() ) {
 			ArrayList<Book> books = dao.wildSearchBookByTitle(title);
-			if( books != null ){
+			if( books != null && books.size() > 0 ){
 				Book b = books.get(0);
 				tfISBN.setText(b.getISBN());
 				tfBookTitle.setText(b.getTitle());
@@ -85,7 +85,7 @@ public class CheckoutController {
 				found = true;
 			} else {
 				ArrayList<Periodical> periodicals = dao.wildSearchPeriodicalByTitle(title);
-				if( periodicals != null ){
+				if( periodicals != null && periodicals.size() > 0 ){
 					Periodical p = periodicals.get(0);
 					tfBookTitle.setText(p.getTitle());
 					tfIssueNumber.setText(p.getIssueNo());
@@ -122,6 +122,8 @@ public class CheckoutController {
 			pub = dao.getBookByISBN(isbn);
 		} else if( ! issue.isEmpty()  ){
 			pub = dao.searchPeriodicalByIssueNo(issue);
+		} else {
+			return;
 		}		
 		
 		//Check if a copy is available
@@ -139,20 +141,13 @@ public class CheckoutController {
 		
 		dao.saveCheckoutRecordEntry(entry);
 	
-/*		ArrayList<CheckoutRecordEntry> list = dao.getCheckoutRecordEntryByMemberID(memberId);
-		ArrayList<CheckoutRecordTable> tableList = new ArrayList<CheckoutRecordTable>();
-		CheckoutRecordTable chkRec = new CheckoutRecordTable();
+		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
+		alert.setTitle("Checkout");
+		alert.show();
 		
-		for(CheckoutRecordEntry chkEntry : list){
-			chkRec.setNumber(chkEntry.getCopy().getPublication().getNumber());
-		    chkRec.setTitle(chkEntry.getCopy().getPublication().getTitle());
-		    
-		    chkRec.setBorrowedDate(chkEntry.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		    chkRec.setDueDate(chkEntry.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		    tableList.add(chkRec);
-		}
-
-		hbSearchResult.getChildren().add(getCheckoutTable(tableList));*/
+		tfISBN.clear();
+		tfBookTitle.clear();
+		tfIssueNumber.clear();			
 	}	
 	
 	private TableView getCheckoutTable(ArrayList<CheckoutRecordTable> list) {
