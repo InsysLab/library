@@ -50,7 +50,7 @@ public class Person implements Serializable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "Firstname: " + firstName + ", Lastname: " + lastName + ", Phone: " + phone + ", Address: " + address;
+		return firstName + " " + lastName;
 	}
 
 }
