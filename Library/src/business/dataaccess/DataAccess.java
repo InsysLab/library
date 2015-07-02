@@ -17,8 +17,8 @@ public interface DataAccess {
 	
 	public void saveMember(LibraryMember member);
 	public MemberList getMemberList();
-	public LibraryMember readLibraryMember(String name);
-	//public void saveLibraryMember(String name, LibraryMember member);
+	public LibraryMember searchLibraryMemberByID(int idNo);
+	public void saveUpdateMember(LibraryMember member);
 	
 	public void saveBook(Book book);
 	public Book getBookByTitle(String title);
@@ -36,9 +36,6 @@ public interface DataAccess {
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
 	
-	public LibraryMember searchLibraryMemberByID(int idNo);
-	public void saveUpdateMember(LibraryMember member);
-
 	public CheckoutRecord getCheckoutRecord();
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo);

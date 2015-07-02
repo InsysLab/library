@@ -29,86 +29,24 @@ public class DataAccessFacade implements DataAccess {
 			+ "\\src\\business\\dataaccess\\storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
 	
-	/*public void saveLibraryMember(String name, LibraryMember member) {
-		ObjectOutputStream out = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, name);
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(member);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
-		}
-	}
-	*/
-	public LibraryMember readLibraryMember(String name) {
-		ObjectInputStream in = null;
-		LibraryMember member = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, name);
-			in = new ObjectInputStream(Files.newInputStream(path));
-			member = (LibraryMember)in.readObject();
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
-			}
-		}
-		return member;
-	}
-	
 	public void saveBook(Book book) {
-		ObjectOutputStream out = null;
 		BookList booklist = getBookList();
-		try {
-			//bookList = this.getBookList();
-			if (booklist == null) {
-				booklist = BookList.getInstance();
-			}
-			booklist.addBook(book);
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(booklist);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
-		}
+
+		if (booklist == null) {
+			booklist = BookList.getInstance();
+		}		
+		
+		booklist.addBook(book);
+		saveToStorage(StorageType.BookList, booklist);				
 	}
 	
 	public Book getBookByTitle(String title) {
-		ObjectInputStream in = null;
-		BookList bookList = null;
+		BookList bookList =  getBookList();
 		Book bk = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			bookList = (BookList)in.readObject();
-			
-			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-				if (book.getTitle().equalsIgnoreCase(title)) {
-					bk = book;					
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
+
+		for (Book book: (ArrayList<Book>) bookList.getBooks()) {
+			if (book.getTitle().equalsIgnoreCase(title)) {
+				bk = book;					
 			}
 		}
 
@@ -116,26 +54,12 @@ public class DataAccessFacade implements DataAccess {
 	}  
 	
 	public Book getBookByISBN(String isbn){
-		ObjectInputStream in = null;
-		BookList bookList = null;
+		BookList bookList =  getBookList();
 		Book bk = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			bookList = (BookList)in.readObject();
-			
-			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-				if (book.getISBN().equals(isbn)) {
-					bk = book;					
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
+		
+		for (Book book: (ArrayList<Book>) bookList.getBooks()) {
+			if (book.getISBN().equals(isbn)) {
+				bk = book;					
 			}
 		}
 
@@ -143,24 +67,7 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	public BookList getBookList() {
-		ObjectInputStream in = null;
-		BookList bookList = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "BookList");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			bookList = (BookList)in.readObject();
-			
-			//System.out.println(bookList.toString());
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
-			}
-		}
-
+		BookList bookList = (BookList)readFromStorage(StorageType.BookList);
 		return bookList;
 	}
 	
@@ -194,45 +101,19 @@ public class DataAccessFacade implements DataAccess {
 	
 	@Override
 	public void saveAuthor(Author author) {
-		// TODO Auto-generated method stub
-		ObjectOutputStream out = null;
-		AuthorList authorlist = AuthorList.getInstance();
-		try {
-			authorlist.addAuthor(author);
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "AuthorList");
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(authorlist);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
-		}
+		AuthorList authorlist = getAuthorList();
+
+		if (authorlist == null) {
+			authorlist = AuthorList.getInstance();
+		}		
+		
+		authorlist.addAuthor(author);
+		saveToStorage(StorageType.AuthorList, authorlist);		
 	}
+	
 	@Override
 	public AuthorList getAuthorList() {
-		// TODO Auto-generated method stub
-		ObjectInputStream in = null;
-		AuthorList authorList = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "AuthorList");
-			in = new ObjectInputStream(Files.newInputStream(path));
-			authorList = (AuthorList)in.readObject();
-			
-			//System.out.println(bookList.toString());
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null) {
-				try {
-					in.close();
-				} catch(Exception e) {}
-			}
-		}
-
+		AuthorList authorList = (AuthorList)readFromStorage(StorageType.AuthorList);
 		return authorList;
 	}
 	
