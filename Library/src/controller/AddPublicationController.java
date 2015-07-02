@@ -58,5 +58,9 @@ public class AddPublicationController {
 	{
 		authorList.setItems(value);
 	}
-
+	
+	@FXML protected void handleAddAuthPerBtnAction(ActionEvent event) {
+		
+		
+	}
 }
