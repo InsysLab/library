@@ -15,13 +15,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class AuthorController implements Initializable{
 	
 	private final DataAccess dao = new DataAccessFacade();
-	private AddPublicationController pc1= null;	
 	
 @FXML private Pane paneAuthor;
 @FXML private ListView<Author> fullListAuthor;
@@ -38,8 +38,6 @@ public class AuthorController implements Initializable{
 @FXML private Button SetAuthor;
 
 	@FXML protected void handleSetAuthor(ActionEvent event) {
-//		ObservableList<Author> olist= selectedList.getItems();
-//		pc1.setAuthorList(olist);
 		dialogStage.close();
 	}
 	
@@ -62,18 +60,23 @@ public class AuthorController implements Initializable{
 			{
 				author = new Author(firstName.getText(), lastName.getText(), phone.getText(), credentials.getText(),addr);
 				dao.saveAuthor(author);
-				reflist();
-				
+				reflist();				
 				paneAuthor.setVisible(false);
 			}
 			else 
 			{
-				
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setHeaderText(null);
+				alert.setContentText("User info missing !");
+				alert.show();
 			}
 		}
 		else 
 		{			
-			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText(null);
+			alert.setContentText("Address info missing !");
+			alert.show();
 		}
 		
 	}
@@ -81,7 +84,14 @@ public class AuthorController implements Initializable{
 	@FXML protected void handleRemoveFromLeft(ActionEvent event) {
 		ObservableList<Author> aa =  selectedList.getItems();
 		Author author = selectedList.getSelectionModel().getSelectedItem();
-		if(aa.contains(author)) aa.remove(author);
+		if(aa.contains(author) && author != null ) aa.remove(author);
+		else
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText(null);
+			alert.setContentText("Please select Author first!");
+			alert.show();
+		}
 		
 		selectedList.setItems(aa);
 	}
@@ -89,10 +99,15 @@ public class AuthorController implements Initializable{
 	@FXML protected void handleMoveToRigth(ActionEvent event) {
 		ObservableList<Author> aa =  selectedList.getItems();
 		Author author = fullListAuthor.getSelectionModel().getSelectedItem();
-		if(!aa.contains(author))aa.add(author);		
-		
+		if(!aa.contains(author) && author != null )aa.add(author);
+		else
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText(null);
+			alert.setContentText("Please select Author first !");
+			alert.show();
+		}
 		selectedList.setItems(aa);
-		
 	}	
 	
 	public void setSelectedList(ObservableList<Author> list)
@@ -113,10 +128,6 @@ public class AuthorController implements Initializable{
 		// TODO Auto-generated method stub
 		reflist();
 	}
-
-	public void initData(AddPublicationController pc) {
-	    	this.pc1 = pc;
-	  }
 	
 	private Stage dialogStage;
 
