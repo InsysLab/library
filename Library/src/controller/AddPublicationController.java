@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,6 +53,13 @@ public class AddPublicationController {
 
 	@FXML protected void handleSaveBookBtnAction(ActionEvent event) {
 		Book book = new Book(tfISBN.getText(), Integer.parseInt(tfBookMaxCODays.getText()), tfBookTitle.getText());
+		List<Author> alist = new ArrayList<>();
+		for(Author a: authorList.getItems())		
+		{
+			alist.add(a);
+		}
+		System.out.println(alist);
+		book.setAuthorlist(alist);
 		Copy aCopy = new Copy("1", book);
 		aCopy.setAvailable(true);
 		book.addCopy(aCopy);	
