@@ -85,7 +85,7 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
               <children>
-                <ListView prefHeight="200.0" prefWidth="200.0" />
+                <ListView fx:id="lvAuthors" prefHeight="200.0" prefWidth="200.0" />
               </children>
             </HBox>
             <Button mnemonicParsing="false" onAction="#handleSavePerBtnAction" prefWidth="100.0" text="Save" />
