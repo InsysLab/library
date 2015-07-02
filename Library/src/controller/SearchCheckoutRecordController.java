@@ -9,10 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import table.objects.CheckoutRecordTable;
@@ -54,17 +57,35 @@ public class SearchCheckoutRecordController {
 	   chkRec.setDueDate(crEntry.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));*/
 	   //CheckoutRecordEntry en1 = new CheckoutRecordEntry();
 	   
-	   CheckoutRecord checkoutRecord = dao.getCheckoutRecord();
-	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
+	   if( tfSearchID.getText().isEmpty() ){
+		   return;
+	   }
 	   
-	   List<CheckoutRecordEntry> entries = checkoutRecord.getEntry();
-	   for(CheckoutRecordEntry ce: entries){
+	   int memberId = Integer.parseInt(tfSearchID.getText());
+	   LibraryMember member = dao.searchLibraryMemberByID(memberId);
+	   
+	   if( member == null ){
+			Alert alert = new Alert(AlertType.INFORMATION, "Member ID does not exist", ButtonType.OK);
+			alert.setTitle("Checkout Record");
+			alert.show();
+			
+			tfMemberName.clear();
+			hbSearchResult.getChildren().clear();
+			lblSearchStatus.setText("");
+			return;
+	   }
+	   
+	   tfMemberName.setText(member.getFirstName() + " " + member.getLastName());
+	   
+	   List<CheckoutRecordEntry> checkoutRecord = dao.getCheckoutRecordEntryByMemberID( memberId );
+	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
+	 
+	   for(CheckoutRecordEntry ce: checkoutRecord){
 		   CheckoutRecordTable chkRec = new CheckoutRecordTable();
 		   chkRec.setTitle(ce.getCopy().getPublication().getTitle());
 		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
 		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		   chkRec.setMemberName(ce.getMember().getFirstName() + " " + ce.getMember().getLastName());
 		   list.add(chkRec);
 	   }
 
@@ -102,17 +123,12 @@ public class SearchCheckoutRecordController {
 		TableColumn colDueDate = new TableColumn("Due Date");
 		colDueDate.setPrefWidth(125);
 		colDueDate.setCellValueFactory(
-                new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));
-		
-		TableColumn colMemberName = new TableColumn("Member");
-		colMemberName.setPrefWidth(125);
-		colMemberName.setCellValueFactory(
-                new PropertyValueFactory<CheckoutRecordTable, String>("memberName"));		
+                new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));	
 
 		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate, colMemberName);
+		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate);
 		
 		return table;
 	}

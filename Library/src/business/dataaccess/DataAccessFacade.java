@@ -418,11 +418,10 @@ public class DataAccessFacade implements DataAccess {
 	
 	@Override
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo){
-		CheckoutRecord checkoutRecord = getCheckoutRecord();
-		List<CheckoutRecordEntry> entryList = checkoutRecord.getEntry();
-		ArrayList<CheckoutRecordEntry> list = null;
-		
-		if (checkoutRecord != null && entryList.size() > 0) {
+		List<CheckoutRecordEntry> entryList = getCheckoutRecord().getEntry();
+
+		if (entryList.size() > 0) {
+			ArrayList<CheckoutRecordEntry> list = new ArrayList<CheckoutRecordEntry>();
 			for (CheckoutRecordEntry entry: entryList) {
 				if (entry.getMember().getMemberID() == idNo) {
 					list.add(entry);					
