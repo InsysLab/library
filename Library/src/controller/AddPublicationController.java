@@ -67,12 +67,6 @@ public class AddPublicationController {
 		data.addAll(showAuthorDialog(authorList.getItems(), event));
 	}
 	
-	@FXML protected void handleAddAuthPerBtnAction(ActionEvent event) {
-		ObservableList<String> data = FXCollections.observableArrayList();
-	//	data.add(showAuthorDialog("Test", event));
-		//lvAuthors.setItems(data);
-	}
-	
 	public ObservableList<Author> showAuthorDialog(ObservableList<Author> list, ActionEvent event) {
 		try {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Author.fxml"));
