@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="500.0" prefWidth="500.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.SearchCheckoutRecordController">
+<VBox prefHeight="549.0000999999975" prefWidth="612.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.SearchCheckoutRecordController">
   <children>
     <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
       <children>
@@ -30,7 +30,7 @@
         <Label fx:id="lblSearchStatus" />
       </children>
     </HBox>
-    <HBox fx:id="hbSearchResult" prefHeight="330.0" prefWidth="490.0" />
+    <HBox fx:id="hbSearchResult" prefHeight="330.0" prefWidth="612.0" />
   </children>
   <padding>
     <Insets left="5.0" right="5.0" />

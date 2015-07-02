@@ -34,11 +34,12 @@ public class AddPublicationController {
 	@FXML private TextField tfBookTitle;
 	@FXML private TextField tfISBN;
 	@FXML private TextField tfBookMaxCODays;
-	@FXML private ListView authorList;
+	@FXML private ListView<Author> authorList;
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
 		Copy aCopy = new Copy("1", periodical);
+		aCopy.setAvailable(true);
 		periodical.addCopy(aCopy);		
 		
 		dao.savePeriodical(periodical);
@@ -46,10 +47,15 @@ public class AddPublicationController {
 		alert.setTitle("Periodicals Saved");
 		alert.show();
 	}
-	
+
 	@FXML protected void handleSaveBookBtnAction(ActionEvent event) {
 		Book book = new Book(tfISBN.getText(), Integer.parseInt(tfBookMaxCODays.getText()), tfBookTitle.getText());
+		Copy aCopy = new Copy("1", book);
+		aCopy.setAvailable(true);
+		book.addCopy(aCopy);	
+		
 		dao.saveBook(book);
+		
 		Alert alert = new Alert(AlertType.INFORMATION, tfBookTitle.getText() + " is now saved!", ButtonType.OK);
 		alert.setTitle("Book Saved");
 		alert.show();
@@ -59,10 +65,12 @@ public class AddPublicationController {
 		//Call Author window and
 		
 		final AddAuthor addAuthor = new AddAuthor(this);		
+		
 	}
 	
-	public void setAuthorList(ObservableList value)
+	public void setAuthorList(ObservableList<Author> value)
 	{
+		System.out.println("print List: " + value);
 		authorList.setItems(value);
 	}
 	

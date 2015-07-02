@@ -1,10 +1,18 @@
 package table.objects;
 
 public class CheckoutRecordTable {
+	private String memberName;
 	private String title;
 	private String number;
 	private String borrowedDate;
 	private String dueDate;
+	
+	public String getMemberName(){
+		return this.memberName;
+	}
+	public void setMemberName(String memberName){
+		this.memberName = memberName;
+	}
 	public String getTitle() {
 		return title;
 	}

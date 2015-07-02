@@ -114,7 +114,7 @@ public class CheckoutController {
 		String isbn = tfISBN.getText();
 		String title = tfBookTitle.getText();
 		String issue = tfIssueNumber.getText();		
-		
+
 		LibraryMember member = dao.searchLibraryMemberByID(memberId);
 		Publication pub = null;
 		
@@ -135,10 +135,11 @@ public class CheckoutController {
 
 		LocalDate dueDate = LocalDate.now().plusDays(pub.getMaxCheckoutLength());
 		CheckoutRecordEntry entry = new CheckoutRecordEntry(aCopy, LocalDate.now(), dueDate);
+		entry.setMember(member);
 		
 		dao.saveCheckoutRecordEntry(entry);
-		
-		ArrayList<CheckoutRecordEntry> list = dao.getCheckoutRecordEntryByMemberID(memberId);
+	
+/*		ArrayList<CheckoutRecordEntry> list = dao.getCheckoutRecordEntryByMemberID(memberId);
 		ArrayList<CheckoutRecordTable> tableList = new ArrayList<CheckoutRecordTable>();
 		CheckoutRecordTable chkRec = new CheckoutRecordTable();
 		
@@ -151,7 +152,7 @@ public class CheckoutController {
 		    tableList.add(chkRec);
 		}
 
-		hbSearchResult.getChildren().add(getCheckoutTable(tableList));
+		hbSearchResult.getChildren().add(getCheckoutTable(tableList));*/
 	}	
 	
 	private TableView getCheckoutTable(ArrayList<CheckoutRecordTable> list) {

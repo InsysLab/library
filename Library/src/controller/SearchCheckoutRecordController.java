@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -37,7 +38,7 @@ public class SearchCheckoutRecordController {
    }
 	
    @FXML protected void onSearchBtnAction(ActionEvent event) {
-	   CheckoutRecord cr = new CheckoutRecord();
+/*	   CheckoutRecord cr = new CheckoutRecord();
 	   Book pub1 = new Book("123", 1, "Java");
 	   Copy copy = new Copy("1", pub1);
 	   LocalDate loc = LocalDate.now();
@@ -50,10 +51,23 @@ public class SearchCheckoutRecordController {
 	   chkRec.setTitle(pub1.getTitle());
 	   chkRec.setNumber(pub1.getISBN());
 	   chkRec.setBorrowedDate(crEntry.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-	   chkRec.setDueDate(crEntry.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+	   chkRec.setDueDate(crEntry.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));*/
 	   //CheckoutRecordEntry en1 = new CheckoutRecordEntry();
 	   
-	   list.add(chkRec);
+	   CheckoutRecord checkoutRecord = dao.getCheckoutRecord();
+	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
+	   
+	   List<CheckoutRecordEntry> entries = checkoutRecord.getEntry();
+	   for(CheckoutRecordEntry ce: entries){
+		   CheckoutRecordTable chkRec = new CheckoutRecordTable();
+		   chkRec.setTitle(ce.getCopy().getPublication().getTitle());
+		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
+		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		   chkRec.setMemberName(ce.getMember().getFirstName() + " " + ce.getMember().getLastName());
+		   list.add(chkRec);
+	   }
+
 	   if (hbSearchResult.getChildren().size() == 1) {
 			hbSearchResult.getChildren().remove(0);
 		}
@@ -68,7 +82,8 @@ public class SearchCheckoutRecordController {
 	
 	private TableView getCheckoutTable(ArrayList<CheckoutRecordTable> list) {
 		TableView table = new TableView();
-		table.setPrefWidth(500);
+		table.setPrefWidth(600);
+
 		TableColumn colTitle = new TableColumn("Title");
 		colTitle.setPrefWidth(125);
 		colTitle.setCellValueFactory(
@@ -88,11 +103,16 @@ public class SearchCheckoutRecordController {
 		colDueDate.setPrefWidth(125);
 		colDueDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));
+		
+		TableColumn colMemberName = new TableColumn("Member");
+		colMemberName.setPrefWidth(125);
+		colMemberName.setCellValueFactory(
+                new PropertyValueFactory<CheckoutRecordTable, String>("memberName"));		
 
 		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate);
+		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate, colMemberName);
 		
 		return table;
 	}
