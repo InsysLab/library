@@ -10,7 +10,11 @@ public class CheckoutDialogController {
 	@FXML private TextField tfTitle;
 	@FXML private TextField tfNumber;
 	@FXML private TextField tfMaxCheckout;
+	private boolean isCheckout;
 
+	public boolean isCheckout() {
+		return isCheckout;
+	}
 	private Stage dialogStage;
 	public Stage getDialogStage() {
 		return dialogStage;
@@ -18,8 +22,12 @@ public class CheckoutDialogController {
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
-	@FXML protected void handleSelectAuthorBtnAction(ActionEvent event) {
-		//System.out.println(tfName.getText());
+	@FXML protected void handleCheckoutBtnAction(ActionEvent event) {
+		isCheckout = true;
+		dialogStage.close();
+	}
+	@FXML protected void handleCancelBtnAction(ActionEvent event) {
+		isCheckout = false;
 		dialogStage.close();
 	}
 }
