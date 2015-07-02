@@ -27,7 +27,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="117.0" prefWidth="152.0">
                       <children>
-                        <ListView layoutX="0.0" layoutY="0.0" prefHeight="103.0" prefWidth="138.00009999999747" />
+                        <ListView fx:id="authorList" layoutX="0.0" layoutY="0.0" prefHeight="103.0" prefWidth="138.00009999999747" />
                       </children>
                     </AnchorPane>
                   </content>
