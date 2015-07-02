@@ -1,25 +1,28 @@
 package controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 
-import view.AddAuthor;
-import view.MemberCheckout;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import view.AddAuthor;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
-import business.objects.Author;
 import business.objects.Book;
-import business.objects.Periodical;
 import business.objects.Copy;
+import business.objects.Periodical;
 
 public class AddPublicationController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -64,7 +67,34 @@ public class AddPublicationController {
 	}
 	
 	@FXML protected void handleAddAuthPerBtnAction(ActionEvent event) {
-		
-		
+		ObservableList<String> data = FXCollections.observableArrayList();
+		data.add(showAuthorDialog("Test", event));
+		//lvAuthors.setItems(data);
+	}
+	
+	public String showAuthorDialog(String input, ActionEvent event) {
+		try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("AddAuthorTest.fxml"));
+    		Parent root = loader.load();
+    	    Stage dialogStage = new Stage();
+    	    dialogStage.setTitle("Select Author");
+    	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.initOwner(((Node)event.getTarget()).getScene().getWindow());
+    	    Scene scene = new Scene(root);
+    	    dialogStage.setScene(scene);
+
+    	    // Set the person into the controller
+    	    AddAuthorController controller = loader.getController();
+    	    controller.setDialogStage(dialogStage);
+    	    controller.getTfName().setText("Testing");
+
+    	    // Show the dialog and wait until the user closes it
+    	    dialogStage.showAndWait();
+    	    return controller.getTfName().getText();
+
+    	} catch (IOException io) {
+    		System.out.println(io.getStackTrace());
+    	}
+		return null;
 	}
 }
