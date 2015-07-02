@@ -143,7 +143,7 @@ public class DataAccessFacade implements DataAccess {
 			plist = PeriodicalList.getInstance();
 		}		
 		
-		plist.addPeriodical(periodical);;
+		plist.addPeriodical(periodical);
 		saveToStorage(StorageType.PeriodicalList, plist);			
 	}
 	
@@ -209,40 +209,25 @@ public class DataAccessFacade implements DataAccess {
 	
 	@Override
 	public void saveUpdateMember(LibraryMember member) {
-		// TODO Auto-generated method stub
-		ObjectOutputStream out = null;
 		MemberList memberlist = getMemberList();
+
+		if (memberlist == null) {
+			memberlist = MemberList.getInstance();
+		}	
 		
-		try {
-			if (memberlist == null) {
-				memberlist = MemberList.getInstance();
-			}	
-			
-			if (memberlist != null && memberlist.getMembers().size() > 0) {
-				for (LibraryMember mem: (ArrayList<LibraryMember>) memberlist.getMembers()) {
-					if (member.getMemberID() == mem.getMemberID()) {
-						mem.setAddress(member.getAddress());
-						mem.setFirstName(member.getFirstName());
-						mem.setLastName(member.getLastName());
-						mem.setPhone(member.getPhone());
-						mem.setAddress(member.getAddress());
-					}
+		if (memberlist != null && memberlist.getMembers().size() > 0) {
+			for (LibraryMember mem: (ArrayList<LibraryMember>) memberlist.getMembers()) {
+				if (member.getMemberID() == mem.getMemberID()) {
+					mem.setAddress(member.getAddress());
+					mem.setFirstName(member.getFirstName());
+					mem.setLastName(member.getLastName());
+					mem.setPhone(member.getPhone());
+					mem.setAddress(member.getAddress());
 				}
 			}
-			
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, "MemberList");
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(memberlist);
-			
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			if(out != null) {
-				try {
-					out.close();
-				} catch(Exception e) {}
-			}
 		}
+
+		saveToStorage(StorageType.MemberList, memberlist);			
 	}
 	
 	@Override
