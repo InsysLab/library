@@ -21,6 +21,10 @@ public class Book extends Publication implements Serializable {
 		this.maxcheckoutlength = maxcheck;
 	}
 	
+	public String getNumber(){
+		return ISBN;
+	}
+	
 	public String getISBN() {
 		return ISBN;
 	}
@@ -50,7 +54,7 @@ public class Book extends Publication implements Serializable {
 	}
 
 	@Override
-	int getMaxCheckoutLength() {
+	public int getMaxCheckoutLength() {
 		// TODO Auto-generated method stub
 		return maxcheckoutlength;
 	}

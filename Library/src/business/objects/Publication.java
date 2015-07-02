@@ -19,7 +19,7 @@ public abstract class Publication implements Serializable {
 		this.copyList = new ArrayList<Copy>();
 	}
 		
-	abstract int getMaxCheckoutLength();
+	public abstract int getMaxCheckoutLength();
 
 	public String getTitle() {
 		return title;
@@ -41,4 +41,17 @@ public abstract class Publication implements Serializable {
 		this.copyList.add(copy);
 	}
 
+	public Copy getAvailableCopy(){
+		List<Copy> copyList = getCopyList();
+		
+		for(Copy c : copyList){
+			if( c.isAvailable() ){
+				return c;
+			}
+		}
+		
+		return null;
+	}
+	
+	public abstract String getNumber();
 }

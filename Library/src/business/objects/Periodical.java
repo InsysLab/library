@@ -18,6 +18,10 @@ public class Periodical extends Publication implements Serializable {
 	private String issueNo;
 	private int maxcheckoutlength;
 	
+	public String getNumber(){
+		return issueNo;
+	}
+	
 	public String getIssueNo() {
 		return issueNo;
 	}
@@ -32,7 +36,7 @@ public class Periodical extends Publication implements Serializable {
 	}
 	
 	@Override
-	int getMaxCheckoutLength() {
+	public int getMaxCheckoutLength() {
 		// TODO Auto-generated method stub
 		return maxcheckoutlength;
 	}

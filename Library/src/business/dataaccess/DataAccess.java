@@ -38,9 +38,9 @@ public interface DataAccess {
 	
 	public LibraryMember searchLibraryMemberByID(int idNo);
 	public void saveUpdateMember(LibraryMember member);
-	
+
 	public CheckoutRecord getCheckoutRecord();
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
-	public CheckoutRecordEntry getCheckoutRecordEntryByMemberID(int idNo);
+	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo);
 	
 }

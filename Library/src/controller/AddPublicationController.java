@@ -19,6 +19,7 @@ import business.dataaccess.DataAccessFacade;
 import business.objects.Author;
 import business.objects.Book;
 import business.objects.Periodical;
+import business.objects.Copy;
 
 public class AddPublicationController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -34,6 +35,9 @@ public class AddPublicationController {
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
+		Copy aCopy = new Copy("1", periodical);
+		periodical.addCopy(aCopy);		
+		
 		dao.savePeriodical(periodical);
 		Alert alert = new Alert(AlertType.INFORMATION, perTitle.getText() + " is now saved!", ButtonType.OK);
 		alert.setTitle("Periodicals Saved");
