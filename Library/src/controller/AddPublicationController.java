@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import view.AddAuthor;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
+import business.objects.Author;
 import business.objects.Book;
 import business.objects.Copy;
 import business.objects.Periodical;
