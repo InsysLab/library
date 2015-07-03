@@ -131,6 +131,7 @@ public class CheckoutController {
 		Copy aCopy = pub.getAvailableCopy();
 		if( aCopy == null ){
 			Alert alert = new Alert(AlertType.INFORMATION, "There is no available copy for that item!", ButtonType.OK);
+			alert.setHeaderText(null);
 			alert.setTitle("Checkout");
 			alert.show();
 			return;
@@ -152,6 +153,7 @@ public class CheckoutController {
 		}
 		
 		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
+		alert.setHeaderText(null);
 		alert.setTitle("Checkout");
 		alert.show();
 		

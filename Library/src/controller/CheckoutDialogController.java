@@ -4,9 +4,11 @@ import java.time.LocalDate;
 
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
+import business.objects.Book;
 import business.objects.CheckoutRecordEntry;
 import business.objects.Copy;
 import business.objects.LibraryMember;
+import business.objects.Periodical;
 import business.objects.Publication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,6 +71,15 @@ public class CheckoutDialogController {
 		entry.setMember(member);
 		
 		dao.saveCheckoutRecordEntry(entry);
+		
+		//Update publication copy
+		pub.checkoutACopy(1);
+		
+		if(publicationType.equals("Book")){
+			dao.saveBook( (Book)pub );
+		} else {
+			dao.savePeriodical( (Periodical)pub );
+		}
 	
 		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
 		alert.setHeaderText(null);
