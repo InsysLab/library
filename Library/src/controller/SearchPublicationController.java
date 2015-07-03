@@ -212,6 +212,7 @@ public class SearchPublicationController {
     	    Stage dialogStage = new Stage();
     	    dialogStage.setTitle("Checkout Publication");
     	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.setResizable(false);
     	    dialogStage.initOwner(this.root.getScene().getWindow());
     	    Scene scene = new Scene(root);
     	    dialogStage.setScene(scene);
