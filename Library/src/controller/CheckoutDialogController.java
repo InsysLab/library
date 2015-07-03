@@ -25,6 +25,7 @@ public class CheckoutDialogController {
 	@FXML private TextField tfTitle;
 	@FXML private TextField tfNumber;
 	@FXML private TextField tfMaxCheckout;
+	@FXML private TextField tfName;
 	private boolean isCheckout;
 	private Stage dialogStage;
 	public String publicationType;
@@ -98,7 +99,26 @@ public class CheckoutDialogController {
 		isCheckout = false;
 		dialogStage.close();
 	}
-
+	@FXML protected void handleOnKeyTyped(ActionEvent event) {
+		int memberid = 0;
+		try {
+			memberid = Integer.parseInt(tfMemberID.getText());
+		} catch (NumberFormatException nfe) {
+			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Checkout Record");
+			alert.show();
+			tfMemberID.setText("");
+			return;
+		}
+		LibraryMember member = dao.searchLibraryMemberByID(memberid);
+		
+		if (member != null) {
+			tfName.setText(member.getFirstName() + " " + member.getLastName());
+		} else {
+			tfName.setText("");
+		}
+	}
 	public TextField getTfTitle() {
 		return tfTitle;
 	}
