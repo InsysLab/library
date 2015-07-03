@@ -104,7 +104,7 @@ public class CheckoutDialogController {
 		try {
 			memberid = Integer.parseInt(tfMemberID.getText());
 		} catch (NumberFormatException nfe) {
-			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic!", ButtonType.OK);
 			alert.setHeaderText(null);
 			alert.setTitle("Checkout Record");
 			alert.show();
@@ -116,6 +116,10 @@ public class CheckoutDialogController {
 		if (member != null) {
 			tfName.setText(member.getFirstName() + " " + member.getLastName());
 		} else {
+			Alert alert = new Alert(AlertType.ERROR, "Member ID " + memberid + "does not exist!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Checkout Record");
+			alert.show();
 			tfName.setText("");
 		}
 	}
