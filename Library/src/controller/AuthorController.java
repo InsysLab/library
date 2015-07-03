@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import business.dataaccess.DataAccess;
@@ -9,6 +8,8 @@ import business.dataaccess.DataAccessFacade;
 import business.objects.Address;
 import business.objects.Author;
 import business.objects.AuthorList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,8 +42,21 @@ public class AuthorController implements Initializable{
 		dialogStage.close();
 	}
 	
+	@FXML protected void handleKeyReleasedCredentials(ActionEvent event) {
+		
+		if(!checkExist(credentials.getText()))
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText(null);
+			alert.setTitle("Duplicated Author Information");
+			alert.setContentText("Author has credentials: " + credentials.getText() + " already exist !");
+			alert.show();
+		}
+	}
+	
 	@FXML protected void handleAddAuthor(ActionEvent event) {
 		paneAuthor.setVisible(true);
+		clearFields();
 	}
 
 	@FXML protected void handleSaveAuthor(ActionEvent event) {
@@ -51,17 +65,26 @@ public class AuthorController implements Initializable{
 		
 				
 		if(!street.getText().equals("")  && !city.getText().equals("") && !state.getText().equals("") && !zip.getText().equals(""))
-		{
-			System.out.println(":" + street.getText() + ":");
-			
+		{			
 			addr = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
 			
 			if(firstName.getText() != " " && lastName.getText() != " " && phone.getText() != " " && credentials.getText() != " ")
 			{
 				author = new Author(firstName.getText(), lastName.getText(), phone.getText(), credentials.getText(),addr);
-				dao.saveAuthor(author);
-				reflist();				
-				paneAuthor.setVisible(false);
+								
+				if(checkExist(author.getCredentials())) {
+					dao.saveAuthor(author);
+					reflist();				
+					paneAuthor.setVisible(false);
+				}
+				else 
+				{
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setHeaderText(null);
+					alert.setTitle("Duplicated Author Information");
+					alert.setContentText("Author has credentials: " + credentials.getText() + " already exist !");
+					alert.show();
+				}
 			}
 			else 
 			{
@@ -79,6 +102,16 @@ public class AuthorController implements Initializable{
 			alert.show();
 		}
 		
+	}
+	
+	private boolean checkExist(String value)
+	{
+		boolean nonExistUser = true;
+		for(Author a: fullListAuthor.getItems())
+		{
+			if(a.getCredentials().equals(value)) nonExistUser =false;
+		}
+		return nonExistUser;
 	}
 	
 	@FXML protected void handleRemoveFromLeft(ActionEvent event) {
@@ -121,6 +154,17 @@ public class AuthorController implements Initializable{
 		AuthorList aa = dao.getAuthorList();
 		data.addAll(aa.getAuthors());
 		fullListAuthor.setItems(data);
+	}
+	private void clearFields()
+	{
+		firstName.clear();
+		lastName.clear();
+		phone.clear();
+		credentials.clear();
+		street.clear();
+		city.clear();
+		state.clear();
+		zip.clear();
 	}
 
 	@Override
