@@ -12,7 +12,7 @@
   <children>
     <HBox alignment="CENTER" prefHeight="50.0">
       <children>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MPP Library">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Whizdom">
           <font>
             <Font name="System Bold" size="24.0" />
           </font>
@@ -24,16 +24,14 @@
         <SplitPane prefHeight="200.0" prefWidth="200.0">
           <items>
             <Accordion>
-              <effect>
-                <Glow />
-              </effect>
               <panes>
                 <TitledPane animated="false" text="Search">
                   <content>
                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                       <children>
-                        <Button layoutX="13.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleSearchLibraryMemberBtnAction" prefWidth="180.0" text="Library Member" />
-                        <Button layoutX="14.0" layoutY="32.0" mnemonicParsing="false" onAction="#handleSearchPublicationBtnAction" prefWidth="180.0" text="Publication" />
+                        <Button layoutX="13.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSearchLibraryMemberBtnAction" prefWidth="180.0" text="Library Member" />
+                        <Button layoutX="14.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleSearchPublicationBtnAction" prefWidth="180.0" text="Publication" />
+                        <Button layoutX="14.0" layoutY="98.0" mnemonicParsing="false" onAction="#handleSearchCheckoutBtnAction" prefWidth="180.0" text="Checkout Records" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -42,9 +40,9 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <Button layoutX="10.0" layoutY="28.0" mnemonicParsing="false" onAction="#handleAddPublicationBtnAction" prefWidth="180.0" text="Add Publication" />
-                        <Button layoutX="10.0" layoutY="63.0" mnemonicParsing="false" onAction="#handleAddMemberBtnAction" prefWidth="180.0" text="Add Member" />
-                        <Button layoutX="10.0" layoutY="102.0" mnemonicParsing="false" onAction="#handleCheckoutBtnAction" prefWidth="180.0" text="Checkout" />
+                        <Button layoutX="10.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleAddPublicationBtnAction" prefWidth="180.0" text="Add Publication" />
+                        <Button layoutX="10.0" layoutY="72.0" mnemonicParsing="false" onAction="#handleAddMemberBtnAction" prefWidth="180.0" text="Add Member" />
+                        <Button layoutX="10.0" layoutY="105.0" mnemonicParsing="false" onAction="#handleCheckoutBtnAction" prefWidth="180.0" text="Checkout" />
                       </children>
                     </AnchorPane>
                   </content>

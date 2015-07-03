@@ -13,7 +13,7 @@ public class MPPLibrary extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("LibraryMainView.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("../view/LibraryMainView.fxml"));
 			Scene scene = new Scene(root,800,600);			
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("MPP Library System");
