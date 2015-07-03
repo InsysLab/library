@@ -58,6 +58,7 @@ public class CheckoutDialogController {
 			alert.setTitle("Checkout Record");
 			alert.show();
 			tfMemberID.setText("");
+			tfName.setText("");
 			return;
 		}
 		String number = tfNumber.getText();
@@ -119,6 +120,7 @@ public class CheckoutDialogController {
 			alert.setTitle("Checkout Record");
 			alert.show();
 			tfMemberID.setText("");
+			tfName.setText("");
 			return;
 		}
 		LibraryMember member = dao.searchLibraryMemberByID(memberid);
