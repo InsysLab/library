@@ -49,7 +49,17 @@ public class CheckoutDialogController {
 		this.dialogStage = dialogStage;
 	}
 	@FXML protected void handleCheckoutBtnAction(ActionEvent event) {
-		int memberId = Integer.parseInt(tfMemberID.getText());
+		int memberId = 0;
+		try {
+			memberId = Integer.parseInt(tfMemberID.getText());
+		} catch (NumberFormatException nfe) {
+			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Checkout Record");
+			alert.show();
+			tfMemberID.setText("");
+			return;
+		}
 		String number = tfNumber.getText();
 
 		LibraryMember member = dao.searchLibraryMemberByID(memberId);
