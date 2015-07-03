@@ -29,10 +29,10 @@
             <Label text="Max Checkout" />
           </children>
           <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
           </padding>
         </VBox>
-        <VBox padding="$x1" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
+        <VBox prefHeight="200.0" prefWidth="200.0" spacing="5.0">
           <children>
             <TextField fx:id="tfMemberID" prefWidth="200.0" promptText="Input Member ID" />
             <TextField fx:id="tfTitle" disable="false" editable="false" prefWidth="200.0" />

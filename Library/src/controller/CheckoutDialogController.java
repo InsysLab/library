@@ -2,6 +2,13 @@ package controller;
 
 import java.time.LocalDate;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Book;
@@ -10,24 +17,22 @@ import business.objects.Copy;
 import business.objects.LibraryMember;
 import business.objects.Periodical;
 import business.objects.Publication;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
 
 public class CheckoutDialogController {
 	private final DataAccess dao = new DataAccessFacade();
+
 	@FXML private TextField tfMemberID;
 	@FXML private TextField tfTitle;
 	@FXML private TextField tfNumber;
 	@FXML private TextField tfMaxCheckout;
 	private boolean isCheckout;
 	private Stage dialogStage;
-	
 	public String publicationType;
+
+    @FXML // This method is called by the FXMLLoader when initialization is complete
+    void initialize() {
+
+    }
 
 	public void setPublicationType(String publicationType) {
 		this.publicationType = publicationType;
@@ -93,4 +98,19 @@ public class CheckoutDialogController {
 		isCheckout = false;
 		dialogStage.close();
 	}
+
+	public TextField getTfTitle() {
+		return tfTitle;
+	}
+
+	public TextField getTfNumber() {
+		return tfNumber;
+	}
+
+	public TextField getTfMaxCheckout() {
+		return tfMaxCheckout;
+	}
+	
+	
+
 }
