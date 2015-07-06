@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
@@ -96,6 +97,14 @@ public class SearchCheckoutRecordController {
 		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
 		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		   
+		   if(ce.getDueDate().isBefore(LocalDate.now())){
+			    Period betweenDates = Period.between(ce.getCheckoutDate(), ce.getDueDate());
+			    chkRec.setStatus(betweenDates.getDays() + " day(s) overdue");
+		   } else {
+			   chkRec.setStatus("");
+		   }
+		   
 		   list.add(chkRec);
 	   }
 
@@ -120,25 +129,30 @@ public class SearchCheckoutRecordController {
 		colTitle.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("title"));
 		
-		TableColumn colISBN = new TableColumn("ISBN/Issue No");
-		colISBN.setPrefWidth(125);
+		TableColumn colISBN = new TableColumn("ISBN/Issue #");
+		colISBN.setPrefWidth(100);
 		colISBN.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("number"));
 		
-		TableColumn colBorrowedDate = new TableColumn("Borrowed Date");
-		colBorrowedDate.setPrefWidth(125);
+		TableColumn colBorrowedDate = new TableColumn("Borrowed");
+		colBorrowedDate.setPrefWidth(70);
 		colBorrowedDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("borrowedDate"));
 		
-		TableColumn colDueDate = new TableColumn("Due Date");
-		colDueDate.setPrefWidth(125);
+		TableColumn colDueDate = new TableColumn("Due");
+		colDueDate.setPrefWidth(70);
 		colDueDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));	
+		
+		TableColumn colStatus = new TableColumn("Status");
+		colStatus.setPrefWidth(125);
+		colStatus.setCellValueFactory(
+                new PropertyValueFactory<CheckoutRecordTable, String>("status"));			
 
 		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate);
+		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate, colStatus);
 		
 		return table;
 	}

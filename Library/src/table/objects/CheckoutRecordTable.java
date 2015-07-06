@@ -5,6 +5,14 @@ public class CheckoutRecordTable {
 	private String number;
 	private String borrowedDate;
 	private String dueDate;
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String getTitle() {
 		return title;
 	}
