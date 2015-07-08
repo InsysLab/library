@@ -1,24 +1,37 @@
 package controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 import table.objects.CheckoutRecordTable;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
@@ -28,6 +41,8 @@ import business.objects.CheckoutRecord;
 import business.objects.CheckoutRecordEntry;
 import business.objects.Copy;
 import business.objects.LibraryMember;
+import business.objects.Periodical;
+import business.objects.Publication;
 
 public class SearchCheckoutRecordController {
 	private final DataAccess dao = new DataAccessFacade();
@@ -35,6 +50,7 @@ public class SearchCheckoutRecordController {
 	@FXML private TextField tfMemberName;
 	@FXML private Label lblSearchStatus;
 	@FXML private HBox hbSearchResult;
+	private Parent root;
 	
     @FXML // This method is called by the FXMLLoader when initialization is complete
    void initialize() {
@@ -42,21 +58,6 @@ public class SearchCheckoutRecordController {
    }
 	
    @FXML protected void onSearchBtnAction(ActionEvent event) {
-/*	   CheckoutRecord cr = new CheckoutRecord();
-	   Book pub1 = new Book("123", 1, "Java");
-	   Copy copy = new Copy("1", pub1);
-	   LocalDate loc = LocalDate.now();
-	   CheckoutRecordEntry crEntry = new CheckoutRecordEntry(copy, loc, loc.plusDays(pub1.getMaxcheckoutlength()));
-	   LibraryMember member = new LibraryMember(12, "Jesus", "Sadang", "1234", new Address("1","1","1","1"));
-	   crEntry.setMember(member);
-	   
-	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
-	   CheckoutRecordTable chkRec = new CheckoutRecordTable();
-	   chkRec.setTitle(pub1.getTitle());
-	   chkRec.setNumber(pub1.getISBN());
-	   chkRec.setBorrowedDate(crEntry.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-	   chkRec.setDueDate(crEntry.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));*/
-	   //CheckoutRecordEntry en1 = new CheckoutRecordEntry();
 	   
 	   if( tfSearchID.getText().isEmpty() ){
 		   return;
@@ -72,6 +73,7 @@ public class SearchCheckoutRecordController {
 		   alert.show();
 		   return;
 	   }
+	   
 	   LibraryMember member = dao.searchLibraryMemberByID(memberId);
 	   
 	   if( member == null ){
@@ -149,6 +151,32 @@ public class SearchCheckoutRecordController {
 		colStatus.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("status"));			
 
+		table.setRowFactory(
+			    new Callback<TableView<Book>, TableRow<Book>>() {
+			    	
+			  @Override
+			  public TableRow<Book> call(TableView<Book> tableView) {
+			    final TableRow<Book> row = new TableRow<>();
+			    final ContextMenu rowMenu = new ContextMenu();
+			    MenuItem checkoutItem = new MenuItem("Return");
+			    checkoutItem.setOnAction(new EventHandler<ActionEvent>() {
+			      @Override
+			      public void handle(ActionEvent event) {
+			    	showReturnDialog(row.getItem(), event);
+			        //table.getItems().remove(row.getItem());
+			      }
+			    });
+			    rowMenu.getItems().addAll(checkoutItem);
+
+			    // only display context menu for non-null items:
+			    row.contextMenuProperty().bind(
+			      Bindings.when(Bindings.isNotNull(row.itemProperty()))
+			      .then(rowMenu)
+			      .otherwise((ContextMenu)null));
+			    return row;
+			  }
+			});		
+		
 		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
@@ -156,5 +184,37 @@ public class SearchCheckoutRecordController {
 		
 		return table;
 	}
-	
+
+	public void showReturnDialog(Publication pub, ActionEvent event) {
+		try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/CheckoutDialog.fxml"));
+    		Parent root = loader.load();
+    	    Stage dialogStage = new Stage();
+    	    dialogStage.setTitle("Checkout Publication");
+    	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.setResizable(false);
+    	    dialogStage.initOwner(this.root.getScene().getWindow());
+    	    Scene scene = new Scene(root);
+    	    dialogStage.setScene(scene);
+
+    	    // Set the Publication into the controller
+    	    CheckoutDialogController controller = loader.getController();
+    	    controller.setDialogStage(dialogStage);
+    	    if (pub instanceof Book) {
+    	    	controller.setPublicationType("Book");
+    	    	controller.getTfTitle().setText(pub.getTitle());
+    	    	controller.getTfNumber().setText(((Book) pub).getISBN());
+    	    	controller.getTfMaxCheckout().setText(((Book) pub).getMaxcheckoutlength()+"");
+    	    } else {
+    	    	controller.setPublicationType("Periodical");
+    	    	controller.getTfTitle().setText(pub.getTitle());
+    	    	controller.getTfNumber().setText(((Periodical) pub).getIssueNo());
+    	    	controller.getTfMaxCheckout().setText(((Periodical) pub).getMaxcheckoutlength()+"");
+    	    }
+    	    // Show the dialog and wait until the user closes it
+    	    dialogStage.showAndWait();
+    	} catch (IOException io) {
+    		System.out.println(io.getStackTrace());
+    	}
+	}	
 }
