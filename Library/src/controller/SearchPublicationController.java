@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.beans.binding.Bindings;
@@ -10,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -26,9 +28,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import table.objects.CheckoutRecordTable;
+import table.objects.SearchPublicationTable;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Book;
+import business.objects.CheckoutRecordEntry;
 import business.objects.Periodical;
 import business.objects.Publication;
 
@@ -108,81 +113,66 @@ public class SearchPublicationController {
 	}
 	
 	private TableView getBookTable(ArrayList<Book> books, ActionEvent event) {
-		TableView table = new TableView();
-		table.setPrefWidth(500);
-		TableColumn colTitle = new TableColumn("Title");
-		colTitle.setPrefWidth(125);
-		colTitle.setCellValueFactory(
-                new PropertyValueFactory<Book, String>("title"));
-		TableColumn colISBN = new TableColumn("ISBN");
-		colISBN.setPrefWidth(125);
-		colISBN.setCellValueFactory(
-                new PropertyValueFactory<Book, String>("ISBN"));
-		TableColumn colMax = new TableColumn("Max Checkout Days");
-		colMax.setPrefWidth(125);
-		colMax.setCellValueFactory(
-                new PropertyValueFactory<Book, String>("maxcheckoutlength"));
-		
-		table.setRowFactory(
-			    new Callback<TableView<Book>, TableRow<Book>>() {
-			  @Override
-			  public TableRow<Book> call(TableView<Book> tableView) {
-			    final TableRow<Book> row = new TableRow<>();
-			    final ContextMenu rowMenu = new ContextMenu();
-			    MenuItem checkoutItem = new MenuItem("Checkout");
-			    checkoutItem.setOnAction(new EventHandler<ActionEvent>() {
-			      @Override
-			      public void handle(ActionEvent event) {
-			    	showCheckoutDialog(row.getItem(), event);
-			        //table.getItems().remove(row.getItem());
-			      }
-			    });
-			    rowMenu.getItems().addAll(checkoutItem);
+		ArrayList<SearchPublicationTable> tableList = new ArrayList<SearchPublicationTable>();
 
-			    // only display context menu for non-null items:
-			    row.contextMenuProperty().bind(
-			      Bindings.when(Bindings.isNotNull(row.itemProperty()))
-			      .then(rowMenu)
-			      .otherwise((ContextMenu)null));
-			    return row;
-			  }
-			});
+		for(Book ce: books){
+			SearchPublicationTable spt = new SearchPublicationTable();
+			spt.setTitle(ce.getTitle());
+			spt.setNumber(ce.getISBN());
+			spt.setMaxDays(ce.getMaxcheckoutlength() +"");
+			spt.setIntCopies(ce.getCopyList().size() + "");
+			tableList.add(spt);
+		}
 
-		ObservableList<Book> data = FXCollections.observableArrayList();
-		data.addAll(books);
-		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colMax);
-		
-		return table;
+		return getSearchTable(tableList);
 	}
 	
 	private TableView getPeriodicalTable(ArrayList<Periodical> periodicals) {
+		ArrayList<SearchPublicationTable> tableList = new ArrayList<SearchPublicationTable>();
+		 
+		for(Periodical ce: periodicals){
+			SearchPublicationTable spt = new SearchPublicationTable();
+			spt.setTitle(ce.getTitle());
+			spt.setNumber(ce.getIssueNo());
+			spt.setMaxDays(ce.getMaxcheckoutlength() +"");
+			spt.setIntCopies(ce.getCopyList().size() + "");
+			tableList.add(spt);
+		}
+		
+		return getSearchTable(tableList);
+	}
+	
+	private TableView getSearchTable(ArrayList<SearchPublicationTable> list) {		
 		TableView table = new TableView();
 		table.setPrefWidth(500);
 		TableColumn colTitle = new TableColumn("Title");
 		colTitle.setPrefWidth(125);
 		colTitle.setCellValueFactory(
-                new PropertyValueFactory<Periodical, String>("title"));
-		TableColumn colIssueNo = new TableColumn("Issue No");
+                new PropertyValueFactory<SearchPublicationTable, String>("title"));
+		TableColumn colIssueNo = new TableColumn(isBook ? "ISBN" : "Issue No");
 		colIssueNo.setPrefWidth(125);
 		colIssueNo.setCellValueFactory(
-                new PropertyValueFactory<Periodical, String>("issueNo"));
+                new PropertyValueFactory<SearchPublicationTable, String>("number"));
 		TableColumn colMax = new TableColumn("Max Checkout");
 		colMax.setPrefWidth(125);
 		colMax.setCellValueFactory(
-                new PropertyValueFactory<Periodical, String>("maxcheckoutlength"));
+                new PropertyValueFactory<SearchPublicationTable, String>("maxDays"));
+		TableColumn numCopies = new TableColumn("Copies");
+		numCopies.setPrefWidth(125);
+		numCopies.setCellValueFactory(
+                new PropertyValueFactory<SearchPublicationTable, String>("intCopies"));
 		
 		table.setRowFactory(
-			    new Callback<TableView<Periodical>, TableRow<Periodical>>() {
+			    new Callback<TableView<SearchPublicationTable>, TableRow<SearchPublicationTable>>() {
 			  @Override
-			  public TableRow<Periodical> call(TableView<Periodical> tableView) {
-			    final TableRow<Periodical> row = new TableRow<>();
+			  public TableRow<SearchPublicationTable> call(TableView<SearchPublicationTable> tableView) {
+			    final TableRow<SearchPublicationTable> row = new TableRow<>();
 			    final ContextMenu rowMenu = new ContextMenu();
 			    MenuItem checkoutItem = new MenuItem("Checkout");
 			    checkoutItem.setOnAction(new EventHandler<ActionEvent>() {
 			      @Override
 			      public void handle(ActionEvent event) {
-			    	showCheckoutDialog(row.getItem(), event);
+			    	showCheckoutDialog(isBook?dao.getBookByISBN(row.getItem().getNumber()):dao.searchPeriodicalByIssueNo(row.getItem().getNumber()), event);
 			        //table.getItems().remove(row.getItem());
 			      }
 			    });
@@ -197,10 +187,10 @@ public class SearchPublicationController {
 			  }
 			});
 
-		ObservableList<Periodical> data = FXCollections.observableArrayList();
-		data.addAll(periodicals);
+		ObservableList<SearchPublicationTable> data = FXCollections.observableArrayList();
+		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colIssueNo, colMax);
+		table.getColumns().addAll(colTitle,colIssueNo, colMax, numCopies);
 		
 		return table;
 	}
