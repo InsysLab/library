@@ -45,8 +45,6 @@ public abstract class Publication implements Serializable {
 	}
 
 	public Copy getAvailableCopy(){
-		List<Copy> copyList = getCopyList();
-		
 		for(Copy c : copyList){
 			if( c.isAvailable() ){
 				return c;
@@ -57,10 +55,8 @@ public abstract class Publication implements Serializable {
 	}
 	
 	public void checkoutACopy(int numCopies){
-		List<Copy> copies = this.getCopyList();
-		
 		int i = 1;
-		for(Copy c : this.getCopyList()){
+		for(Copy c : copyList){
 			if(c.isAvailable()){
 				c.setAvailable(false);
 			}
@@ -71,8 +67,6 @@ public abstract class Publication implements Serializable {
 			
 			i++;
 		}		
-		
-		this.setCopyList(copies);
 	}
 	
 	public abstract String getNumber();

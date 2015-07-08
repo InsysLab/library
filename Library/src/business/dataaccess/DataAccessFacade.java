@@ -29,17 +29,41 @@ public class DataAccessFacade implements DataAccess {
 			+ "\\src\\business\\dataaccess\\storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
 	
+	@Override
 	public void saveBook(Book book) {
-		BookList booklist = getBookList();
+		BookList bookList = getBookList();
 
-		if (booklist == null) {
-			booklist = BookList.getInstance();
+		if (bookList == null) {
+			bookList = BookList.getInstance();
 		}		
 		
-		booklist.addBook(book);
-		saveToStorage(StorageType.BookList, booklist);				
+		bookList.addBook(book);
+		saveToStorage(StorageType.BookList, bookList);				
 	}
 	
+	@Override
+	public void updateBook(Book book){
+		BookList bookList = getBookList();
+
+		if (bookList == null) {
+			bookList = BookList.getInstance();
+		}	
+		
+		if (bookList != null && bookList.getBooks().size() > 0) {
+			for (Book bk: (ArrayList<Book>) bookList.getBooks()) {
+				if (book.getISBN() == bk.getISBN()) {
+					bk.setAuthorlist(book.getAuthorlist());
+					bk.setCopyList(book.getCopyList());
+					bk.setMaxcheckoutlength(book.getMaxcheckoutlength());
+					bk.setTitle(book.getTitle());
+				}
+			}
+		}
+		
+		saveToStorage(StorageType.BookList, bookList);			
+	}
+	
+	@Override
 	public Book getBookByTitle(String title) {
 		BookList bookList =  getBookList();
 		Book bk = null;
@@ -53,6 +77,7 @@ public class DataAccessFacade implements DataAccess {
 		return bk;
 	}  
 	
+	@Override
 	public Book getBookByISBN(String isbn){
 		BookList bookList =  getBookList();
 		Book bk = null;
@@ -66,11 +91,13 @@ public class DataAccessFacade implements DataAccess {
 		return bk;		
 	}
 	
+	@Override
 	public BookList getBookList() {
 		BookList bookList = (BookList)readFromStorage(StorageType.BookList);
 		return bookList;
 	}
 	
+	@Override
 	public ArrayList<Book> wildSearchBookByTitle(String title) {
 		BookList bookList =  getBookList();
 		if (bookList != null && bookList.getBooks().size() > 0) {
@@ -85,6 +112,7 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 	
+	@Override
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN) {
 		BookList bookList =  getBookList();
 		if (bookList != null && bookList.getBooks().size() > 0) {
@@ -145,6 +173,27 @@ public class DataAccessFacade implements DataAccess {
 		
 		plist.addPeriodical(periodical);
 		saveToStorage(StorageType.PeriodicalList, plist);			
+	}
+	
+	@Override
+	public void updatePeriodical(Periodical periodical){
+		PeriodicalList plist = getPeriodicalList();
+
+		if (plist == null) {
+			plist = PeriodicalList.getInstance();
+		}	
+		
+		if (plist != null && plist.getPeriodicals().size() > 0) {
+			for (Periodical p: (ArrayList<Periodical>) plist.getPeriodicals()) {
+				if (periodical.getIssueNo() == p.getIssueNo()) {
+					p.setCopyList(periodical.getCopyList());
+					p.setMaxcheckoutlength(periodical.getMaxcheckoutlength());
+					p.setTitle(periodical.getTitle());
+				}
+			}
+		}
+		
+		saveToStorage(StorageType.PeriodicalList, plist);				
 	}
 	
 	@Override
