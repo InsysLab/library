@@ -3,6 +3,7 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import rule.RuleException;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Address;
@@ -191,5 +192,55 @@ public class AuthorController implements Initializable{
 		this.selectedList = selectedList;
 	}
 	
-	
+	private boolean isInputValid() {
+        String errorMessage = "";
+        if (firstName.getText().trim().isEmpty() || lastName.getText().trim().isEmpty() || phone.getText().trim().isEmpty() ||
+        		credentials.getText().trim().isEmpty() || street.getText().trim().isEmpty()  || city.getText().trim().isEmpty() || state.getText().trim().isEmpty() || zip.getText().trim().isEmpty()) {
+			errorMessage += "All fields must be nonempty!\n";
+		}
+
+        if (!firstName.getText().matches("[a-zA-Z]*")) {
+        	errorMessage +="First name field may not contain spaces or characters other than a-z, A-Z\n";  
+		}
+        if (!lastName.getText().matches("[a-zA-Z]*")) {
+        	errorMessage +="Last name field may not contain spaces or characters other than a-z, A-Z\n"; 
+        }
+        if (!phone.getText().matches("^[0-9]*")) {
+            errorMessage += "No valid first name!\n"; 
+        }
+        if (credentials.getText() == null || credentials.getText().length() == 0) {
+            errorMessage += "No valid last name!\n"; 
+        }
+        
+        if (street.getText() == null || street.getText().length() == 0) {
+            errorMessage += "No valid street!\n"; 
+        }
+
+        if (!zip.getText().matches("^[0-9]{5,5}")) {
+        	errorMessage += "Zip must be numeric with exactly 5 digits!\n";  
+		} 
+
+        if (city.getText() == null || city.getText().length() == 0) {
+            errorMessage += "No valid city!\n"; 
+        }
+
+        if (!state.getText().matches("^[A-Z][A-Z]$")) {
+        	errorMessage += "State must have exactly two characters in the range A-Z!\n";  
+		}
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(dialogStage);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
+	}
 }

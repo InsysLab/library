@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import business.dataaccess.DataAccess;
@@ -83,6 +84,8 @@ public class AddPublicationController {
     	    dialogStage.setTitle("Select Author");
     	    dialogStage.initModality(Modality.WINDOW_MODAL);
     	    dialogStage.initOwner(((Node)event.getTarget()).getScene().getWindow());
+    	    dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("../view/author.png")));
+    	    
     	    Scene scene = new Scene(root);
     	    dialogStage.setScene(scene);
 

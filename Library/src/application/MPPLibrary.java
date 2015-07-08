@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MPPLibrary extends Application {
@@ -17,6 +18,7 @@ public class MPPLibrary extends Application {
 			Scene scene = new Scene(root,800,600);			
 			scene.getStylesheets().add(getClass().getResource("../view/application.css").toExternalForm());
 			primaryStage.setTitle("MPP Library System");
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../view/icon.png")));
 			primaryStage.setResizable(true);
 			primaryStage.setScene(scene);
 			primaryStage.show();

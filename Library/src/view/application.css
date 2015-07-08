@@ -70,6 +70,18 @@
 	-fx-background-color:#828282;
 }
 
+.titled-pane > .title > .arrow-button .arrow{
+  
+   -fx-shape: "";
+}
+
+.titled-pane:expanded .title {
+    
+    -fx-text-fill: #96b946;
+}
+
+
+
 .accordion {
 	-fx-background-color:#828282;
 }
