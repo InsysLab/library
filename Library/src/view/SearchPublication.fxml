@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="500.0" prefWidth="500.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchPublicationController">
-   <padding>
-      <Insets left="5.0" right="5.0" />
-   </padding>
-   <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Publication">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Text>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
-         <children>
-            <TextField fx:id="tfSearchText" />
-            <ComboBox fx:id="cbPublication" prefWidth="70.0" promptText="Book" onAction="#onSearchComboPubAction"/>
-            <ComboBox fx:id="cbTitle" prefWidth="70.0" promptText="Title" />
-            <Button mnemonicParsing="false" onAction="#onSearchBtnAction" prefWidth="70.0" text="Search" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="lblSearchStatus" />
-         </children>
-      </HBox>
-      <HBox fx:id="hbSearchResult" prefHeight="330.0" prefWidth="490.0" />
-   </children>
+<VBox prefHeight="500.0" prefWidth="600.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.SearchPublicationController">
+  <children>
+    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+      <children>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Publication">
+          <font>
+            <Font name="System Bold" size="18.0" />
+          </font>
+        </Text>
+      </children>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
+      <children>
+        <TextField fx:id="tfSearchText" />
+        <ComboBox fx:id="cbPublication" onAction="#onSearchComboPubAction" prefWidth="70.0" promptText="Book" />
+        <ComboBox fx:id="cbTitle" prefWidth="70.0" promptText="Title" />
+        <Button mnemonicParsing="false" onAction="#onSearchBtnAction" prefWidth="70.0" text="Search" />
+      </children>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+      <children>
+        <Label fx:id="lblSearchStatus" />
+      </children>
+    </HBox>
+    <HBox fx:id="hbSearchResult" prefHeight="330.0" prefWidth="490.0" />
+  </children>
+  <padding>
+    <Insets left="5.0" right="5.0" />
+  </padding>
 </VBox>

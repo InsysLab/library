@@ -47,6 +47,7 @@ public class AddPublicationController {
 		
 		dao.savePeriodical(periodical);
 		Alert alert = new Alert(AlertType.INFORMATION, perTitle.getText() + " is now saved!", ButtonType.OK);
+		alert.setHeaderText(null);
 		alert.setTitle("Periodicals Saved");
 		alert.show();
 	}
@@ -67,6 +68,7 @@ public class AddPublicationController {
 		dao.saveBook(book);
 		
 		Alert alert = new Alert(AlertType.INFORMATION, tfBookTitle.getText() + " is now saved!", ButtonType.OK);
+		alert.setHeaderText(null);
 		alert.setTitle("Book Saved");
 		alert.show();
 	}

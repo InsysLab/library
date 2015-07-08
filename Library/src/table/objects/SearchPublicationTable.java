@@ -6,6 +6,7 @@ public class SearchPublicationTable {
 	private String maxDays;
 	private String intCopies;
 	private String status;
+	private String availableCopies;
 	
 	public String getStatus() {
 		return status;
@@ -36,6 +37,12 @@ public class SearchPublicationTable {
 	}
 	public void setIntCopies(String intCopies) {
 		this.intCopies = intCopies;
+	}
+	public String getAvailableCopies() {
+		return availableCopies;
+	}
+	public void setAvailableCopies(String availableCopies) {
+		this.availableCopies = availableCopies;
 	}
 
 }

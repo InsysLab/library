@@ -1,9 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.beans.binding.Bindings;
@@ -28,12 +25,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import table.objects.CheckoutRecordTable;
 import table.objects.SearchPublicationTable;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Book;
-import business.objects.CheckoutRecordEntry;
+import business.objects.Copy;
 import business.objects.Periodical;
 import business.objects.Publication;
 
@@ -121,6 +117,11 @@ public class SearchPublicationController {
 			spt.setNumber(ce.getISBN());
 			spt.setMaxDays(ce.getMaxcheckoutlength() +"");
 			spt.setIntCopies(ce.getCopyList().size() + "");
+			int count = 0;
+			for (Copy copy: ce.getCopyList()) {
+				count += copy.isAvailable() ? 1 : 0;
+			}
+			spt.setAvailableCopies(count + "");
 			tableList.add(spt);
 		}
 
@@ -136,6 +137,11 @@ public class SearchPublicationController {
 			spt.setNumber(ce.getIssueNo());
 			spt.setMaxDays(ce.getMaxcheckoutlength() +"");
 			spt.setIntCopies(ce.getCopyList().size() + "");
+			int count = 0;
+			for (Copy copy: ce.getCopyList()) {
+				count += copy.isAvailable() ? 1 : 0;
+			}
+			spt.setAvailableCopies(count + "");
 			tableList.add(spt);
 		}
 		
@@ -144,23 +150,28 @@ public class SearchPublicationController {
 	
 	private TableView getSearchTable(ArrayList<SearchPublicationTable> list) {		
 		TableView table = new TableView();
-		table.setPrefWidth(500);
+		table.setPrefWidth(600);
 		TableColumn colTitle = new TableColumn("Title");
-		colTitle.setPrefWidth(125);
+		colTitle.setPrefWidth(150);
 		colTitle.setCellValueFactory(
                 new PropertyValueFactory<SearchPublicationTable, String>("title"));
 		TableColumn colIssueNo = new TableColumn(isBook ? "ISBN" : "Issue No");
-		colIssueNo.setPrefWidth(125);
+		colIssueNo.setPrefWidth(90);
 		colIssueNo.setCellValueFactory(
                 new PropertyValueFactory<SearchPublicationTable, String>("number"));
 		TableColumn colMax = new TableColumn("Max Checkout");
-		colMax.setPrefWidth(125);
+		colMax.setPrefWidth(90);
 		colMax.setCellValueFactory(
                 new PropertyValueFactory<SearchPublicationTable, String>("maxDays"));
-		TableColumn numCopies = new TableColumn("Copies");
-		numCopies.setPrefWidth(125);
+		TableColumn numCopies = new TableColumn("Copy");
+		numCopies.setPrefWidth(90);
 		numCopies.setCellValueFactory(
                 new PropertyValueFactory<SearchPublicationTable, String>("intCopies"));
+
+		TableColumn avlCopies = new TableColumn("Available Copy");
+		avlCopies.setPrefWidth(90);
+		avlCopies.setCellValueFactory(
+                new PropertyValueFactory<SearchPublicationTable, String>("availableCopies"));
 		
 		table.setRowFactory(
 			    new Callback<TableView<SearchPublicationTable>, TableRow<SearchPublicationTable>>() {
@@ -190,7 +201,7 @@ public class SearchPublicationController {
 		ObservableList<SearchPublicationTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colIssueNo, colMax, numCopies);
+		table.getColumns().addAll(colTitle,colIssueNo, colMax, numCopies, avlCopies);
 		
 		return table;
 	}

@@ -38,6 +38,14 @@ public class AddLibraryMember {
 												 tfPhone.getText(), 
 												 address);
 		MemberList mlist = dao.getMemberList();
+		if (mlist == null) {
+			dao.saveMember(member);
+			Alert alert = new Alert(AlertType.INFORMATION, tfFirstname.getText() + " is now saved!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("New Member Saved");
+			alert.show();
+			return;
+		}
 		List<LibraryMember> memberList = mlist.getMembers();
 		
 		boolean nonexistmember = true;
