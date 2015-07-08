@@ -40,6 +40,7 @@ public abstract class Publication implements Serializable {
 	public void addCopy() {
 		int num = copyList.size() + 1;
 		Copy c = new Copy(Integer.toString(num), this);
+		c.setAvailable(true);
 		this.copyList.add(c);
 	}
 
