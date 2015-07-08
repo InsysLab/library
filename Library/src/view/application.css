@@ -23,11 +23,12 @@
     -fx-text-fill: white;
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-background-color: #3c3c3c;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 .button:hover {
-    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+	-fx-background-color: #e6e6e6;
+    -fx-text-fill:#3c3c3c;
 }
 
 .tab-pane .tab-header-area .tab-header-background {
@@ -66,5 +67,14 @@
 }
 
 .accordion .titled-pane > *.content {
-	-fx-background-color: null;
+	-fx-background-color:#828282;
+}
+
+.accordion {
+	-fx-background-color:#828282;
+}
+
+#MainTitle
+{
+	-fx-fill: #3c3c3c;
 }
