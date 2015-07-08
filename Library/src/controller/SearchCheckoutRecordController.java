@@ -6,6 +6,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -171,8 +172,9 @@ public class SearchCheckoutRecordController {
 			    checkoutItem.setOnAction(new EventHandler<ActionEvent>() {
 			      @Override
 			      public void handle(ActionEvent event) {
-			    	showReturnDialog(row.getItem(), event);
-			        //table.getItems().remove(row.getItem());
+			    	  Alert alert = new Alert(AlertType.CONFIRMATION);
+			    	  alert.setContentText("Confirm return item.");
+			    	  Optional<ButtonType> result = alert.showAndWait();
 			      }
 			    });
 			    rowMenu.getItems().addAll(checkoutItem);
@@ -194,36 +196,4 @@ public class SearchCheckoutRecordController {
 		return table;
 	}
 
-	public void showReturnDialog(Publication pub, ActionEvent event) {
-		try {
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/CheckoutDialog.fxml"));
-    		Parent root = loader.load();
-    	    Stage dialogStage = new Stage();
-    	    dialogStage.setTitle("Checkout Publication");
-    	    dialogStage.initModality(Modality.WINDOW_MODAL);
-    	    dialogStage.setResizable(false);
-    	    dialogStage.initOwner(this.root.getScene().getWindow());
-    	    Scene scene = new Scene(root);
-    	    dialogStage.setScene(scene);
-
-    	    // Set the Publication into the controller
-    	    CheckoutDialogController controller = loader.getController();
-    	    controller.setDialogStage(dialogStage);
-    	    if (pub instanceof Book) {
-    	    	controller.setPublicationType("Book");
-    	    	controller.getTfTitle().setText(pub.getTitle());
-    	    	controller.getTfNumber().setText(((Book) pub).getISBN());
-    	    	controller.getTfMaxCheckout().setText(((Book) pub).getMaxcheckoutlength()+"");
-    	    } else {
-    	    	controller.setPublicationType("Periodical");
-    	    	controller.getTfTitle().setText(pub.getTitle());
-    	    	controller.getTfNumber().setText(((Periodical) pub).getIssueNo());
-    	    	controller.getTfMaxCheckout().setText(((Periodical) pub).getMaxcheckoutlength()+"");
-    	    }
-    	    // Show the dialog and wait until the user closes it
-    	    dialogStage.showAndWait();
-    	} catch (IOException io) {
-    		System.out.println(io.getStackTrace());
-    	}
-	}	
 }
