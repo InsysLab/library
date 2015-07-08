@@ -41,9 +41,7 @@ public class AddPublicationController {
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
-		Copy aCopy = new Copy("1", periodical);
-		aCopy.setAvailable(true);
-		periodical.addCopy(aCopy);		
+		periodical.addCopy();		
 		
 		dao.savePeriodical(periodical);
 		Alert alert = new Alert(AlertType.INFORMATION, perTitle.getText() + " is now saved!", ButtonType.OK);
@@ -61,9 +59,7 @@ public class AddPublicationController {
 		}
 		System.out.println(alist);
 		book.setAuthorlist(alist);
-		Copy aCopy = new Copy("1", book);
-		aCopy.setAvailable(true);
-		book.addCopy(aCopy);	
+		book.addCopy();	
 		
 		dao.saveBook(book);
 		

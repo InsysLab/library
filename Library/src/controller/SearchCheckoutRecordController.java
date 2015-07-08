@@ -91,6 +91,15 @@ public class SearchCheckoutRecordController {
 	   tfMemberName.setText(member.getFirstName() + " " + member.getLastName());
 	   
 	   List<CheckoutRecordEntry> checkoutRecord = dao.getCheckoutRecordEntryByMemberID( memberId );
+	   
+	   if(checkoutRecord == null){
+			Alert alert = new Alert(AlertType.ERROR, "Member has no checkout record", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Checkout Record");
+			alert.show();		   
+			return;
+	   }
+	   
 	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
 	 
 	   for(CheckoutRecordEntry ce: checkoutRecord){

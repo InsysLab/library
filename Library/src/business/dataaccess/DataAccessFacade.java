@@ -232,7 +232,9 @@ public class DataAccessFacade implements DataAccess {
 	
 	@Override
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo){
-		List<CheckoutRecordEntry> entryList = getCheckoutRecord().getEntry();
+		CheckoutRecord checkoutRecord = getCheckoutRecord();
+		if(checkoutRecord == null) return null;
+		List<CheckoutRecordEntry> entryList = checkoutRecord.getEntry();
 
 		if (entryList.size() > 0) {
 			ArrayList<CheckoutRecordEntry> list = new ArrayList<CheckoutRecordEntry>();
