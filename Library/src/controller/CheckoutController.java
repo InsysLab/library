@@ -147,9 +147,9 @@ public class CheckoutController {
 		pub.checkoutACopy(1);
 		
 		if(pub.getClass().getName().contains("Book")){
-			dao.updateBook( (Book)pub );
+			dao.saveUpdateBook( (Book)pub );
 		} else {
-			dao.updatePeriodical( (Periodical)pub );
+			dao.saveUpdatePeriodical( (Periodical)pub );
 		}
 		
 		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
