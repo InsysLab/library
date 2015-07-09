@@ -63,13 +63,9 @@ public class AuthorController implements Initializable{
 		Address addr = null;
 		Author author = null;
 		
-				
-		if(!street.getText().equals("")  && !city.getText().equals("") && !state.getText().equals("") && !zip.getText().equals(""))
-		{			
-			addr = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
-			
-			if(firstName.getText() != " " && lastName.getText() != " " && phone.getText() != " " && credentials.getText() != " ")
-			{
+		if(isInputValid()){
+		
+				addr = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
 				author = new Author(firstName.getText(), lastName.getText(), phone.getText(), credentials.getText(),addr);
 								
 				if(checkExist(author.getCredentials())) {
@@ -77,29 +73,7 @@ public class AuthorController implements Initializable{
 					reflist();				
 					paneAuthor.setVisible(false);
 				}
-				else 
-				{
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setHeaderText(null);
-					alert.setTitle("Duplicated Author Information");
-					alert.setContentText("Author has credentials: " + credentials.getText() + " already exist !");
-					alert.show();
-				}
-			}
-			else 
-			{
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setHeaderText(null);
-				alert.setContentText("User info missing !");
-				alert.show();
-			}
-		}
-		else 
-		{			
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setContentText("Address info missing !");
-			alert.show();
+				
 		}
 		
 	}
@@ -207,19 +181,19 @@ public class AuthorController implements Initializable{
         if (!phone.getText().matches("^[0-9]*")) {
             errorMessage += "No valid first name!\n"; 
         }
-        if (credentials.getText() == null || credentials.getText().length() == 0) {
-            errorMessage += "No valid last name!\n"; 
+        if (!credentials.getText().matches("[a-zA-Z]*")) {
+            errorMessage += "No valid credentials!\n"; 
         }
         
-        if (street.getText() == null || street.getText().length() == 0) {
-            errorMessage += "No valid street!\n"; 
+        if (!street.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
+            errorMessage += "Street field can contain spaces or characters a-z, A-Z and 0-9 \n"; 
         }
 
         if (!zip.getText().matches("^[0-9]{5,5}")) {
         	errorMessage += "Zip must be numeric with exactly 5 digits!\n";  
 		} 
 
-        if (city.getText() == null || city.getText().length() == 0) {
+        if (!city.getText().matches("[a-zA-Z]*")) {
             errorMessage += "No valid city!\n"; 
         }
 
