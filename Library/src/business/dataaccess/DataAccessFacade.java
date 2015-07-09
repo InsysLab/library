@@ -96,6 +96,11 @@ public class DataAccessFacade implements DataAccess {
 	@Override
 	public BookList getBookList() {
 		BookList bookList = (BookList)readFromStorage(StorageType.BookList);
+		
+		if (bookList == null) {
+			bookList = BookList.getInstance();
+		}			
+		
 		return bookList;
 	}
 	
