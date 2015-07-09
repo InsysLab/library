@@ -295,6 +295,7 @@ public class SearchPublicationController {
 		    			for (int i = 0; i < copy; i++)
 		    				per.addCopy();
 		    			//SaveUpdate Periodical
+		    			dao.saveUpdatePeriodical(per);
 		    		}
 		    	}
 		    	
