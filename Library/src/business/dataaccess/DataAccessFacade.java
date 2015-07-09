@@ -354,5 +354,35 @@ public class DataAccessFacade implements DataAccess {
 			}
 		}
 		return retVal;
-	}	
+	}
+	
+	public void saveUpdateBook(Book book) {
+		BookList booklist = getBookList();
+		if (booklist == null) {
+			booklist = BookList.getInstance();
+		}
+		List<Book> list = booklist.getBooks();
+		for (int i=0; i<list.size(); i++) {
+			Book b = list.get(i);
+			if (b.getISBN().equals(book.getISBN())) {
+				list.set(i, book);
+				saveToStorage(StorageType.BookList, booklist);
+			}
+		}
+	}
+	
+	public void saveUpdatePeriodical(Periodical periodical) {
+		PeriodicalList periodicallist = getPeriodicalList();
+		if (periodicallist == null) {
+			periodicallist = PeriodicalList.getInstance();
+		}
+		List<Periodical> list = periodicallist.getPeriodicals();
+		for (int i=0; i<list.size(); i++) {
+			Periodical b = list.get(i);
+			if (b.getIssueNo().equals(periodical.getIssueNo())) {
+				list.set(i, periodical);
+				saveToStorage(StorageType.PeriodicalList, periodicallist);
+			}
+		}
+	}
 }
