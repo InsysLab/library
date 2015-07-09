@@ -13,7 +13,7 @@
       <content>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
           <children>
-            <GridPane hgap="10.0" prefHeight="381.0" prefWidth="500.0" vgap="5.0">
+            <GridPane hgap="10.0" prefHeight="392.0" prefWidth="500.0" vgap="10.0">
               <children>
                 <Label alignment="CENTER_RIGHT" prefWidth="-1.0" text="Title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField fx:id="tfBookTitle" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -21,15 +21,19 @@
                 <Label alignment="CENTER_RIGHT" prefWidth="-1.0" text="ISBN" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <Label alignment="CENTER_RIGHT" prefWidth="-1.0" text="Max Checkout Days" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <TextField fx:id="tfBookMaxCODays" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button mnemonicParsing="false" onAction="#handleSaveBookBtnAction" prefWidth="100.0" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <Label text="Authors" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Button mnemonicParsing="false" onAction="#handleSaveBookBtnAction" prefHeight="22.0" prefWidth="112.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                <Label text="Authors" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                  <GridPane.margin>
+                    <Insets top="25.0" />
+                  </GridPane.margin>
+                </Label>
                 <ListView fx:id="authorList" prefHeight="110.0" prefWidth="153.00009999999747" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Button id="btnEditAuthor" mnemonicParsing="false" onAction="#handlebtnEditAuthor" text="Add/Edit Authors" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Button id="btnEditAuthor" mnemonicParsing="false" onAction="#handlebtnEditAuthor" prefHeight="22.0" text="Add/Edit Authors" GridPane.columnIndex="2" GridPane.rowIndex="3" />
               </children>
               <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="137.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="192.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="131.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="115.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="215.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="130.0" />
               </columnConstraints>
               <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -43,14 +47,17 @@
               </rowConstraints>
             </GridPane>
           </children>
+          <padding>
+            <Insets left="10.0" />
+          </padding>
         </VBox>
       </content>
     </Tab>
     <Tab text="Periodicals">
       <content>
-        <VBox alignment="CENTER" prefHeight="-1.0" prefWidth="100.0" spacing="10.0">
+        <VBox alignment="TOP_LEFT" prefHeight="-1.0" prefWidth="100.0" spacing="10.0">
           <children>
-            <GridPane hgap="10.0" prefHeight="171.0" vgap="5.0">
+            <GridPane hgap="10.0" prefHeight="158.0" prefWidth="477.0" vgap="10.0">
               <children>
                 <Label alignment="CENTER_RIGHT" prefWidth="-1.0" text="Title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField fx:id="perTitle" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -58,12 +65,12 @@
                 <Label alignment="CENTER_RIGHT" prefWidth="-1.0" text="Issue Number" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <Label alignment="CENTER_RIGHT" prefWidth="-1.0" text="Max Checkout Days" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <TextField fx:id="perMaxCODays" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button mnemonicParsing="false" onAction="#handleSavePerBtnAction" prefWidth="100.0" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleSavePerBtnAction" prefHeight="22.0" prefWidth="112.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
               </children>
               <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="154.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="202.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.0" minWidth="10.0" prefWidth="104.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="118.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="216.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.0" minWidth="10.0" prefWidth="126.0" />
               </columnConstraints>
               <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -76,6 +83,9 @@
               </rowConstraints>
             </GridPane>
           </children>
+          <padding>
+            <Insets top="35.0" />
+          </padding>
         </VBox>
       </content>
     </Tab>

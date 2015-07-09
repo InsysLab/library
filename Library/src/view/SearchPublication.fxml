@@ -8,16 +8,19 @@
 
 <VBox prefHeight="500.0" prefWidth="600.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.SearchPublicationController">
   <children>
-    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="595.0" spacing="10.0">
       <children>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Publication">
           <font>
             <Font name="System Bold" size="18.0" />
           </font>
+          <HBox.margin>
+            <Insets left="20.0" fx:id="x1" />
+          </HBox.margin>
         </Text>
       </children>
     </HBox>
-    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
+    <HBox alignment="CENTER_LEFT" padding="$x1" prefHeight="40.0" prefWidth="576.0" spacing="10.0">
       <children>
         <TextField fx:id="tfSearchText" />
         <ComboBox fx:id="cbPublication" onAction="#onSearchComboPubAction" prefWidth="70.0" promptText="Book" />
@@ -25,7 +28,7 @@
         <Button mnemonicParsing="false" onAction="#onSearchBtnAction" prefWidth="70.0" text="Search" />
       </children>
     </HBox>
-    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+    <HBox alignment="CENTER_LEFT" prefHeight="21.0" prefWidth="590.0">
       <children>
         <Label fx:id="lblSearchStatus" />
       </children>

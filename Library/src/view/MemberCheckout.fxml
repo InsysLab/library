@@ -7,57 +7,57 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="610.0" prefWidth="610.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.CheckoutController">
+<AnchorPane prefHeight="587.0" prefWidth="562.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.CheckoutController">
   <!-- TODO Add Nodes -->
   <children>
-    <GridPane layoutX="45.0" layoutY="54.0" prefHeight="60.0" prefWidth="425.0" vgap="10.0">
+    <GridPane hgap="5.0" layoutX="53.0" layoutY="79.0" prefHeight="24.0" prefWidth="422.0" vgap="10.0">
       <children>
-        <Label prefHeight="20.0" prefWidth="96.0" text="             Member" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="tfMemberID" prefHeight="34.0" prefWidth="126.0" promptText="Enter member ID" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label prefHeight="20.0" prefWidth="126.0" text="             Member" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="tfMemberID" prefHeight="24.0" prefWidth="86.0" promptText="Enter member ID" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <TextField fx:id="tfMemberName" disable="true" editable="false" focusTraversable="true" opacity="1.0" prefHeight="34.0" prefWidth="205.0001220703125" promptText="" style="-fx-background-color: #D7D0DB;&#10;-fx-border-color: #94BBDA;&#10;-fx-text-fill: #000000;" visible="true" GridPane.columnIndex="2" GridPane.rowIndex="0" />
       </children>
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="116.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="209.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="96.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="74.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="242.0" />
       </columnConstraints>
       <rowConstraints>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <GridPane layoutX="39.0" layoutY="92.0" prefHeight="137.0" prefWidth="441.0">
+    <GridPane hgap="15.0" layoutX="34.0" layoutY="107.0" prefHeight="109.0" prefWidth="452.0" vgap="10.0">
       <children>
-        <Label prefHeight="24.0" prefWidth="95.0" text="                 ISBN" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label alignment="CENTER_RIGHT" contentDisplay="LEFT" prefHeight="24.0" prefWidth="95.0" text="ISBN" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
           <font>
             <Font size="12.0" fx:id="x1" />
           </font>
         </Label>
         <TextField fx:id="tfISBN" editable="true" prefHeight="33.0" prefWidth="246.0" promptText="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label font="$x1" prefWidth="145.0" text="          Book Title" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label alignment="CENTER_RIGHT" font="$x1" prefWidth="145.0" text="Book Title" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
         <TextField fx:id="tfBookTitle" prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label font="$x1" prefWidth="145.0" text="Periodical Issue #" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label alignment="CENTER_RIGHT" font="$x1" prefWidth="145.0" text="Periodical Issue #" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
         <TextField fx:id="tfIssueNumber" prefHeight="33.0" prefWidth="197.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       </children>
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="96.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="325.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="94.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="346.0" minWidth="10.0" prefWidth="323.0" />
       </columnConstraints>
       <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </padding>
       <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="21.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <Button fx:id="btnSearch" layoutX="145.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleSearchBtnAction" prefHeight="33.0" prefWidth="95.0" text="Search" />
-    <Label layoutX="45.0" layoutY="21.0" prefHeight="33.0" prefWidth="126.0" text="Checkout">
+    <Button fx:id="btnSearch" layoutX="154.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleSearchBtnAction" prefHeight="22.0" prefWidth="119.0" text="Search" />
+    <Label layoutX="63.0" layoutY="14.0" prefHeight="33.0" prefWidth="126.0" text="Checkout" textFill="BLACK">
       <font>
-        <Font size="20.0" />
+        <Font name="System Bold" size="18.0" />
       </font>
     </Label>
-    <Button fx:id="btnAddCheckout" disable="true" layoutX="313.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleAddCheckoutBtnAction" prefHeight="33.0" prefWidth="157.0" text="Checkout" textFill="BLACK" visible="true" />
-    <HBox fx:id="hbSearchResult" layoutX="58.0" layoutY="305.0" prefHeight="187.0" prefWidth="412.0" />
+    <Button fx:id="btnAddCheckout" disable="true" layoutX="318.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleAddCheckoutBtnAction" prefHeight="22.0" prefWidth="157.0" text="Checkout" textFill="BLACK" visible="true" />
+    <HBox fx:id="hbSearchResult" layoutX="48.0" layoutY="286.0" prefHeight="268.0" prefWidth="428.0" />
   </children>
 </AnchorPane>

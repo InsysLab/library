@@ -14,10 +14,13 @@
           <font>
             <Font name="System Bold" size="18.0" />
           </font>
+          <HBox.margin>
+            <Insets left="30.0" fx:id="x1" />
+          </HBox.margin>
         </Text>
       </children>
     </HBox>
-    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0">
+    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0" VBox.margin="$x1">
       <children>
         <Label text="Member ID" />
         <TextField id="tfSearchText" fx:id="tfSearchID" prefWidth="80.0" promptText="Enter ID" />
