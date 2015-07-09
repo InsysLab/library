@@ -64,13 +64,14 @@ public class SearchCheckoutRecordController {
 		   return;
 	   }
 	   
+	   Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
+	   alert.setHeaderText(null);
+	   alert.setTitle("Checkout Record");
+	   
 	   int memberId = -1;
 	   try {
 		   memberId = Integer.parseInt(tfSearchID.getText());
 	   } catch (NumberFormatException nfe) {
-		   Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
-		   alert.setHeaderText(null);
-		   alert.setTitle("Checkout Record");
 		   alert.show();
 		   return;
 	   }
@@ -78,9 +79,7 @@ public class SearchCheckoutRecordController {
 	   LibraryMember member = dao.searchLibraryMemberByID(memberId);
 	   
 	   if( member == null ){
-			Alert alert = new Alert(AlertType.ERROR, "Member ID does not exist", ButtonType.OK);
-			alert.setHeaderText(null);
-			alert.setTitle("Checkout Record");
+			alert.setContentText("Member ID does not exist");
 			alert.show();
 			
 			tfMemberName.clear();
@@ -94,9 +93,7 @@ public class SearchCheckoutRecordController {
 	   List<CheckoutRecordEntry> checkoutRecord = dao.getCheckoutRecordEntryByMemberID( memberId );
 	   
 	   if(checkoutRecord == null){
-			Alert alert = new Alert(AlertType.ERROR, "Member has no checkout record", ButtonType.OK);
-			alert.setHeaderText(null);
-			alert.setTitle("Checkout Record");
+			alert.setContentText("Member has no checkout record");
 			alert.show();		   
 			return;
 	   }

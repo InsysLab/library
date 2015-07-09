@@ -38,16 +38,18 @@ public class AddLibraryMember {
 												 tfPhone.getText(), 
 												 address);
 		MemberList mlist = dao.getMemberList();
+		Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
+		alert.setTitle("Add Member");
+		alert.setHeaderText(null);
+		
 		if (mlist == null) {
 			dao.saveMember(member);
-			Alert alert = new Alert(AlertType.INFORMATION, tfFirstname.getText() + " is now saved!", ButtonType.OK);
-			alert.setHeaderText(null);
-			alert.setTitle("New Member Saved");
+			alert.setContentText(tfFirstname.getText() + " is now saved!");
 			alert.show();
 			return;
 		}
-		List<LibraryMember> memberList = mlist.getMembers();
 		
+		List<LibraryMember> memberList = mlist.getMembers();
 		boolean nonexistmember = true;
 		
 		for(LibraryMember lm: memberList)
@@ -57,16 +59,11 @@ public class AddLibraryMember {
 		
 		if(nonexistmember){
 			dao.saveMember(member);
-			
-			Alert alert = new Alert(AlertType.INFORMATION, tfFirstname.getText() + " is now saved!", ButtonType.OK);
-			alert.setHeaderText(null);
-			alert.setTitle("New Member Saved");
+			alert.setContentText(tfFirstname.getText() + " is now saved!");
 			alert.show();		
 		}
 		else {
-			Alert alert = new Alert(AlertType.INFORMATION, tfID.getText() + " member already exist!", ButtonType.OK);
-			alert.setHeaderText(null);
-			alert.setTitle("Duplicated member ID");
+			alert.setContentText(tfID.getText() + " member already exist!");
 			alert.show();	
 		}
 	}

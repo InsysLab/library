@@ -105,6 +105,23 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	@Override
+	public void saveUpdateBook(Book book) {
+		BookList booklist = getBookList();
+		if (booklist == null) {
+			booklist = BookList.getInstance();
+		}
+		List<Book> list = booklist.getBooks();
+		for (int i=0; i<list.size(); i++) {
+			Book b = list.get(i);
+			if (b.getISBN().equals(book.getISBN())) {
+				list.set(i, book);
+				saveToStorage(StorageType.BookList, booklist);
+				break;
+			}
+		}
+	}
+	
+	@Override
 	public ArrayList<Book> wildSearchBookByTitle(String title) {
 		BookList bookList =  getBookList();
 		if (bookList != null && bookList.getBooks().size() > 0) {
@@ -204,6 +221,23 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	@Override
+	public void saveUpdatePeriodical(Periodical periodical) {
+		PeriodicalList periodicallist = getPeriodicalList();
+		if (periodicallist == null) {
+			periodicallist = PeriodicalList.getInstance();
+		}
+		List<Periodical> list = periodicallist.getPeriodicals();
+		for (int i=0; i<list.size(); i++) {
+			Periodical b = list.get(i);
+			if (b.getIssueNo().equals(periodical.getIssueNo())) {
+				list.set(i, periodical);
+				saveToStorage(StorageType.PeriodicalList, periodicallist);
+				break;
+			}
+		}
+	}	
+	
+	@Override
 	public PeriodicalList getPeriodicalList() {
 		PeriodicalList periodicalList = (PeriodicalList)readFromStorage(StorageType.PeriodicalList);
 		return periodicalList;
@@ -223,6 +257,7 @@ public class DataAccessFacade implements DataAccess {
 		return null;		
 	}
 	
+	@Override
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title) {
 		PeriodicalList periodicalList =  getPeriodicalList();
 		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
@@ -237,6 +272,7 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 	
+	@Override
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo) {
 		PeriodicalList periodicalList =  getPeriodicalList();
 		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
@@ -251,6 +287,7 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 	
+	@Override
 	public LibraryMember searchLibraryMemberByID(int idNo) {
 		MemberList list =  getMemberList();
 		if (list != null && list.getMembers().size() > 0) {
@@ -325,6 +362,7 @@ public class DataAccessFacade implements DataAccess {
 		saveToStorage(StorageType.CheckoutRecord, checkoutRecord);	
 	}
 	
+	@Override
 	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String idNum){
 		List<CheckoutRecordEntry> checkoutRecord = getCheckoutRecordEntryByMemberID(memberId);
 		
@@ -337,6 +375,7 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 	
+	@Override
 	public void removeCheckoutRecordEntry(int memberId, Publication pub){
 		CheckoutRecord checkoutRecord = getCheckoutRecord();
 		List<CheckoutRecordEntry> entries = new ArrayList<CheckoutRecordEntry>();
@@ -364,7 +403,22 @@ public class DataAccessFacade implements DataAccess {
 		newList.setEntry(entries);
 		
 		saveToStorage(StorageType.CheckoutRecord, newList);
-	}	
+	}		
+	
+	@Override
+	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy) {
+		List<CheckoutRecordEntry> entryList = getCheckoutRecord().getEntry();
+
+		if (entryList != null && entryList.size() > 0) {
+			for (CheckoutRecordEntry entry: entryList) {
+				if (entry.getCopy().equals(copy)) {
+					return 	entry;				
+				}
+			}
+		}
+		
+		return null;
+	}		
 	
 	public static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;
@@ -401,50 +455,5 @@ public class DataAccessFacade implements DataAccess {
 		}
 		return retVal;
 	}
-	
-	public void saveUpdateBook(Book book) {
-		BookList booklist = getBookList();
-		if (booklist == null) {
-			booklist = BookList.getInstance();
-		}
-		List<Book> list = booklist.getBooks();
-		for (int i=0; i<list.size(); i++) {
-			Book b = list.get(i);
-			if (b.getISBN().equals(book.getISBN())) {
-				list.set(i, book);
-				saveToStorage(StorageType.BookList, booklist);
-				break;
-			}
-		}
-	}
-	
-	public void saveUpdatePeriodical(Periodical periodical) {
-		PeriodicalList periodicallist = getPeriodicalList();
-		if (periodicallist == null) {
-			periodicallist = PeriodicalList.getInstance();
-		}
-		List<Periodical> list = periodicallist.getPeriodicals();
-		for (int i=0; i<list.size(); i++) {
-			Periodical b = list.get(i);
-			if (b.getIssueNo().equals(periodical.getIssueNo())) {
-				list.set(i, periodical);
-				saveToStorage(StorageType.PeriodicalList, periodicallist);
-				break;
-			}
-		}
-	}
-	
-	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy) {
-		List<CheckoutRecordEntry> entryList = getCheckoutRecord().getEntry();
 
-		if (entryList != null && entryList.size() > 0) {
-			for (CheckoutRecordEntry entry: entryList) {
-				if (entry.getCopy().equals(copy)) {
-					return 	entry;				
-				}
-			}
-		}
-		
-		return null;
-	}
 }
