@@ -367,6 +367,7 @@ public class DataAccessFacade implements DataAccess {
 			if (b.getISBN().equals(book.getISBN())) {
 				list.set(i, book);
 				saveToStorage(StorageType.BookList, booklist);
+				break;
 			}
 		}
 	}
@@ -382,6 +383,7 @@ public class DataAccessFacade implements DataAccess {
 			if (b.getIssueNo().equals(periodical.getIssueNo())) {
 				list.set(i, periodical);
 				saveToStorage(StorageType.PeriodicalList, periodicallist);
+				break;
 			}
 		}
 	}
