@@ -55,17 +55,18 @@ public abstract class Publication implements Serializable {
 	}
 	
 	public void checkoutACopy(int numCopies){
-		int i = 1;
+		int i = 0;
 		for(Copy c : copyList){
 			if(c.isAvailable()){
 				c.setAvailable(false);
+				i++;
 			}
 			
 			if( i == numCopies ){
 				break;
 			}
 			
-			i++;
+			
 		}		
 	}
 	
