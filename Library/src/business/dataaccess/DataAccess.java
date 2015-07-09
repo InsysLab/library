@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import business.objects.Author;
 import business.objects.AuthorList;
+import business.objects.Publication;
 import business.objects.Book;
 import business.objects.BookList;
 import business.objects.Copy;
@@ -44,6 +45,7 @@ public interface DataAccess {
 	public CheckoutRecord getCheckoutRecord();
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo);
-	
+	public void removeCheckoutRecordEntry(int memberId, Publication pub);
+	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String idNum);
 	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy);
 }

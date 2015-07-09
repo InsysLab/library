@@ -102,10 +102,6 @@ public class CheckoutController {
 			alert.setContentText("Cannot find the publication.");
 			alert.show();
 			btnAddCheckout.setDisable(true);
-			
-			//tfISBN.clear();
-			//tfBookTitle.clear();
-			//tfIssueNumber.clear();
 		}
 		
 	}	

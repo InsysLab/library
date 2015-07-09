@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import business.objects.Author;
 import business.objects.AuthorList;
+import business.objects.Publication;
 import business.objects.Book;
 import business.objects.BookList;
 import business.objects.Copy;
@@ -319,7 +320,46 @@ public class DataAccessFacade implements DataAccess {
 		saveToStorage(StorageType.CheckoutRecord, checkoutRecord);	
 	}
 	
+	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String idNum){
+		List<CheckoutRecordEntry> checkoutRecord = getCheckoutRecordEntryByMemberID(memberId);
+		
+		for(CheckoutRecordEntry recEntry : checkoutRecord){
+			if( recEntry.getCopy().getPublication().getNumber().equals(idNum) ){
+				return recEntry;
+			}
+		}
+		
+		return null;
+	}
 	
+	public void removeCheckoutRecordEntry(int memberId, Publication pub){
+		CheckoutRecord checkoutRecord = getCheckoutRecord();
+		List<CheckoutRecordEntry> entries = new ArrayList<CheckoutRecordEntry>();
+		
+		for(CheckoutRecordEntry recEntry : checkoutRecord.getEntry()){
+			if( recEntry.getMember().getMemberID() == memberId ){
+				Publication p = recEntry.getCopy().getPublication();
+			
+				if(pub.getClass().getName().contains("Book")){
+					Book b1 = (Book)pub;
+					Book b2 = (Book)p;
+					if( ! b1.getISBN().equals(b2.getISBN()) ){
+						entries.add(recEntry);					}
+				} else {
+					Periodical pr1 = (Periodical)pub;
+					Periodical pr2 = (Periodical)p;
+					if( ! pr1.getIssueNo().equals(pr2.getIssueNo()) ){
+						entries.add(recEntry);
+					}			
+				}				
+			}
+		}
+		
+		CheckoutRecord newList = CheckoutRecord.getInstance();
+		newList.setEntry(entries);
+		
+		saveToStorage(StorageType.CheckoutRecord, newList);
+	}	
 	
 	public static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;

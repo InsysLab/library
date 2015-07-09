@@ -109,9 +109,9 @@ public class SearchCheckoutRecordController {
 		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
 		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		   
+
 		   if(ce.getDueDate().isBefore(LocalDate.now())){
-			    Period betweenDates = Period.between(ce.getCheckoutDate(), ce.getDueDate());
+			    Period betweenDates = Period.between(ce.getDueDate(), LocalDate.now());
 			    chkRec.setStatus(betweenDates.getDays() + " day(s) overdue");
 		   } else {
 			   chkRec.setStatus("");
@@ -159,14 +159,14 @@ public class SearchCheckoutRecordController {
 		TableColumn colStatus = new TableColumn("Status");
 		colStatus.setPrefWidth(125);
 		colStatus.setCellValueFactory(
-                new PropertyValueFactory<CheckoutRecordTable, String>("status"));			
-
+                new PropertyValueFactory<CheckoutRecordTable, String>("status"));					
+		
 		table.setRowFactory(
-			    new Callback<TableView<Book>, TableRow<Book>>() {
+			    new Callback<TableView<CheckoutRecordTable>, TableRow<CheckoutRecordTable>>() {
 			    	
 			  @Override
-			  public TableRow<Book> call(TableView<Book> tableView) {
-			    final TableRow<Book> row = new TableRow<>();
+			  public TableRow<CheckoutRecordTable> call(TableView<CheckoutRecordTable> tableView) {
+			    final TableRow<CheckoutRecordTable> row = new TableRow<>();
 			    final ContextMenu rowMenu = new ContextMenu();
 			    MenuItem checkoutItem = new MenuItem("Return");
 			    checkoutItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -174,7 +174,24 @@ public class SearchCheckoutRecordController {
 			      public void handle(ActionEvent event) {
 			    	  Alert alert = new Alert(AlertType.CONFIRMATION);
 			    	  alert.setContentText("Confirm return item.");
+			    	  
 			    	  Optional<ButtonType> result = alert.showAndWait();
+			    	  if (result.isPresent() && result.get() == ButtonType.OK) {
+			    		  int memberId = Integer.parseInt(tfSearchID.getText());
+			    		  CheckoutRecordEntry checkoutRecordEntry = dao.getCheckoutRecordEntryById(memberId, row.getItem().getNumber());
+			    		  
+			    		  Publication pub = checkoutRecordEntry.getCopy().getPublication();
+			    		  dao.removeCheckoutRecordEntry(memberId, pub);
+
+			    		  pub.returnACopy();
+			    		  if(pub.getClass().getName().contains("Book")){
+			    			  dao.saveUpdateBook( (Book)pub );
+			    		  } else {
+			    			  dao.saveUpdatePeriodical( (Periodical)pub );
+			    		  }
+			    		  
+			    		  row.setPrefHeight(0);
+			    	  }
 			      }
 			    });
 			    rowMenu.getItems().addAll(checkoutItem);

@@ -6,7 +6,7 @@ public class CheckoutRecordTable {
 	private String borrowedDate;
 	private String dueDate;
 	private String status;
-	
+
 	public String getStatus() {
 		return status;
 	}

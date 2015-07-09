@@ -74,7 +74,7 @@ public class AddPublicationController {
 		{
 			alist.add(a);
 		}
-		System.out.println(alist);
+		//System.out.println(alist);
 		book.setAuthorlist(alist);
 		book.addCopy();	
 		
