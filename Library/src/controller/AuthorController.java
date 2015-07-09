@@ -3,7 +3,6 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import rule.RuleException;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Address;
