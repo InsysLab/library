@@ -205,6 +205,9 @@ public class SearchPublicationController {
 			    		  row.getItem().setIntCopies((Integer.parseInt(row.getItem().getIntCopies()) + copy) + "");
 			    		  tableView.getColumns().get(3).setVisible(false);
 			    		  tableView.getColumns().get(3).setVisible(true);
+			    		  row.getItem().setAvailableCopies((Integer.parseInt(row.getItem().getAvailableCopies()) + copy) + "");
+			    		  tableView.getColumns().get(4).setVisible(false);
+			    		  tableView.getColumns().get(4).setVisible(true);
 			    	  }
 			        //table.getItems().remove(row.getItem());
 			      }
