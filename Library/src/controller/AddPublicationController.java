@@ -41,6 +41,14 @@ public class AddPublicationController {
 	@FXML private ListView<Author> authorList;
 	
 	@FXML protected void handleSavePerBtnAction(ActionEvent event) {
+		Periodical per = dao.searchPeriodicalByIssueNo(perIssueNum.getText());
+		if (per != null) {
+			Alert alert = new Alert(AlertType.ERROR, "Periodical issue number already exist!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Add Periodical Error");
+			alert.show();
+			return;
+		}
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
 		periodical.addCopy();		
 		
@@ -52,6 +60,14 @@ public class AddPublicationController {
 	}
 
 	@FXML protected void handleSaveBookBtnAction(ActionEvent event) {
+		Book bk = dao.getBookByISBN(tfISBN.getText());
+		if (bk != null) {
+			Alert alert = new Alert(AlertType.ERROR, "Book ISBN number already exist!", ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Add Book Error");
+			alert.show();
+			return;
+		}
 		Book book = new Book(tfISBN.getText(), Integer.parseInt(tfBookMaxCODays.getText()), tfBookTitle.getText());
 		List<Author> alist = new ArrayList<>();
 		for(Author a: authorList.getItems())		
