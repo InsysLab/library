@@ -93,9 +93,9 @@ public class CheckoutDialogController {
 		pub.checkoutACopy(1);
 		
 		if(publicationType.equals("Book")){
-			dao.saveBook( (Book)pub );
+			dao.saveUpdateBook( (Book)pub );
 		} else {
-			dao.savePeriodical( (Periodical)pub );
+			dao.saveUpdatePeriodical( (Periodical)pub );
 		}
 	
 		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
