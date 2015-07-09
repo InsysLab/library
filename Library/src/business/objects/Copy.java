@@ -47,4 +47,18 @@ public class Copy implements Serializable {
 		// TODO Auto-generated method stub
 		return publication.toString();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		boolean isequal = false;
+		if (o==null) return isequal;
+		Copy copy = (Copy) o;
+		if (this.getPublication().getClass() == copy.getPublication().getClass() &&
+			this.getPublication().getNumber().equals(copy.getPublication().getNumber()) &&
+			this.copyNo == copy.getCopyNo()) {			
+			isequal = true;
+		}
+		
+		return isequal;
+	}
 }
