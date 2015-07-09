@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -12,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -20,6 +23,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -183,11 +188,28 @@ public class SearchPublicationController {
 			    checkoutItem.setOnAction(new EventHandler<ActionEvent>() {
 			      @Override
 			      public void handle(ActionEvent event) {
-			    	showCheckoutDialog(isBook?dao.getBookByISBN(row.getItem().getNumber()):dao.searchPeriodicalByIssueNo(row.getItem().getNumber()), event);
+			    	if (showCheckoutDialog(isBook?dao.getBookByISBN(row.getItem().getNumber()):dao.searchPeriodicalByIssueNo(row.getItem().getNumber()), event)) {
+			    		row.getItem().setAvailableCopies((Integer.parseInt(row.getItem().getAvailableCopies()) - 1) + "");
+			    		tableView.getColumns().get(4).setVisible(false);
+			    		tableView.getColumns().get(4).setVisible(true);
+			    	}
 			        //table.getItems().remove(row.getItem());
 			      }
 			    });
-			    rowMenu.getItems().addAll(checkoutItem);
+			    MenuItem addCopy = new MenuItem("Add Copy");
+			    addCopy.setOnAction(new EventHandler<ActionEvent>() {
+			      @Override
+			      public void handle(ActionEvent event) {
+			    	  int copy = showAddCopy(row.getItem().getTitle(), row.getItem().getNumber());
+			    	  if (copy > 0) {
+			    		  row.getItem().setIntCopies((Integer.parseInt(row.getItem().getIntCopies()) + copy) + "");
+			    		  tableView.getColumns().get(3).setVisible(false);
+			    		  tableView.getColumns().get(3).setVisible(true);
+			    	  }
+			        //table.getItems().remove(row.getItem());
+			      }
+			    });
+			    rowMenu.getItems().addAll(checkoutItem, addCopy);
 
 			    // only display context menu for non-null items:
 			    row.contextMenuProperty().bind(
@@ -206,7 +228,7 @@ public class SearchPublicationController {
 		return table;
 	}
 	
-	public void showCheckoutDialog(Publication pub, ActionEvent event) {
+	public boolean showCheckoutDialog(Publication pub, ActionEvent event) {
 		try {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/CheckoutDialog.fxml"));
     		Parent root = loader.load();
@@ -234,8 +256,52 @@ public class SearchPublicationController {
     	    }
     	    // Show the dialog and wait until the user closes it
     	    dialogStage.showAndWait();
+    	    return controller.isCheckout();
     	} catch (IOException io) {
     		System.out.println(io.getStackTrace());
     	}
+		return false;
+	}
+	
+	public int showAddCopy(String title, String number) {
+		int copy = 0;
+		TextInputDialog dialog = new TextInputDialog("1");
+		dialog.setTitle("Add copy");
+		dialog.setHeaderText("Add Copy to " + title);
+		dialog.setContentText("Enter number of copies:");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+		    try {
+		    	copy = Integer.parseInt(result.get());
+		    	if (copy < 1) {
+					Alert alert = new Alert(AlertType.ERROR, "Number of copy should be greater than zero!", ButtonType.OK);
+					alert.setHeaderText(null);
+					alert.setTitle("Add Copy");
+					alert.show();
+		    	} else {
+		    		if (isBook) {
+		    			Book book = dao.getBookByISBN(number);
+		    			for (int i = 0; i < copy; i++)
+		    				book.addCopy();
+		    			//SaveUpdate Book
+		    			dao.saveUpdateBook(book);
+		    		} else {
+		    			Periodical per = dao.searchPeriodicalByIssueNo(number);
+		    			for (int i = 0; i < copy; i++)
+		    				per.addCopy();
+		    			//SaveUpdate Periodical
+		    		}
+		    	}
+		    	
+		    } catch (NumberFormatException nfe) {
+				Alert alert = new Alert(AlertType.ERROR, "Number of copy should be numberic!", ButtonType.OK);
+				alert.setHeaderText(null);
+				alert.setTitle("Add Copy");
+				alert.show();
+		    }
+		}
+		return copy;
 	}
 }
