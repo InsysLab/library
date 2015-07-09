@@ -12,6 +12,7 @@ import business.objects.Author;
 import business.objects.AuthorList;
 import business.objects.Book;
 import business.objects.BookList;
+import business.objects.Copy;
 import business.objects.LibraryMember;
 import business.objects.MemberList;
 import business.objects.Periodical;
@@ -386,5 +387,19 @@ public class DataAccessFacade implements DataAccess {
 				break;
 			}
 		}
+	}
+	
+	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy) {
+		List<CheckoutRecordEntry> entryList = getCheckoutRecord().getEntry();
+
+		if (entryList != null && entryList.size() > 0) {
+			for (CheckoutRecordEntry entry: entryList) {
+				if (entry.getCopy().equals(copy)) {
+					return 	entry;				
+				}
+			}
+		}
+		
+		return null;
 	}
 }

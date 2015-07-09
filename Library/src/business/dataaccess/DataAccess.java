@@ -6,6 +6,7 @@ import business.objects.Author;
 import business.objects.AuthorList;
 import business.objects.Book;
 import business.objects.BookList;
+import business.objects.Copy;
 import business.objects.LibraryMember;
 import business.objects.MemberList;
 import business.objects.Periodical;
@@ -44,4 +45,5 @@ public interface DataAccess {
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo);
 	
+	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy);
 }

@@ -55,7 +55,7 @@ public class Copy implements Serializable {
 		Copy copy = (Copy) o;
 		if (this.getPublication().getClass() == copy.getPublication().getClass() &&
 			this.getPublication().getNumber().equals(copy.getPublication().getNumber()) &&
-			this.copyNo == copy.getCopyNo()) {			
+			this.copyNo.equals(copy.getCopyNo())) {			
 			isequal = true;
 		}
 		

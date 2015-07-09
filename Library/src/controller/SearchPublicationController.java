@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -34,6 +36,7 @@ import table.objects.SearchPublicationTable;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Book;
+import business.objects.CheckoutRecordEntry;
 import business.objects.Copy;
 import business.objects.Periodical;
 import business.objects.Publication;
@@ -212,7 +215,15 @@ public class SearchPublicationController {
 			        //table.getItems().remove(row.getItem());
 			      }
 			    });
-			    rowMenu.getItems().addAll(checkoutItem, addCopy);
+			    MenuItem checkCopy = new MenuItem("Check Copy");
+			    checkCopy.setOnAction(new EventHandler<ActionEvent>() {
+			      @Override
+			      public void handle(ActionEvent event) {
+			    	  showCheckCopy(row.getItem().getTitle(), row.getItem().getNumber());
+			      }
+			    });
+			    
+			    rowMenu.getItems().addAll(checkoutItem, addCopy, checkCopy);
 
 			    // only display context menu for non-null items:
 			    row.contextMenuProperty().bind(
@@ -307,5 +318,82 @@ public class SearchPublicationController {
 		    }
 		}
 		return copy;
+	}
+	
+	public void showCheckCopy(String title, String number) {
+		TextInputDialog dialog = new TextInputDialog("1");
+		dialog.setTitle("Check copy");
+		dialog.setHeaderText("Check copy of " + title);
+		dialog.setContentText("Enter the copy number:");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+		//boolean t = dao.getBookByISBN("100").getAvailableCopy().equals(dao.getBookByISBN("900").getAvailableCopy());
+		if (result.isPresent()){
+			boolean isValidCopy = false;
+			Copy pubCopy = null;
+			if (isBook) {
+    			Book book = dao.getBookByISBN(number);
+    			for (Copy c : book.getCopyList()) {
+    				if (c.getCopyNo().equals(result.get())) {
+    					pubCopy = c;
+    					isValidCopy = true;
+    					break;
+    				}
+    			}
+    			
+    		} else {
+    			Periodical per = dao.searchPeriodicalByIssueNo(number);
+    			for (Copy c : per.getCopyList()) {
+    				if (c.getCopyNo().equals(result.get())) {
+    					pubCopy = c;
+    					isValidCopy = true;
+    					break;
+    				}
+    			}
+    		}
+			if (!isValidCopy) {
+				Alert alert = new Alert(AlertType.ERROR, "Copy number " + result.get() + " does not exist!", ButtonType.OK);
+				alert.setHeaderText(null);
+				alert.setTitle("Check Copy");
+				alert.show();
+			} else {
+				if (pubCopy.isAvailable()) {
+					Alert alert = new Alert(AlertType.INFORMATION, "Copy number " + result.get() + " is available.", ButtonType.OK);
+					alert.setHeaderText(null);
+					alert.setTitle("Check Copy");
+					alert.show();
+				} else {
+					CheckoutRecordEntry entry = dao.getCheckoutRecordEntry(pubCopy);
+					if (entry!=null) {
+						   if(entry.getDueDate().isBefore(LocalDate.now())){
+							    Period betweenDates = Period.between(entry.getDueDate(), LocalDate.now());
+							    String message = "Copy number " + result.get() + " is " + betweenDates.getDays() + " day(s) overdue\n";
+							    message+= "Member ID " + entry.getMember().getMemberID() + ", " + entry.getMember().getFirstName() + 
+							    " " + entry.getMember().getLastName() + ", has the copy.\n";
+							    message+= "Due date: " + entry.getDueDate();
+								Alert alert = new Alert(AlertType.WARNING, message, ButtonType.OK);
+								alert.setHeaderText(null);
+								alert.setTitle("Check Copy");
+								alert.show();
+						   } else {
+							    String message = "Copy number " + result.get() + " is not available.\n";
+							    message+= "Member ID " + entry.getMember().getMemberID() + ", " + entry.getMember().getFirstName() + 
+							    " " + entry.getMember().getLastName() + ", has the copy.\n";
+							    message+= "Due date: " + entry.getDueDate();
+								Alert alert = new Alert(AlertType.INFORMATION, message, ButtonType.OK);
+								alert.setHeaderText(null);
+								alert.setTitle("Check Copy");
+								alert.show();
+						   }
+					} else {
+						Alert alert = new Alert(AlertType.ERROR, "Copy number " + result.get() + " does not exist in Checkout record!", ButtonType.OK);
+						alert.setHeaderText(null);
+						alert.setTitle("Check Copy");
+						alert.show();
+					}
+				}
+			}
+		}
 	}
 }
