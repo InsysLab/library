@@ -1,12 +1,9 @@
 package business.dataaccess;
 import static java.util.stream.Collectors.toList;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +23,25 @@ import business.objects.Publication;
 
 
 public class DataAccessDB implements DataAccess {
+	private static Connection conn = null;
+	
+	public DataAccessDB (String DB_URL, String USERNAME, String PASSWORD) {
+		try {
+		if(conn == null) {	
+			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+			System.out.println("Got connection...");
+		}
+		} catch (SQLException sqe) {
+			System.out.println("Cannot get connection...");
+		}
+	}
+	
+	public void closeConnection(Connection con)  throws SQLException {
+		if(con != null && !con.isClosed()) {
+			con.close();
+		}
+	}
+	
 	enum StorageType {
 		BookList, PeriodicalList, MemberList, CheckoutRecord, AuthorList;
 	}

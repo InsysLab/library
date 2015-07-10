@@ -8,6 +8,7 @@ import java.util.Properties;
 
 public class DataAccessFacade {
 	private static DataAccess dao;
+	private static Properties properties = new Properties();
 	
 	private static final String propFileName = "./config.properties";
 	
@@ -23,7 +24,13 @@ public class DataAccessFacade {
 			return dao; 
 		} else {
 			if (dao == null) {
-				dao = new DataAccessDB();
+				dao = new DataAccessDB(properties.getProperty("database"),
+						properties.getProperty("dbuser"),
+						properties.getProperty("dbpassword"));
+				// get the property value and print it out
+				//System.out.println(properties.getProperty("database"));
+				//System.out.println(properties.getProperty("dbuser"));
+				//System.out.println(properties.getProperty("dbpassword"));
 			}
 			return dao;
 		}
@@ -31,7 +38,6 @@ public class DataAccessFacade {
 
 	private static int getDataSource() {
 		int sourceType = 0;
-		Properties properties = new Properties();
 		InputStream input = null;
 		 
 		try {	 
@@ -43,10 +49,6 @@ public class DataAccessFacade {
 			String source = properties.getProperty("Datasource");
 			if (source.equals("DB")) {
 				sourceType = 1;
-				// get the property value and print it out
-				//System.out.println(properties.getProperty("database"));
-				//System.out.println(properties.getProperty("dbuser"));
-				//System.out.println(properties.getProperty("dbpassword"));
 			} 
 		} catch (IOException ex) {
 			ex.printStackTrace();
