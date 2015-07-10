@@ -1,27 +1,28 @@
 package business.dataaccess;
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.ArrayList;
-import static java.util.stream.Collectors.toList;
+import java.util.List;
 import java.util.Optional;
 
 import business.objects.Author;
 import business.objects.AuthorList;
-import business.objects.Publication;
 import business.objects.Book;
 import business.objects.BookList;
+import business.objects.CheckoutRecord;
+import business.objects.CheckoutRecordEntry;
 import business.objects.Copy;
 import business.objects.LibraryMember;
 import business.objects.MemberList;
 import business.objects.Periodical;
 import business.objects.PeriodicalList;
-import business.objects.CheckoutRecord;
-import business.objects.CheckoutRecordEntry;
+import business.objects.Publication;
 
 
 public class DataAccessFacade implements DataAccess {
@@ -446,7 +447,8 @@ public class DataAccessFacade implements DataAccess {
 			in = new ObjectInputStream(Files.newInputStream(path));
 			retVal = in.readObject();
 		} catch(Exception e) {
-			e.printStackTrace();
+			return initializeStorage(type);
+			//e.printStackTrace();
 		} finally {
 			if(in != null) {
 				try {
@@ -455,6 +457,23 @@ public class DataAccessFacade implements DataAccess {
 			}
 		}
 		return retVal;
+	}
+	
+	public static Object initializeStorage(StorageType type) {
+		Object obj = null;
+		if (type.equals(StorageType.PeriodicalList)) {
+			obj = PeriodicalList.getInstance();
+		} else if (type.equals(StorageType.BookList)) {
+			obj = BookList.getInstance();
+		} else if (type.equals(StorageType.MemberList)) {
+			obj = MemberList.getInstance();
+		} else if (type.equals(StorageType.CheckoutRecord)) {
+			obj = CheckoutRecord.getInstance();
+		} else if (type.equals(StorageType.AuthorList)) {
+			obj = AuthorList.getInstance();
+		}
+
+		return obj;
 	}
 
 }
