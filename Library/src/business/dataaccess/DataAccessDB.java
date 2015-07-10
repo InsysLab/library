@@ -3,11 +3,14 @@ import static java.util.stream.Collectors.toList;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import business.objects.Address;
 import business.objects.Author;
 import business.objects.AuthorList;
 import business.objects.Book;
@@ -307,38 +310,87 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public LibraryMember searchLibraryMemberByID(int idNo) {
-		MemberList list =  getMemberList();
-		if (list != null && list.getMembers().size() > 0) {
-			for (LibraryMember member: (ArrayList<LibraryMember>) list.getMembers()) {
-				if (member.getMemberID() == idNo) {
-					return member;					
-				}
+
+		try {
+			String selectSQL = "SELECT MEMBERID, ADDRESSID, FIRSTNAME, LASTNAME, TELEPHONE FROM APP.LIBRARYMEMBER WHERE MEMBERID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, idNo+"");
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				String memberid = rs.getString("MEMBERID");
+				String addressid = rs.getString("ADDRESSID");	
+				String firstname = rs.getString("FIRSTNAME");
+				String lastname = rs.getString("LASTNAME");
+				String tel = rs.getString("TELEPHONE");
+				LibraryMember member = new LibraryMember(Integer.parseInt(memberid.trim()), 
+						firstname.trim(), lastname.trim(), tel.trim(), getAddress(addressid));
+				return member;
 			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	private Address getAddress(String ID) {
+		try {
+			String selectSQL = "SELECT ID, STREET, CITY, STATE, ZIP FROM APP.ADDRESS WHERE ID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, ID);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				String street = rs.getString("STREET");
+				String city = rs.getString("CITY");	
+				String state = rs.getString("STATE");
+				String zip = rs.getString("ZIP");
+				Address a = new Address(street.trim(),city.trim(),state.trim(),zip.trim() );
+				return a;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
 		return null;
 	}
 	
 	@Override
 	public void saveUpdateMember(LibraryMember member) {
-		MemberList memberlist = getMemberList();
-
-		if (memberlist == null) {
-			memberlist = MemberList.getInstance();
-		}	
-		
-		if (memberlist != null && memberlist.getMembers().size() > 0) {
-			for (LibraryMember mem: (ArrayList<LibraryMember>) memberlist.getMembers()) {
-				if (member.getMemberID() == mem.getMemberID()) {
-					mem.setAddress(member.getAddress());
-					mem.setFirstName(member.getFirstName());
-					mem.setLastName(member.getLastName());
-					mem.setPhone(member.getPhone());
-					mem.setAddress(member.getAddress());
-				}
-			}
+		try {
+			String updateSQL = "UPDATE APP.LIBRARYMEMBER SET FIRSTNAME=?, LASTNAME=?, TELEPHONE=? WHERE MEMBERID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
+			preparedStatement.setString(1, member.getFirstName());
+			preparedStatement.setString(2, member.getLastName());
+			preparedStatement.setString(3, member.getPhone());
+			preparedStatement.setString(4, member.getMemberID() + "");
+			//System.out.println(preparedStatement.);
+			int rs = preparedStatement.executeUpdate();
+			updateAddress(member.getAddress(), member.getMemberID()+"");
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
-
-		saveToStorage(StorageType.MemberList, memberlist);			
+	}
+	
+	private void updateAddress(Address addr, String id) {
+		try {
+			String updateSQL = "UPDATE APP.ADDRESS SET STREET=?, CITY=?, STATE=?, ZIP=? WHERE ID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
+			preparedStatement.setString(1, addr.getCity());
+			preparedStatement.setString(2, addr.getStreet());
+			preparedStatement.setString(3, addr.getState());
+			preparedStatement.setString(4, addr.getZip());
+			preparedStatement.setString(5, id);
+			//System.out.println(preparedStatement.);
+			preparedStatement.executeUpdate();
+			
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
 	}
 	
 	@Override
