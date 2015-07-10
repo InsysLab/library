@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+import java.util.Optional;
 
 import business.objects.Author;
 import business.objects.AuthorList;
@@ -123,32 +125,30 @@ public class DataAccessFacade implements DataAccess {
 	
 	@Override
 	public ArrayList<Book> wildSearchBookByTitle(String title) {
-		BookList bookList =  getBookList();
-		if (bookList != null && bookList.getBooks().size() > 0) {
-			ArrayList<Book> list = new ArrayList<Book>();
-			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-				if (book.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1) {
-					list.add(book);					
-				}
-			}
-			return list;
+		List<Book> bookList = getBookList().getBooks();
+		if (bookList != null && bookList.size() > 0) {
+			List<Book> list = bookList.stream()
+									  .filter( b -> b.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1 )
+									  .collect(toList());
+			
+			return new ArrayList<Book>(list);
 		}
+		
 		return null;
 	}
 	
 	@Override
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN) {
-		BookList bookList =  getBookList();
-		if (bookList != null && bookList.getBooks().size() > 0) {
-			ArrayList<Book> list = new ArrayList<Book>();
-			for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-				if (book.getISBN().indexOf(ISBN.toUpperCase())!=-1) {
-					list.add(book);					
-				}
-			}
-			return list;
+		List<Book> bookList = getBookList().getBooks();
+		if (bookList != null && bookList.size() > 0) {
+			List<Book> list = bookList.stream()
+									  .filter( b -> b.getISBN().indexOf(ISBN.toUpperCase())!=-1 )
+									  .collect(toList());
+			
+			return new ArrayList<Book>(list);
 		}
-		return null; //Comment
+		
+		return null;		
 	}
 	
 	@Override
@@ -244,16 +244,17 @@ public class DataAccessFacade implements DataAccess {
 	}
 	
 	public Periodical searchPeriodicalByIssueNo(String issueNo){
-		PeriodicalList periodicalList =  getPeriodicalList();
-		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
-			Periodical periodical = null;
-			for (Periodical p: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
-				if (p.getIssueNo().equals(issueNo)) {
-					periodical = p;
-				}
+		List<Periodical> periodicalList = getPeriodicalList().getPeriodicals();
+		if (periodicalList != null && periodicalList.size() > 0) {
+			Optional<Periodical> periodical = periodicalList.stream()
+												  .filter( p -> p.getIssueNo().equals(issueNo))
+												  .findFirst();
+			
+			if(periodical.isPresent()){
+				return periodical.get();
 			}
-			return periodical;
 		}
+		
 		return null;		
 	}
 	
