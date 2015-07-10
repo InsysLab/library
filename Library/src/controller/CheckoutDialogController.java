@@ -19,7 +19,7 @@ import business.objects.Periodical;
 import business.objects.Publication;
 
 public class CheckoutDialogController {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 
 	@FXML private TextField tfMemberID;
 	@FXML private TextField tfTitle;

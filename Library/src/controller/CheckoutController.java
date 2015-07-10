@@ -33,7 +33,7 @@ import business.objects.Copy;
 import table.objects.CheckoutRecordTable;
 
 public class CheckoutController {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 
 	@FXML private TextField tfMemberID;
 	@FXML private TextField tfMemberName;

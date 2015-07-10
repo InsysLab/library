@@ -46,7 +46,7 @@ import business.objects.Periodical;
 import business.objects.Publication;
 
 public class SearchCheckoutRecordController {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 	@FXML private TextField tfSearchID;
 	@FXML private TextField tfMemberName;
 	@FXML private Label lblSearchStatus;

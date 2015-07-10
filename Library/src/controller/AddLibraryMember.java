@@ -15,7 +15,7 @@ import business.objects.Address;
 import business.objects.MemberList;
 
 public class AddLibraryMember {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 
 	@FXML private TextField tfID;
 	@FXML private TextField tfFirstname;

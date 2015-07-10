@@ -29,7 +29,7 @@ import business.objects.Copy;
 import business.objects.Periodical;
 
 public class AddPublicationController {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 	
 	
 	@FXML private TextField perTitle;

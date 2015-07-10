@@ -3,6 +3,7 @@ package business.objects;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.io.Serializable;
+
 import business.dataaccess.*;
 
 public class CheckoutRecordEntry implements Serializable {
@@ -10,6 +11,7 @@ public class CheckoutRecordEntry implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -7867212047222496038L;
+	private static final String DATE_PATTERN = "MM/dd/yyyy";
 	
 	private LibraryMember member;
 	private LocalDate checkoutDate;
@@ -55,8 +57,8 @@ public class CheckoutRecordEntry implements Serializable {
 		// TODO Auto-generated method stub
 		
 		return "[" + "checkoutdate:" + 
-	        checkoutDate.format(DateTimeFormatter.ofPattern(DataAccessFacade.DATE_PATTERN)) +
-	        ", dueDate: " + dueDate.format(DateTimeFormatter.ofPattern(DataAccessFacade.DATE_PATTERN)) +
+	        checkoutDate.format(DateTimeFormatter.ofPattern(DATE_PATTERN)) +
+	        ", dueDate: " + dueDate.format(DateTimeFormatter.ofPattern(DATE_PATTERN)) +
 	        ", publication: " + copy + "]";
 		
 	}

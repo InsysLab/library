@@ -42,7 +42,7 @@ import business.objects.Periodical;
 import business.objects.Publication;
 
 public class SearchPublicationController {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 	@FXML private ComboBox cbPublication;
 	@FXML private ComboBox cbTitle;
 	@FXML private Label lblSearchStatus;

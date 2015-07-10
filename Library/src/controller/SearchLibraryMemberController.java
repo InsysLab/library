@@ -13,7 +13,7 @@ import business.objects.LibraryMember;
 import business.objects.Address;
 
 public class SearchLibraryMemberController {
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 	private int memberId;
 	
 	@FXML private TextField tfMemberID;

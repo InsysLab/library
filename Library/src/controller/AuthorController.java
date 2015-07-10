@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 public class AuthorController implements Initializable{
 	
-	private final DataAccess dao = new DataAccessFacade();
+	private final DataAccess dao = DataAccessFacade.getDAO();
 	
 @FXML private Pane paneAuthor;
 @FXML private ListView<Author> fullListAuthor;
