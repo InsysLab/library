@@ -31,7 +31,7 @@ public class AuthorController implements Initializable{
 @FXML private TextField firstName;
 @FXML private TextField lastName;
 @FXML private TextField phone;
-@FXML private TextField credentials;
+@FXML private TextField bio;
 @FXML private TextField street;
 @FXML private TextField city;
 @FXML private TextField state;
@@ -43,15 +43,15 @@ public class AuthorController implements Initializable{
 	}
 	
 	@FXML protected void handleKeyReleasedCredentials(ActionEvent event) {
-		
-		if(!checkExist(credentials.getText()))
-		{
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setTitle("Duplicated Author Information");
-			alert.setContentText("Author has credentials: " + credentials.getText() + " already exist !");
-			alert.show();
-		}
+//		
+//		if(!checkExist(bio.getText()))
+//		{
+//			Alert alert = new Alert(AlertType.INFORMATION);
+//			alert.setHeaderText(null);
+//			alert.setTitle("Duplicated Author Information");
+//			alert.setContentText("Author has bio: " + bio.getText() + " already exist !");
+//			alert.show();
+//		}
 	}
 	
 	@FXML protected void handleAddAuthor(ActionEvent event) {
@@ -66,9 +66,9 @@ public class AuthorController implements Initializable{
 		if(isInputValid()){
 		
 				addr = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
-				author = new Author(firstName.getText(), lastName.getText(), phone.getText(), credentials.getText(),addr);
+				author = new Author(firstName.getText(), lastName.getText(), phone.getText(), bio.getText(),addr);
 								
-				if(checkExist(author.getCredentials())) {
+				if(checkExist(author)) {
 					dao.saveAuthor(author);
 					reflist();				
 					paneAuthor.setVisible(false);
@@ -78,12 +78,12 @@ public class AuthorController implements Initializable{
 		
 	}
 	
-	private boolean checkExist(String value)
+	private boolean checkExist(Author value)
 	{
 		boolean nonExistUser = true;
 		for(Author a: fullListAuthor.getItems())
 		{
-			if(a.getCredentials().equals(value)) nonExistUser =false;
+			if(a.getBio().equals(value.getBio()) && a.getAddress().getStreet().equals(value.getAddress().getStreet()) && a.getFirstName().equals(value.getFirstName()) ) nonExistUser =false;
 		}
 		return nonExistUser;
 	}
@@ -134,7 +134,7 @@ public class AuthorController implements Initializable{
 		firstName.clear();
 		lastName.clear();
 		phone.clear();
-		credentials.clear();
+		bio.clear();
 		street.clear();
 		city.clear();
 		state.clear();
@@ -168,7 +168,7 @@ public class AuthorController implements Initializable{
 	private boolean isInputValid() {
         String errorMessage = "";
         if (firstName.getText().trim().isEmpty() || lastName.getText().trim().isEmpty() || phone.getText().trim().isEmpty() ||
-        		credentials.getText().trim().isEmpty() || street.getText().trim().isEmpty()  || city.getText().trim().isEmpty() || state.getText().trim().isEmpty() || zip.getText().trim().isEmpty()) {
+        		bio.getText().trim().isEmpty() || street.getText().trim().isEmpty()  || city.getText().trim().isEmpty() || state.getText().trim().isEmpty() || zip.getText().trim().isEmpty()) {
 			errorMessage += "All fields must be nonempty!\n";
 		}
 
@@ -181,8 +181,8 @@ public class AuthorController implements Initializable{
         if (!phone.getText().matches("^[0-9]*")) {
             errorMessage += "No valid first name!\n"; 
         }
-        if (!credentials.getText().matches("[a-zA-Z]*")) {
-            errorMessage += "No valid credentials!\n"; 
+        if (!bio.getText().matches("[a-zA-Z]*")) {
+            errorMessage += "No valid bio!\n"; 
         }
         
         if (!street.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {

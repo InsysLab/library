@@ -29,7 +29,7 @@
             <Label text="City:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label text="State:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label text="Zip:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField fx:id="credentials" onAction="#handleKeyReleasedCredentials" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <TextField fx:id="bio" onAction="#handleKeyReleasedCredentials" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <TextField fx:id="firstName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="lastName" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="phone" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
