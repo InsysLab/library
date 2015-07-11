@@ -46,27 +46,27 @@ public class DataAccessFile implements DataAccess {
 		saveToStorage(StorageType.BookList, bookList);				
 	}
 	
-	@Override
-	public void updateBook(Book book){
-		BookList bookList = getBookList();
-
-		if (bookList == null) {
-			bookList = BookList.getInstance();
-		}	
-		
-		if (bookList != null && bookList.getBooks().size() > 0) {
-			for (Book bk: (ArrayList<Book>) bookList.getBooks()) {
-				if (book.getISBN() == bk.getISBN()) {
-					bk.setAuthorlist(book.getAuthorlist());
-					bk.setCopyList(book.getCopyList());
-					bk.setMaxcheckoutlength(book.getMaxcheckoutlength());
-					bk.setTitle(book.getTitle());
-				}
-			}
-		}
-		
-		saveToStorage(StorageType.BookList, bookList);			
-	}
+//	@Override
+//	public void updateBook(Book book){
+//		BookList bookList = getBookList();
+//
+//		if (bookList == null) {
+//			bookList = BookList.getInstance();
+//		}	
+//		
+//		if (bookList != null && bookList.getBooks().size() > 0) {
+//			for (Book bk: (ArrayList<Book>) bookList.getBooks()) {
+//				if (book.getISBN() == bk.getISBN()) {
+//					bk.setAuthorlist(book.getAuthorlist());
+//					bk.setCopyList(book.getCopyList());
+//					bk.setMaxcheckoutlength(book.getMaxcheckoutlength());
+//					bk.setTitle(book.getTitle());
+//				}
+//			}
+//		}
+//		
+//		saveToStorage(StorageType.BookList, bookList);			
+//	}
 	
 	@Override
 	public Book getBookByTitle(String title) {
@@ -200,26 +200,26 @@ public class DataAccessFile implements DataAccess {
 		saveToStorage(StorageType.PeriodicalList, plist);			
 	}
 	
-	@Override
-	public void updatePeriodical(Periodical periodical){
-		PeriodicalList plist = getPeriodicalList();
-
-		if (plist == null) {
-			plist = PeriodicalList.getInstance();
-		}	
-		
-		if (plist != null && plist.getPeriodicals().size() > 0) {
-			for (Periodical p: (ArrayList<Periodical>) plist.getPeriodicals()) {
-				if (periodical.getIssueNo() == p.getIssueNo()) {
-					p.setCopyList(periodical.getCopyList());
-					p.setMaxcheckoutlength(periodical.getMaxcheckoutlength());
-					p.setTitle(periodical.getTitle());
-				}
-			}
-		}
-		
-		saveToStorage(StorageType.PeriodicalList, plist);				
-	}
+//	@Override
+//	public void updatePeriodical(Periodical periodical){
+//		PeriodicalList plist = getPeriodicalList();
+//
+//		if (plist == null) {
+//			plist = PeriodicalList.getInstance();
+//		}	
+//		
+//		if (plist != null && plist.getPeriodicals().size() > 0) {
+//			for (Periodical p: (ArrayList<Periodical>) plist.getPeriodicals()) {
+//				if (periodical.getIssueNo() == p.getIssueNo()) {
+//					p.setCopyList(periodical.getCopyList());
+//					p.setMaxcheckoutlength(periodical.getMaxcheckoutlength());
+//					p.setTitle(periodical.getTitle());
+//				}
+//			}
+//		}
+//		
+//		saveToStorage(StorageType.PeriodicalList, plist);				
+//	}
 	
 	@Override
 	public void saveUpdatePeriodical(Periodical periodical) {

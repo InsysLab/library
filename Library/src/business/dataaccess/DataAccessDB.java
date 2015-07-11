@@ -57,6 +57,8 @@ public class DataAccessDB implements DataAccess {
 	@Override
 	public void saveBook(Book book) {
 		int pubid = saveAddPublication(book);
+		book.setId(pubid);
+		saveUpdateCopies(book);
 		List<Author> authors = book.getAuthorlist();
 		if (authors != null) {
 			for (Author auth: authors) {
@@ -77,28 +79,6 @@ public class DataAccessDB implements DataAccess {
 			//System.out.println();
 			sqe.printStackTrace();
 		}	
-	}
-	
-	@Override
-	public void updateBook(Book book){
-		BookList bookList = getBookList();
-
-		if (bookList == null) {
-			bookList = BookList.getInstance();
-		}	
-		
-		if (bookList != null && bookList.getBooks().size() > 0) {
-			for (Book bk: (ArrayList<Book>) bookList.getBooks()) {
-				if (book.getISBN() == bk.getISBN()) {
-					bk.setAuthorlist(book.getAuthorlist());
-					bk.setCopyList(book.getCopyList());
-					bk.setMaxcheckoutlength(book.getMaxcheckoutlength());
-					bk.setTitle(book.getTitle());
-				}
-			}
-		}
-		
-		saveToStorage(StorageType.BookList, bookList);			
 	}
 	
 	@Override
@@ -142,26 +122,14 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public void saveUpdateBook(Book book) {
-		BookList booklist = getBookList();
-		if (booklist == null) {
-			booklist = BookList.getInstance();
-		}
-		List<Book> list = booklist.getBooks();
-		for (int i=0; i<list.size(); i++) {
-			Book b = list.get(i);
-			if (b.getISBN().equals(book.getISBN())) {
-				list.set(i, book);
-				saveToStorage(StorageType.BookList, booklist);
-				break;
-			}
-		}
+		saveUpdateCopies(book);
 	}
 	
 	@Override
 	public ArrayList<Book> wildSearchBookByTitle(String tit) {
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		try {
-			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(TITLE) like ?";
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, ID FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(TITLE) like ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 			preparedStatement.setString(1, "book");
 			preparedStatement.setString(2, "%" + tit.toUpperCase() + "%" );
@@ -173,8 +141,11 @@ public class DataAccessDB implements DataAccess {
 				String title = rs.getString("TITLE");
 				String num = rs.getString("ISBN_ISSUENUM");	
 				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				int id = rs.getInt("ID");
 				Book book = new Book(num.trim(), max, title.trim());
+				book.setId(id);
 				//Add retrieve of Copies
+				book.setCopyList(getCopyList(book));
 				bookList.add(book);
 			}
 			if (found) {
@@ -187,9 +158,107 @@ public class DataAccessDB implements DataAccess {
 		return null;
 	}
 	
-	private ArrayList getCopyList(int pubID) {
-		
-		return null;
+	private ArrayList<Copy> getCopyList(Publication pub) {
+		ArrayList<Copy> copyList = new ArrayList<Copy>();
+		try {
+			String selectSQL = "SELECT COPYNUMBER, STATUS FROM APP.PUBCOPY WHERE PUBID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, pub.getId());
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				String copyNumber = rs.getString("COPYNUMBER");
+				boolean avl = rs.getBoolean("STATUS");	
+				Copy copy = new Copy(copyNumber, pub);
+				copy.setAvailable(avl);
+				//Add retrieve of Copies
+				copyList.add(copy);
+			}
+			if (found) {
+				return copyList;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return copyList;
+	}
+	
+	private void saveUpdateCopies(Publication pub) {
+		List<Copy> listCopy = pub.getCopyList();
+		for (Copy copy: listCopy) {
+			Copy dbCopy = getCopy(pub, Integer.parseInt(copy.getCopyNo()));
+			if (dbCopy != null && dbCopy.isAvailable() != copy.isAvailable()) {
+				updateCopy(copy);
+			} else {
+				addCopy(copy);
+			}
+		}
+	}
+	
+	private Copy getCopy(Publication pub, int id) {
+		Copy copy = null;
+		try {
+			String selectSQL = "SELECT COPYNUMBER, STATUS FROM APP.PUBCOPY WHERE PUBID = ? AND COPYNUMBER = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, pub.getId());
+			preparedStatement.setInt(2, id);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			//boolean found = false;
+			if (rs.next()) {
+				//found = true;
+				String copyNumber = rs.getString("COPYNUMBER");
+				boolean avl = rs.getBoolean("STATUS");	
+				copy = new Copy(copyNumber.trim(), pub);
+				copy.setAvailable(avl);
+				return copy;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return copy;
+	}
+	
+	private void addCopy(Copy copy) {
+		try {
+			String insertSQL = "INSERT INTO APP.PUBCOPY (COPYNUMBER, STATUS, PUBID) VALUES (?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL);
+			preparedStatement.setInt(1, Integer.parseInt(copy.getCopyNo()));
+			preparedStatement.setBoolean(2, true);
+			preparedStatement.setInt(3,copy.getPublication().getId());
+			//System.out.println(preparedStatement.);
+			int rs = preparedStatement.executeUpdate();
+			//boolean found = false;
+			if (rs == 0) {
+				System.out.println("Cannot add copy record!");
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+	}
+	
+	private void updateCopy(Copy copy) {
+		try {
+			String insertSQL = "UPDATE APP.PUBCOPY SET STATUS = ? where ID = ? AND PUBID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL);
+			preparedStatement.setBoolean(1, copy.isAvailable());
+			preparedStatement.setInt(1, Integer.parseInt(copy.getCopyNo()));
+			preparedStatement.setInt(3, copy.getPublication().getId());
+			//System.out.println(preparedStatement.);
+			int rs = preparedStatement.executeUpdate();
+			//boolean found = false;
+			if (rs == 0) {
+				System.out.println("Cannot update copy record!");
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -354,45 +423,14 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public void savePeriodical (Periodical periodical) {
-		saveAddPublication(periodical);
-	}
-	
-	@Override
-	public void updatePeriodical(Periodical periodical){
-		PeriodicalList plist = getPeriodicalList();
-
-		if (plist == null) {
-			plist = PeriodicalList.getInstance();
-		}	
-		
-		if (plist != null && plist.getPeriodicals().size() > 0) {
-			for (Periodical p: (ArrayList<Periodical>) plist.getPeriodicals()) {
-				if (periodical.getIssueNo() == p.getIssueNo()) {
-					p.setCopyList(periodical.getCopyList());
-					p.setMaxcheckoutlength(periodical.getMaxcheckoutlength());
-					p.setTitle(periodical.getTitle());
-				}
-			}
-		}
-		
-		saveToStorage(StorageType.PeriodicalList, plist);				
+		int id = saveAddPublication(periodical);
+		periodical.setId(id);
+		saveUpdateCopies(periodical);
 	}
 	
 	@Override
 	public void saveUpdatePeriodical(Periodical periodical) {
-		PeriodicalList periodicallist = getPeriodicalList();
-		if (periodicallist == null) {
-			periodicallist = PeriodicalList.getInstance();
-		}
-		List<Periodical> list = periodicallist.getPeriodicals();
-		for (int i=0; i<list.size(); i++) {
-			Periodical b = list.get(i);
-			if (b.getIssueNo().equals(periodical.getIssueNo())) {
-				list.set(i, periodical);
-				saveToStorage(StorageType.PeriodicalList, periodicallist);
-				break;
-			}
-		}
+		saveUpdateCopies(periodical);
 	}	
 	
 	@Override
@@ -426,7 +464,7 @@ public class DataAccessDB implements DataAccess {
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String tit) {
 		ArrayList<Periodical> periodicalList = new ArrayList<Periodical>();
 		try {
-			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(TITLE) like ?";
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, ID FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(TITLE) like ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 			preparedStatement.setString(1, "periodical");
 			preparedStatement.setString(2, "%" + tit.toUpperCase() + "%" );
@@ -438,7 +476,11 @@ public class DataAccessDB implements DataAccess {
 				String title = rs.getString("TITLE");
 				String num = rs.getString("ISBN_ISSUENUM");	
 				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				int id = rs.getInt("ID");
 				Periodical periodical = new Periodical(title.trim(), num.trim(), max);
+				periodical.setId(id);
+				//Add retrieve of Copies
+				periodical.setCopyList(getCopyList(periodical));
 				periodicalList.add(periodical);
 			}
 			if (found) {

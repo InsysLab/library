@@ -23,7 +23,7 @@ public interface DataAccess {
 	
 	public void saveBook(Book book);
 	public void saveUpdateBook(Book book);
-	public void updateBook(Book book);
+	//public void updateBook(Book book);
 	public Book getBookByTitle(String title);
 	public Book getBookByISBN(String isbn);
 	public BookList getBookList();
@@ -36,7 +36,7 @@ public interface DataAccess {
 	public PeriodicalList getPeriodicalList();
 	public void savePeriodical(Periodical periodical);
 	public void saveUpdatePeriodical(Periodical periodical);
-	public void updatePeriodical(Periodical periodical);
+	//public void updatePeriodical(Periodical periodical);
 	public Periodical searchPeriodicalByIssueNo(String issueNo);
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
