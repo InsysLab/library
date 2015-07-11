@@ -51,16 +51,18 @@ public class AddLibraryMember {
 												 tfPhone.getText(), 
 												 address);
 		
-		Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
-		alert.setTitle("Add Member");
-		alert.setHeaderText(null);
-		
 		if(dao.searchLibraryMemberByID(memberID) == null){
 			dao.saveMember(member);
+			Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
+			alert.setTitle("Add Member");
+			alert.setHeaderText(null);
 			alert.setContentText(tfFirstname.getText() + " is now saved!");
 			alert.show();		
 		}
 		else {
+			Alert alert = new Alert(AlertType.ERROR, "", ButtonType.OK);
+			alert.setTitle("Add Member");
+			alert.setHeaderText(null);
 			alert.setContentText(tfID.getText() + " member already exist!");
 			alert.show();	
 		}
