@@ -603,6 +603,26 @@ public class DataAccessDB implements DataAccess {
 		return null;
 	}
 	
+	private int getLibraryMemberDBID(int idNo) {
+		int dbID = 0;
+		try {
+			String selectSQL = "SELECT ID FROM APP.LIBRARYMEMBER WHERE MEMBERID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, idNo+"");
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				dbID = rs.getInt("ID");
+				return dbID;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		
+		return dbID;
+	}
+	
 	private Address getAddress(String ID) {
 		try {
 			String selectSQL = "SELECT ID, STREET, CITY, STATE, ZIP FROM APP.ADDRESS WHERE ID = ?";
@@ -692,15 +712,28 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry){
-		CheckoutRecord checkoutRecord = getCheckoutRecord();
-
-		if(checkoutRecord == null){
-			checkoutRecord = CheckoutRecord.getInstance();
+		try {
+			String insertSQL = "INSERT INTO APP.CHECKOUTRECORD (IDMEM, COPYID, CHECKOUTDATE, DUEDATE) VALUES(?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, getLibraryMemberDBID(entry.getMember().getMemberID()));
+			preparedStatement.setInt(2, getCopyID(entry.getCopy()));
+			preparedStatement.setDate(3, Date.valueOf(entry.getCheckoutDate()));
+			preparedStatement.setDate(4, Date.valueOf(entry.getDueDate()));
+			//System.out.println(preparedStatement.);
+			int row = preparedStatement.executeUpdate();
+			conn.commit();
+			if (row == 0) {
+				throw new SQLException("Failed creating CheckoutRecordEntry record!");
+			}
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					int id = generatedKeys.getInt(1);
+				}
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
-		
-		checkoutRecord.addEntry(entry);
-		
-		saveToStorage(StorageType.CheckoutRecord, checkoutRecord);	
 	}
 	
 	@Override
