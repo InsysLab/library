@@ -96,7 +96,11 @@ public class SearchLibraryMemberController {
 		LibraryMember mem = dao.searchLibraryMemberByID(id);
 		
 		if (mem != null) {
-			Address address = new Address(tfStreet.getText(), tfCity.getText(), tfState.getText(), tfZip.getText());
+			Address address = mem.getAddress();
+			address.setStreet(tfStreet.getText());
+			address.setCity(tfCity.getText());
+			address.setState(tfState.getText());
+			address.setZip(tfZip.getText());
 			LibraryMember member = new LibraryMember(id, tfFirstName.getText(), tfLastName.getText(), tfPhone.getText(), address);
 			dao.saveUpdateMember(member);
 			
