@@ -286,7 +286,7 @@ public class DataAccessDB implements DataAccess {
 	
 	private void updateCopy(Copy copy) {
 		try {
-			String insertSQL = "UPDATE APP.PUBCOPY SET STATUS = ? where ID = ? AND PUBID = ?";
+			String insertSQL = "UPDATE APP.PUBCOPY SET STATUS = ? where COPYNUMBER = ? AND PUBID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL);
 			preparedStatement.setBoolean(1, copy.isAvailable());
 			preparedStatement.setInt(2, Integer.parseInt(copy.getCopyNo()));
