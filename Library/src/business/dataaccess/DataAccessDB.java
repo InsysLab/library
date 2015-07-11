@@ -209,8 +209,10 @@ public class DataAccessDB implements DataAccess {
 		List<Copy> listCopy = pub.getCopyList();
 		for (Copy copy: listCopy) {
 			Copy dbCopy = getCopy(pub, Integer.parseInt(copy.getCopyNo()));
-			if (dbCopy != null && dbCopy.isAvailable() != copy.isAvailable()) {
-				updateCopy(copy);
+			if (dbCopy != null) {
+				 if (dbCopy.isAvailable() != copy.isAvailable()) {
+					 updateCopy(copy);
+				 }
 			} else {
 				addCopy(copy);
 			}
