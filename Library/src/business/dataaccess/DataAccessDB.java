@@ -174,6 +174,7 @@ public class DataAccessDB implements DataAccess {
 				String num = rs.getString("ISBN_ISSUENUM");	
 				int max = rs.getInt("MAXCHECKOUTLENGTH");
 				Book book = new Book(num.trim(), max, title.trim());
+				//Add retrieve of Copies
 				bookList.add(book);
 			}
 			if (found) {
@@ -183,6 +184,11 @@ public class DataAccessDB implements DataAccess {
 			//System.out.println();
 			sqe.printStackTrace();
 		}
+		return null;
+	}
+	
+	private ArrayList getCopyList(int pubID) {
+		
 		return null;
 	}
 	

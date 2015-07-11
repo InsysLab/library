@@ -11,7 +11,14 @@ public class Address implements Serializable {
 	private String city;
 	private String state;
 	private String zip;
+	private int id;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public Address(String street, String city, String state, String zip)
 	{
 		this.street = street;
