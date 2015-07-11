@@ -18,7 +18,6 @@ import business.objects.CheckoutRecordEntry;
 public interface DataAccess {
 	
 	public void saveMember(LibraryMember member);
-	public MemberList getMemberList();
 	public LibraryMember searchLibraryMemberByID(int idNo);
 	public void saveUpdateMember(LibraryMember member);
 	

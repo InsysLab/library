@@ -182,8 +182,8 @@ public class DataAccessFile implements DataAccess {
 		saveToStorage(StorageType.MemberList, memberlist);			
 	}
 	
-	@Override
-	public MemberList getMemberList() {
+	//@Override
+	private MemberList getMemberList() {
 		MemberList memberList = (MemberList)readFromStorage(StorageType.MemberList);
 		return memberList;
 	}

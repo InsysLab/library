@@ -27,37 +27,35 @@ public class AddLibraryMember {
 	@FXML private TextField tfPhone;
 	
 	@FXML protected void handleSaveMemberBtnAction(ActionEvent event) {
-		Address address = new Address(tfStreet.getText(), 
-									  tfCity.getText(), 
-									  tfState.getText(), 
-									  tfZip.getText());
-		
-		LibraryMember member = new LibraryMember( Integer.parseInt(tfID.getText()),
-												 tfFirstname.getText(), 
-												 tfLastname.getText(), 
-												 tfPhone.getText(), 
-												 address);
-		MemberList mlist = dao.getMemberList();
-		Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
-		alert.setTitle("Add Member");
-		alert.setHeaderText(null);
-		
-		if (mlist == null) {
-			dao.saveMember(member);
-			alert.setContentText(tfFirstname.getText() + " is now saved!");
+
+		int memberID = 0;
+		try {
+			memberID = Integer.parseInt(tfID.getText());
+		} catch (NumberFormatException nfe) {
+			Alert alert = new Alert(AlertType.ERROR, "", ButtonType.OK);
+			alert.setTitle("Add Member");
+			alert.setHeaderText(null);
+			alert.setContentText("Member ID must be a number!");
 			alert.show();
 			return;
 		}
 		
-		List<LibraryMember> memberList = mlist.getMembers();
-		boolean nonexistmember = true;
+		Address address = new Address(tfStreet.getText(), 
+				  tfCity.getText(), 
+				  tfState.getText(), 
+				  tfZip.getText());
 		
-		for(LibraryMember lm: memberList)
-		{
-			if(lm.getMemberID() == member.getMemberID()) nonexistmember = false;
-		}
+		LibraryMember member = new LibraryMember( memberID,
+												 tfFirstname.getText(), 
+												 tfLastname.getText(), 
+												 tfPhone.getText(), 
+												 address);
 		
-		if(nonexistmember){
+		Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
+		alert.setTitle("Add Member");
+		alert.setHeaderText(null);
+		
+		if(dao.searchLibraryMemberByID(memberID) == null){
 			dao.saveMember(member);
 			alert.setContentText(tfFirstname.getText() + " is now saved!");
 			alert.show();		

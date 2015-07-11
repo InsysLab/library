@@ -33,6 +33,7 @@ public class DataAccessDB implements DataAccess {
 		if(conn == null) {	
 			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 			System.out.println("Got connection...");
+			conn.setAutoCommit(true);
 		}
 		} catch (SQLException sqe) {
 			System.out.println("Cannot get connection...");
@@ -191,20 +192,61 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public void saveMember(LibraryMember member) {
-		MemberList memberlist = getMemberList();
-
-		if (memberlist == null) {
-			memberlist = MemberList.getInstance();
+		try {
+			int address = saveAddress(member.getAddress());
+			String updateSQL = "INSERT INTO APP.LIBRARYMEMBER (FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID, MEMBERID) VALUES (?,?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
+			preparedStatement.setString(1, member.getFirstName());
+			preparedStatement.setString(2, member.getLastName());
+			preparedStatement.setString(3, member.getPhone());
+			preparedStatement.setInt(4, address);
+			preparedStatement.setInt(5, member.getMemberID());
+			//System.out.println(preparedStatement.);
+			int rs = preparedStatement.executeUpdate();
+			updateAddress(member.getAddress(), member.getMemberID()+"");
+			conn.commit();
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}		
-		
-		memberlist.addMember(member);
-		saveToStorage(StorageType.MemberList, memberlist);			
 	}
 	
-	@Override
+	private int saveAddress(Address address) {
+		int addressID = 0;
+		try {
+			String insertSQL = "INSERT INTO APP.ADDRESS (STREET, CITY, STATE, ZIP) VALUES(?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, address.getStreet());
+			preparedStatement.setString(2, address.getCity());
+			preparedStatement.setString(3, address.getState());
+			preparedStatement.setString(4, address.getZip());
+			//System.out.println(preparedStatement.);
+			int row = preparedStatement.executeUpdate();
+			conn.commit();
+			if (row == 0) {
+				throw new SQLException("Failed creating address record!");
+			}
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					addressID = generatedKeys.getInt(1);
+				}
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return addressID;
+	}
+	
+	//@Override
 	public MemberList getMemberList() {
 		MemberList memberList = (MemberList)readFromStorage(StorageType.MemberList);
 		return memberList;
+	}
+	
+	private int saveAddPublication(Publication pub) {
+		
+		return 0;
 	}
 	
 	@Override
@@ -369,6 +411,7 @@ public class DataAccessDB implements DataAccess {
 			//System.out.println(preparedStatement.);
 			int rs = preparedStatement.executeUpdate();
 			updateAddress(member.getAddress(), member.getMemberID()+"");
+			conn.commit();
 		} catch (SQLException sqe) {
 			//System.out.println();
 			sqe.printStackTrace();
