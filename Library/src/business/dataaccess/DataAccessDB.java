@@ -60,7 +60,7 @@ public class DataAccessDB implements DataAccess {
 		List<Author> authors = book.getAuthorlist();
 		if (authors != null) {
 			for (Author auth: authors) {
-				saveAddpublicationAuthor(pubid, auth.getAuthorID());
+				//saveAddpublicationAuthor(pubid, auth.getAuthorID());
 			}
 		}
 	}
@@ -500,6 +500,7 @@ public class DataAccessDB implements DataAccess {
 				String state = rs.getString("STATE");
 				String zip = rs.getString("ZIP");
 				Address a = new Address(street.trim(),city.trim(),state.trim(),zip.trim() );
+				a.setId(Integer.parseInt(ID));
 				return a;
 			}
 		} catch (SQLException sqe) {
@@ -509,6 +510,7 @@ public class DataAccessDB implements DataAccess {
 		return null;
 	}
 	
+
 	@Override
 	public void saveUpdateMember(LibraryMember member) {
 		try {
@@ -520,7 +522,7 @@ public class DataAccessDB implements DataAccess {
 			preparedStatement.setString(4, member.getMemberID() + "");
 			//System.out.println(preparedStatement.);
 			int rs = preparedStatement.executeUpdate();
-			updateAddress(member.getAddress(), member.getMemberID()+"");
+			updateAddress(member.getAddress());
 			conn.commit();
 		} catch (SQLException sqe) {
 			//System.out.println();
@@ -528,7 +530,7 @@ public class DataAccessDB implements DataAccess {
 		}
 	}
 	
-	private void updateAddress(Address addr, String id) {
+	private void updateAddress(Address addr) {
 		try {
 			String updateSQL = "UPDATE APP.ADDRESS SET STREET=?, CITY=?, STATE=?, ZIP=? WHERE ID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
@@ -536,7 +538,7 @@ public class DataAccessDB implements DataAccess {
 			preparedStatement.setString(2, addr.getStreet());
 			preparedStatement.setString(3, addr.getState());
 			preparedStatement.setString(4, addr.getZip());
-			preparedStatement.setString(5, id);
+			preparedStatement.setInt(5, addr.getId());
 			//System.out.println(preparedStatement.);
 			preparedStatement.executeUpdate();
 			
