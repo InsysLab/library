@@ -94,7 +94,42 @@ public class DataAccessDB implements DataAccess {
 		}
 
 		return bk;
-	}  
+	} 
+	
+	private Publication getPublicationByDBID(int id) {
+		Publication pub = null;
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, PUBTYPE FROM APP.PUBLICATION WHERE ID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, id);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			if (rs.next()) {
+				found = true;
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				String type = rs.getString("PUBTYPE");
+				if (type.equals("book")) {
+					pub = new Book(num.trim(), max, title.trim());
+					pub.setId(id);
+				} else {
+					pub = new Periodical(title.trim(), num.trim(), max);
+					pub.setId(id);
+				}
+			}
+			if (found) {
+				return pub;
+			} else {
+				System.out.println("Cannot find publication");
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return null;	
+	}
 	
 	@Override
 	public Book getBookByISBN(String isbn){
@@ -233,6 +268,32 @@ public class DataAccessDB implements DataAccess {
 				//found = true;
 				String copyNumber = rs.getString("COPYNUMBER");
 				boolean avl = rs.getBoolean("STATUS");	
+				copy = new Copy(copyNumber.trim(), pub);
+				copy.setAvailable(avl);
+				return copy;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return copy;
+	}
+	
+	private Copy getCopyByDBID(int id) {
+		Copy copy = null;
+		try {
+			String selectSQL = "SELECT COPYNUMBER, STATUS, PUBID FROM APP.PUBCOPY WHERE ID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, id);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			//boolean found = false;
+			if (rs.next()) {
+				//found = true;
+				String copyNumber = rs.getString("COPYNUMBER");
+				boolean avl = rs.getBoolean("STATUS");
+				int pubDBID = rs.getInt("PUBID");
+				Publication pub = getPublicationByDBID(pubDBID);
 				copy = new Copy(copyNumber.trim(), pub);
 				copy.setAvailable(avl);
 				return copy;
@@ -686,19 +747,35 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo){
-		CheckoutRecord checkoutRecord = getCheckoutRecord();
-		if(checkoutRecord == null) return null;
-		List<CheckoutRecordEntry> entryList = checkoutRecord.getEntry();
-
-		if (entryList.size() > 0) {
-			ArrayList<CheckoutRecordEntry> list = new ArrayList<CheckoutRecordEntry>();
-			for (CheckoutRecordEntry entry: entryList) {
-				if (entry.getMember().getMemberID() == idNo) {
-					list.add(entry);					
-				}
+		ArrayList<CheckoutRecordEntry> list = new ArrayList<CheckoutRecordEntry>();
+		int memDBID = getLibraryMemberDBID(idNo);
+		try {
+			String selectSQL = "SELECT IDMEM, COPYID, CHECKOUTDATE, DUEDATE FROM APP.CHECKOUTRECORD WHERE IDMEM = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, memDBID);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				Date coDate = rs.getDate("CHECKOUTDATE");
+				Date dueDate = rs.getDate("DUEDATE");
+				int memID = rs.getInt("IDMEM");
+				int copyID = rs.getInt("COPYID");
+				Copy copy = getCopyByDBID(copyID);
+				CheckoutRecordEntry entry = new CheckoutRecordEntry(copy, coDate.toLocalDate(), dueDate.toLocalDate());
+				LibraryMember member = getLibraryMemberByDBID(memID);
+				entry.setMember(member);
+				list.add(entry);
 			}
-			
-			return list;
+			if (found) {
+				return list;
+			} else {
+				System.out.println("No checkout record entry found!");
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
 		
 		return null;		
