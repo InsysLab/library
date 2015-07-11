@@ -154,7 +154,7 @@ public class DataAccessFile implements DataAccess {
 	
 	@Override
 	public void saveAuthor(Author author) {
-		AuthorList authorlist = getAuthorList();
+		AuthorList authorlist = (AuthorList)readFromStorage(StorageType.AuthorList);
 
 		if (authorlist == null) {
 			authorlist = AuthorList.getInstance();
@@ -165,9 +165,9 @@ public class DataAccessFile implements DataAccess {
 	}
 	
 	@Override
-	public AuthorList getAuthorList() {
+	public ArrayList<Author> getAuthorList() {
 		AuthorList authorList = (AuthorList)readFromStorage(StorageType.AuthorList);
-		return authorList;
+		return (ArrayList<Author>)authorList.getAuthors();
 	}
 	
 	@Override

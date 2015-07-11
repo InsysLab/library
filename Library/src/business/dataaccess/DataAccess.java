@@ -31,7 +31,7 @@ public interface DataAccess {
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN);
 	
 	public void saveAuthor(Author author);
-	public AuthorList getAuthorList();
+	public ArrayList<Author> getAuthorList();
 	
 	public PeriodicalList getPeriodicalList();
 	public void savePeriodical(Periodical periodical);

@@ -56,14 +56,27 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public void saveBook(Book book) {
-		BookList bookList = getBookList();
-
-		if (bookList == null) {
-			bookList = BookList.getInstance();
-		}		
-		
-		bookList.addBook(book);
-		saveToStorage(StorageType.BookList, bookList);				
+		int pubid = saveAddPublication(book);
+		List<Author> authors = book.getAuthorlist();
+		if (authors != null) {
+			for (Author auth: authors) {
+				saveAddpublicationAuthor(pubid, auth.getAuthorID());
+			}
+		}
+	}
+	
+	private void saveAddpublicationAuthor(int pub, int author) {
+		try {
+			String updateSQL = "INSERT INTO APP.PUBLICATIONAUTHOR (AUTHORID, PUBID) VALUES (?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
+			preparedStatement.setInt(1, pub);
+			preparedStatement.setInt(2, author);
+			int rs = preparedStatement.executeUpdate();
+			conn.commit();
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}	
 	}
 	
 	@Override
@@ -145,16 +158,31 @@ public class DataAccessDB implements DataAccess {
 	}
 	
 	@Override
-	public ArrayList<Book> wildSearchBookByTitle(String title) {
-		List<Book> bookList = getBookList().getBooks();
-		if (bookList != null && bookList.size() > 0) {
-			List<Book> list = bookList.stream()
-									  .filter( b -> b.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1 )
-									  .collect(toList());
-			
-			return new ArrayList<Book>(list);
+	public ArrayList<Book> wildSearchBookByTitle(String tit) {
+		ArrayList<Book> bookList = new ArrayList<Book>();
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(TITLE) like ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, "book");
+			preparedStatement.setString(2, "%" + tit.toUpperCase() + "%" );
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				Book book = new Book(num.trim(), max, title.trim());
+				bookList.add(book);
+			}
+			if (found) {
+				return bookList;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
-		
 		return null;
 	}
 	
@@ -174,20 +202,60 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public void saveAuthor(Author author) {
-		AuthorList authorlist = getAuthorList();
-
-		if (authorlist == null) {
-			authorlist = AuthorList.getInstance();
-		}		
-		
-		authorlist.addAuthor(author);
-		saveToStorage(StorageType.AuthorList, authorlist);		
+		try {
+			int address = saveAddress(author.getAddress());
+			String updateSQL = "INSERT INTO APP.AUTHOR (FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID) VALUES (?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, author.getFirstName());
+			preparedStatement.setString(2, author.getLastName());
+			preparedStatement.setString(3, author.getPhone());
+			preparedStatement.setInt(4, address);
+			//System.out.println(preparedStatement.);
+			int row = preparedStatement.executeUpdate();
+			conn.commit();
+			if (row == 0) {
+				throw new SQLException("Failed creating author record!");
+			}
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					int authID = generatedKeys.getInt(1);
+					author.setAuthorID(authID);
+				}
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}	
 	}
 	
 	@Override
-	public AuthorList getAuthorList() {
-		AuthorList authorList = (AuthorList)readFromStorage(StorageType.AuthorList);
-		return authorList;
+	public ArrayList<Author> getAuthorList() {
+		ArrayList<Author> list = new ArrayList<Author>();
+		try {
+			String selectSQL = "SELECT FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID, BIO FROM APP.AUTHOR";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				String fName = rs.getString("FIRSTNAME");
+				String lName = rs.getString("LASTNAME");
+				String tel = rs.getString("TELEPHONE");	
+				int addID = rs.getInt("ADDRESSID");	
+				String bio = rs.getString("BIO");
+				Address address = this.getAddress(addID+"");
+				Author author = new Author(fName.trim(), lName.trim(), tel.trim(), bio.trim(), address);
+				list.add(author);
+				found = true;
+			}
+			if (found) { 
+				return list;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override
@@ -203,7 +271,7 @@ public class DataAccessDB implements DataAccess {
 			preparedStatement.setInt(5, member.getMemberID());
 			//System.out.println(preparedStatement.);
 			int rs = preparedStatement.executeUpdate();
-			updateAddress(member.getAddress(), member.getMemberID()+"");
+			//updateAddress(member.getAddress(), member.getMemberID()+"");
 			conn.commit();
 		} catch (SQLException sqe) {
 			//System.out.println();
@@ -328,31 +396,51 @@ public class DataAccessDB implements DataAccess {
 	}
 	
 	public Periodical searchPeriodicalByIssueNo(String issueNo){
-		List<Periodical> periodicalList = getPeriodicalList().getPeriodicals();
-		if (periodicalList != null && periodicalList.size() > 0) {
-			Optional<Periodical> periodical = periodicalList.stream()
-												  .filter( p -> p.getIssueNo().equals(issueNo))
-												  .findFirst();
-			
-			if(periodical.isPresent()){
-				return periodical.get();
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH FROM APP.PUBLICATION WHERE ISBN_ISSUENUM = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, issueNo);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				Periodical periodical = new Periodical(title.trim(), num.trim(), max);
+				return periodical;
 			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
-		
-		return null;		
+		return null;
 	}
 	
 	@Override
-	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title) {
-		PeriodicalList periodicalList =  getPeriodicalList();
-		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
-			ArrayList<Periodical> list = new ArrayList<Periodical>();
-			for (Periodical periodical: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
-				if (periodical.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1) {
-					list.add(periodical);					
-				}
+	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String tit) {
+		ArrayList<Periodical> periodicalList = new ArrayList<Periodical>();
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(TITLE) like ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, "periodical");
+			preparedStatement.setString(2, "%" + tit.toUpperCase() + "%" );
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				Periodical periodical = new Periodical(title.trim(), num.trim(), max);
+				periodicalList.add(periodical);
 			}
-			return list;
+			if (found) {
+				return periodicalList;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
 		return null;
 	}
