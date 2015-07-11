@@ -289,7 +289,7 @@ public class DataAccessDB implements DataAccess {
 			String insertSQL = "UPDATE APP.PUBCOPY SET STATUS = ? where ID = ? AND PUBID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL);
 			preparedStatement.setBoolean(1, copy.isAvailable());
-			preparedStatement.setInt(1, Integer.parseInt(copy.getCopyNo()));
+			preparedStatement.setInt(2, Integer.parseInt(copy.getCopyNo()));
 			preparedStatement.setInt(3, copy.getPublication().getId());
 			//System.out.println(preparedStatement.);
 			int rs = preparedStatement.executeUpdate();
