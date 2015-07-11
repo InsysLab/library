@@ -8,20 +8,29 @@ public class Author extends Person implements Serializable {
 	 */
 	private static final long serialVersionUID = -6561578507888988520L;
 	
-	private String credentials;
+	private int AuthorID;
+	private String bio;
 	
-	public Author(String firstname, String lastname, String phone, String credential, Address addr)
+	public Author(String firstname, String lastname, String phone, String bio, Address addr)
 	{
 		super(firstname, lastname,phone, addr);
-		this.credentials = credential;
+		this.bio = bio;
 	}
 
-	public String getCredentials() {
-		return credentials;
+	public String getBio() {
+		return bio;
+	}
+	
+	public int getAuthorID() {
+		return AuthorID;
 	}
 
-	public void setCredentials(String credentials) {
-		this.credentials = credentials;
+	public void setAuthorID(int authorID) {
+		AuthorID = authorID;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
 	}
 	
 	@Override
@@ -29,5 +38,7 @@ public class Author extends Person implements Serializable {
 		// TODO Auto-generated method stub
 		return super.toString();
 	}
+
+	
 
 }

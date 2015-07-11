@@ -10,6 +10,7 @@ public abstract class Publication implements Serializable {
 	 */
 	private static final long serialVersionUID = 2747962880993378844L;
 	
+	private int id;
 	private String title;
 	private List<Copy> copyList;
 	
@@ -20,6 +21,15 @@ public abstract class Publication implements Serializable {
 	}
 		
 	public abstract int getMaxCheckoutLength();
+	public abstract String getNumber();
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return title;
@@ -77,5 +87,5 @@ public abstract class Publication implements Serializable {
 		}		
 	}
 	
-	public abstract String getNumber();
+	
 }
