@@ -2,13 +2,14 @@ package business.dataaccess;
 import static java.util.stream.Collectors.toList;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import business.objects.Address;
 import business.objects.Author;
@@ -97,16 +98,34 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public Book getBookByISBN(String isbn){
-		BookList bookList =  getBookList();
-		Book bk = null;
-		
-		for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-			if (book.getISBN().equals(isbn)) {
-				bk = book;					
+		Book book = null;
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, ID FROM APP.PUBLICATION WHERE PUBTYPE = ? AND ISBN_ISSUENUM = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, "book");
+			preparedStatement.setString(2, isbn);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				int id = rs.getInt("ID");
+				book = new Book(num.trim(), max, title.trim());
+				book.setId(id);
+				//Add retrieve of Copies
+				book.setCopyList(getCopyList(book));
 			}
+			if (found) {
+				return book;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
-
-		return bk;		
+		return null;	
 	}
 	
 	@Override
@@ -221,6 +240,27 @@ public class DataAccessDB implements DataAccess {
 			sqe.printStackTrace();
 		}
 		return copy;
+	}
+	
+	private int getCopyID(Copy copy) {
+		int copyID = 0;
+		try {
+			String selectSQL = "SELECT ID FROM APP.PUBCOPY WHERE PUBID = ? AND COPYNUMBER = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, copy.getPublication().getId());
+			preparedStatement.setInt(2, Integer.parseInt(copy.getCopyNo()));
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			//boolean found = false;
+			if (rs.next()) {
+				//found = true;
+				return rs.getInt(1);
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return copyID;
 	}
 	
 	private void addCopy(Copy copy) {
@@ -535,6 +575,32 @@ public class DataAccessDB implements DataAccess {
 		return null;
 	}
 	
+	private LibraryMember getLibraryMemberByDBID(int idNo) {
+
+		try {
+			String selectSQL = "SELECT MEMBERID, ADDRESSID, FIRSTNAME, LASTNAME, TELEPHONE FROM APP.LIBRARYMEMBER WHERE ID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, idNo+"");
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				String memberid = rs.getString("MEMBERID");
+				String addressid = rs.getString("ADDRESSID");	
+				String firstname = rs.getString("FIRSTNAME");
+				String lastname = rs.getString("LASTNAME");
+				String tel = rs.getString("TELEPHONE");
+				LibraryMember member = new LibraryMember(Integer.parseInt(memberid.trim()), 
+						firstname.trim(), lastname.trim(), tel.trim(), getAddress(addressid));
+				return member;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	private Address getAddress(String ID) {
 		try {
 			String selectSQL = "SELECT ID, STREET, CITY, STATE, ZIP FROM APP.ADDRESS WHERE ID = ?";
@@ -680,14 +746,29 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy) {
-		List<CheckoutRecordEntry> entryList = getCheckoutRecord().getEntry();
-
-		if (entryList != null && entryList.size() > 0) {
-			for (CheckoutRecordEntry entry: entryList) {
-				if (entry.getCopy().equals(copy)) {
-					return 	entry;				
-				}
+		CheckoutRecordEntry entry = null;
+		int id = getCopyID(copy);
+		if (id == 0) return null;
+		try {
+			String selectSQL = "SELECT IDMEM, COPYID, CHECKOUTDATE, DUEDATE FROM APP.CHECKOUTRECORD WHERE COPYID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, id);
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			//boolean found = false;
+			if (rs.next()) {
+				//found = true;
+				Date coDate = rs.getDate("CHECKOUTDATE");
+				Date dueDate = rs.getDate("DUEDATE");
+				int memID = rs.getInt("IDMEM");
+				entry = new CheckoutRecordEntry(copy, coDate.toLocalDate(), dueDate.toLocalDate());
+				LibraryMember member = getLibraryMemberByDBID(memID);
+				entry.setMember(member);
+				return entry;
 			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
 		
 		return null;
