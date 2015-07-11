@@ -245,20 +245,42 @@ public class DataAccessDB implements DataAccess {
 	}
 	
 	private int saveAddPublication(Publication pub) {
-		
-		return 0;
+		int pubID = 0;
+		try {
+			String insertSQL = "INSERT INTO APP.PUBLICATION (PUBTYPE, TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH) VALUES(?,?,?,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+
+			if (pub instanceof Book) {
+				//Book bk = (Book) pub;
+				preparedStatement.setString(1, "book");
+			} else {
+				preparedStatement.setString(1, "periodical");
+			}
+
+			preparedStatement.setString(2, pub.getTitle());
+			preparedStatement.setString(3, pub.getNumber());
+			preparedStatement.setInt(4, pub.getMaxCheckoutLength());
+			//System.out.println(preparedStatement.);
+			int row = preparedStatement.executeUpdate();
+			conn.commit();
+			if (row == 0) {
+				throw new SQLException("Failed creating publication record!");
+			}
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					pubID = generatedKeys.getInt(1);
+				}
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return pubID;
 	}
 	
 	@Override
 	public void savePeriodical (Periodical periodical) {
-		PeriodicalList plist = getPeriodicalList();
-
-		if (plist == null) {
-			plist = PeriodicalList.getInstance();
-		}		
-		
-		plist.addPeriodical(periodical);
-		saveToStorage(StorageType.PeriodicalList, plist);			
+		saveAddPublication(periodical);
 	}
 	
 	@Override
