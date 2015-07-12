@@ -132,7 +132,7 @@ public class AddLibraryMember {
         } else {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(root.getScene().getWindow());
+            //alert.initOwner(root.getScene().getWindow());
             alert.setTitle("Invalid Fields");
             alert.setHeaderText("Please correct invalid fields");
             alert.setContentText(errorMessage);
