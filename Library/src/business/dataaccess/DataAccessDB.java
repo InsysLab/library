@@ -527,6 +527,7 @@ public class DataAccessDB implements DataAccess {
 				int id = rs.getInt("ID");
 				Periodical periodical = new Periodical(title.trim(), num.trim(), max);
 				periodical.setId(id);
+				periodical.setCopyList(getCopyList(periodical));
 				return periodical;
 			}
 		} catch (SQLException sqe) {
