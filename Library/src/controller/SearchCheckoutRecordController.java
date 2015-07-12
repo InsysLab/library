@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -111,8 +112,9 @@ public class SearchCheckoutRecordController {
 		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		   chkRec.setCopyNum(ce.getCopy().getCopyNo());
 		   if(ce.getDueDate().isBefore(LocalDate.now())){
-			    Period betweenDates = Period.between(ce.getDueDate(), LocalDate.now());
-			    chkRec.setStatus(betweenDates.getDays() + " day(s) overdue");
+			    //Period betweenDates = Period.between(ce.getDueDate(), LocalDate.now());
+			   long dayDiff = ChronoUnit.DAYS.between(ce.getDueDate(), LocalDate.now());
+			    chkRec.setStatus(dayDiff + " day(s) overdue");
 		   } else {
 			   chkRec.setStatus("");
 		   }

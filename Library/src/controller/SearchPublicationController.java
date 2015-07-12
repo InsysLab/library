@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -382,8 +383,9 @@ public class SearchPublicationController {
 					CheckoutRecordEntry entry = dao.getCheckoutRecordEntry(pubCopy);
 					if (entry!=null) {
 						   if(entry.getDueDate().isBefore(LocalDate.now())){
-							    Period betweenDates = Period.between(entry.getDueDate(), LocalDate.now());
-							    String message = "Copy number " + result.get() + " is " + betweenDates.getDays() + " day(s) overdue\n";
+							    //Period betweenDates = Period.between(entry.getDueDate(), LocalDate.now());
+							    long dayDiff = ChronoUnit.DAYS.between(entry.getDueDate(), LocalDate.now());
+							    String message = "Copy number " + result.get() + " is " + dayDiff + " day(s) overdue\n";
 							    message+= "Member ID " + entry.getMember().getMemberID() + ", " + entry.getMember().getFirstName() + 
 							    " " + entry.getMember().getLastName() + ", has the copy.\n";
 							    message+= "Borrowed date: " + entry.getCheckoutDate() + "\n";
