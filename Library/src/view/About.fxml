@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="241.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AuthorListController">
+   <children>
+      <VBox prefHeight="300.0" prefWidth="500.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="28.0" prefWidth="500.0">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="tableSpace" alignment="CENTER" prefHeight="177.0" prefWidth="500.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="177.0" prefWidth="291.0">
+                     <children>
+                        <HBox prefHeight="45.0" prefWidth="291.0">
+                           <children>
+                              <ImageView fitHeight="59.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+      								<Image url="@icon.png" />
+   								</image>
+                              </ImageView>
+                              <HBox alignment="CENTER" prefHeight="59.0" prefWidth="236.0">
+                                 <children>
+                                    <Label text="MPP Library System 1.0">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <Label text="Group 2">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label text="Boldkhuu Dandarvanchig">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Mark Makinn Pit">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Jesus Sadang III">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children></HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

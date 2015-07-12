@@ -1,8 +1,15 @@
 package controller;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import view.AddLibraryMember;
 import view.AddPublication;
 import view.MemberCheckout;
@@ -17,8 +24,14 @@ public class MainController {
 	private final SearchPublication searchPublication = new SearchPublication();
 	private final MemberCheckout memberCheckout = new MemberCheckout();
 	private final SearchCheckoutRecord searchCheckoutRecord = new SearchCheckoutRecord();
+	private Parent root;
 	
 	@FXML private VBox vBoxWorkArea;
+	
+	@FXML // This method is called by the FXMLLoader when initialization is complete
+	void initialize() {
+		root = vBoxWorkArea.getParent();
+	}	
 	
 	@FXML protected void handleSearchLibraryMemberBtnAction(ActionEvent event) {
 		if (vBoxWorkArea.getChildren().size() == 1) {
@@ -61,4 +74,21 @@ public class MainController {
     	}
 		vBoxWorkArea.getChildren().add(memberCheckout);
 	}	
+	
+	@FXML protected void handleAboutBtnAction(ActionEvent event) {
+		try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/About.fxml"));
+    		Parent root = loader.load();
+    	    Stage dialogStage = new Stage();
+    	    dialogStage.setTitle("About MPP Library");
+    	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.setResizable(false);
+    	    dialogStage.initOwner(this.root.getScene().getWindow());
+    	    Scene scene = new Scene(root);
+    	    dialogStage.setScene(scene);
+    	    dialogStage.showAndWait();
+    	} catch (IOException io) {
+    		System.out.println(io.getStackTrace());
+    	}
+	}
 }
