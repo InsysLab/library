@@ -44,6 +44,5 @@ public interface DataAccess {
 	public void removeCheckoutRecordEntry(int memberId, Publication pub, Copy copy);
 	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String type, String pubNum, String copyNum);
 	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy);
-	//public Connection getConnection();
 	public void closeConnection();
 }
