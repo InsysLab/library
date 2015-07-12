@@ -106,7 +106,7 @@ public class SearchCheckoutRecordController {
 		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
 		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-
+		   chkRec.setCopyNum(ce.getCopy().getCopyNo());
 		   if(ce.getDueDate().isBefore(LocalDate.now())){
 			    Period betweenDates = Period.between(ce.getDueDate(), LocalDate.now());
 			    chkRec.setStatus(betweenDates.getDays() + " day(s) overdue");
@@ -139,9 +139,14 @@ public class SearchCheckoutRecordController {
                 new PropertyValueFactory<CheckoutRecordTable, String>("title"));
 		
 		TableColumn colISBN = new TableColumn("ISBN/Issue #");
-		colISBN.setPrefWidth(100);
+		colISBN.setPrefWidth(50);
 		colISBN.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("number"));
+		
+		TableColumn colCopy = new TableColumn("Copy Number");
+		colCopy.setPrefWidth(50);
+		colCopy.setCellValueFactory(
+                new PropertyValueFactory<CheckoutRecordTable, String>("copyNum"));
 		
 		TableColumn colBorrowedDate = new TableColumn("Borrowed");
 		colBorrowedDate.setPrefWidth(70);
@@ -205,7 +210,7 @@ public class SearchCheckoutRecordController {
 		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colBorrowedDate, colDueDate, colStatus);
+		table.getColumns().addAll(colTitle,colISBN, colCopy,colBorrowedDate, colDueDate, colStatus);
 		
 		return table;
 	}
