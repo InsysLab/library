@@ -544,7 +544,7 @@ public class DataAccessDB implements DataAccess {
 	
 	public Periodical searchPeriodicalByIssueNo(String issueNo){
 		try {
-			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH FROM APP.PUBLICATION WHERE ISBN_ISSUENUM = ?";
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, ID FROM APP.PUBLICATION WHERE ISBN_ISSUENUM = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 			preparedStatement.setString(1, issueNo);
 			//System.out.println(preparedStatement.);
@@ -553,7 +553,9 @@ public class DataAccessDB implements DataAccess {
 				String title = rs.getString("TITLE");
 				String num = rs.getString("ISBN_ISSUENUM");	
 				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				int id = rs.getInt("ID");
 				Periodical periodical = new Periodical(title.trim(), num.trim(), max);
+				periodical.setId(id);
 				return periodical;
 			}
 		} catch (SQLException sqe) {
@@ -814,11 +816,11 @@ public class DataAccessDB implements DataAccess {
 	}
 	
 	@Override
-	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String idNum){
+	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String type, String pubNum, String copyNum){
 		List<CheckoutRecordEntry> checkoutRecord = getCheckoutRecordEntryByMemberID(memberId);
 		
 		for(CheckoutRecordEntry recEntry : checkoutRecord){
-			if( recEntry.getCopy().getPublication().getNumber().equals(idNum) ){
+			if( recEntry.getCopy().getPublication().getNumber().equals(pubNum) ){
 				return recEntry;
 			}
 		}
