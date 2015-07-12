@@ -81,12 +81,12 @@ public class AuthorController implements Initializable{
 	
 	private boolean checkExist(Author value)
 	{
-		boolean nonExistUser = true;
+		boolean nonExistUser = false;
 		for(Author a: fullListAuthor.getItems())
 		{
 			if(value.getFirstName().toUpperCase().equals(a.getFirstName().toUpperCase()) && 
 			   value.getLastName().toUpperCase().equals(a.getLastName().toUpperCase())) {
-				nonExistUser =false;
+				nonExistUser =true;
 				break;
 			}
 		}
