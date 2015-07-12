@@ -3,13 +3,12 @@ package application;
 import java.io.IOException;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 
@@ -27,6 +26,8 @@ public class MPPLibrary extends Application {
 				System.out.println("Stage is closing");
 				DataAccess da = (DataAccessFacade.getDAO());
 				da.closeConnection();
+			    Platform.exit();
+			    System.exit(0);
 			});
 			primaryStage.setResizable(true);
 			primaryStage.setScene(scene);

@@ -2,6 +2,9 @@ package controller;
 
 import java.io.IOException;
 
+import business.dataaccess.DataAccess;
+import business.dataaccess.DataAccessFacade;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -90,5 +93,12 @@ public class MainController {
     	} catch (IOException io) {
     		System.out.println(io.getStackTrace());
     	}
+	}
+	
+	@FXML protected void handleQuitMenuAction(ActionEvent event) {
+		DataAccess da = (DataAccessFacade.getDAO());
+		da.closeConnection();
+		Platform.exit();
+	    System.exit(0);
 	}
 }
