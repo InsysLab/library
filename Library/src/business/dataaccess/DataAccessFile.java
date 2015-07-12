@@ -69,20 +69,6 @@ public class DataAccessFile implements DataAccess {
 //	}
 	
 	@Override
-	public Book getBookByTitle(String title) {
-		BookList bookList =  getBookList();
-		Book bk = null;
-
-		for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				bk = book;					
-			}
-		}
-
-		return bk;
-	}  
-	
-	@Override
 	public Book getBookByISBN(String isbn){
 		BookList bookList =  getBookList();
 		Book bk = null;
@@ -96,8 +82,7 @@ public class DataAccessFile implements DataAccess {
 		return bk;		
 	}
 	
-	@Override
-	public BookList getBookList() {
+	private BookList getBookList() {
 		BookList bookList = (BookList)readFromStorage(StorageType.BookList);
 		
 		if (bookList == null) {
@@ -238,8 +223,7 @@ public class DataAccessFile implements DataAccess {
 		}
 	}	
 	
-	@Override
-	public PeriodicalList getPeriodicalList() {
+	private PeriodicalList getPeriodicalList() {
 		PeriodicalList periodicalList = (PeriodicalList)readFromStorage(StorageType.PeriodicalList);
 		return periodicalList;
 	}
@@ -345,8 +329,7 @@ public class DataAccessFile implements DataAccess {
 		return null;		
 	}
 	
-	@Override
-	public CheckoutRecord getCheckoutRecord(){
+	private CheckoutRecord getCheckoutRecord(){
 		CheckoutRecord checkoutRecord = (CheckoutRecord)readFromStorage(StorageType.CheckoutRecord);
 		return checkoutRecord;		
 	}

@@ -1,6 +1,4 @@
 package business.dataaccess;
-import static java.util.stream.Collectors.toList;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -46,14 +44,6 @@ public class DataAccessDB implements DataAccess {
 		}
 	}
 	
-	enum StorageType {
-		BookList, PeriodicalList, MemberList, CheckoutRecord, AuthorList;
-	}
-	
-	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
-			+ "\\src\\business\\dataaccess\\storage";
-	public static final String DATE_PATTERN = "MM/dd/yyyy";
-	
 	@Override
 	public void saveBook(Book book) {
 		int pubid = saveAddPublication(book);
@@ -83,20 +73,6 @@ public class DataAccessDB implements DataAccess {
 			sqe.printStackTrace();
 		}	
 	}
-	
-	@Override
-	public Book getBookByTitle(String title) {
-		BookList bookList =  getBookList();
-		Book bk = null;
-
-		for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				bk = book;					
-			}
-		}
-
-		return bk;
-	} 
 	
 	private Publication getPublicationByDBID(int id) {
 		Publication pub = null;
@@ -163,17 +139,6 @@ public class DataAccessDB implements DataAccess {
 			sqe.printStackTrace();
 		}
 		return null;	
-	}
-	
-	@Override
-	public BookList getBookList() {
-		BookList bookList = (BookList)readFromStorage(StorageType.BookList);
-		
-		if (bookList == null) {
-			bookList = BookList.getInstance();
-		}			
-		
-		return bookList;
 	}
 	
 	@Override
@@ -368,15 +333,34 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN) {
-		List<Book> bookList = getBookList().getBooks();
-		if (bookList != null && bookList.size() > 0) {
-			List<Book> list = bookList.stream()
-									  .filter( b -> b.getISBN().indexOf(ISBN.toUpperCase())!=-1 )
-									  .collect(toList());
-			
-			return new ArrayList<Book>(list);
+		ArrayList<Book> bookList = new ArrayList<Book>();
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, ID FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(ISBN_ISSUENUM) like ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, "book");
+			preparedStatement.setString(2, "%" + ISBN.toUpperCase() + "%" );
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				int id = rs.getInt("ID");
+				Book book = new Book(num.trim(), max, title.trim());
+				book.setId(id);
+				//Add retrieve of Copies
+				book.setCopyList(getCopyList(book));
+				bookList.add(book);
+			}
+			if (found) {
+				return bookList;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
-		
 		return null;		
 	}
 	
@@ -488,12 +472,6 @@ public class DataAccessDB implements DataAccess {
 		return addressID;
 	}
 	
-	//@Override
-	public MemberList getMemberList() {
-		MemberList memberList = (MemberList)readFromStorage(StorageType.MemberList);
-		return memberList;
-	}
-	
 	private int saveAddPublication(Publication pub) {
 		int pubID = 0;
 		try {
@@ -539,12 +517,6 @@ public class DataAccessDB implements DataAccess {
 	public void saveUpdatePeriodical(Periodical periodical) {
 		saveUpdateCopies(periodical);
 	}	
-	
-	@Override
-	public PeriodicalList getPeriodicalList() {
-		PeriodicalList periodicalList = (PeriodicalList)readFromStorage(StorageType.PeriodicalList);
-		return periodicalList;
-	}
 	
 	public Periodical searchPeriodicalByIssueNo(String issueNo){
 		try {
@@ -604,15 +576,33 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo) {
-		PeriodicalList periodicalList =  getPeriodicalList();
-		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
-			ArrayList<Periodical> list = new ArrayList<Periodical>();
-			for (Periodical periodical: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
-				if (periodical.getIssueNo().toUpperCase().indexOf(issueNo.toUpperCase())!=-1) {
-					list.add(periodical);					
-				}
+		ArrayList<Periodical> periodicalList = new ArrayList<Periodical>();
+		try {
+			String selectSQL = "SELECT TITLE, ISBN_ISSUENUM, MAXCHECKOUTLENGTH, ID FROM APP.PUBLICATION WHERE PUBTYPE = ? AND UPPER(ISBN_ISSUENUM) like ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setString(1, "periodical");
+			preparedStatement.setString(2, "%" + issueNo.toUpperCase() + "%" );
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				found = true;
+				String title = rs.getString("TITLE");
+				String num = rs.getString("ISBN_ISSUENUM");	
+				int max = rs.getInt("MAXCHECKOUTLENGTH");
+				int id = rs.getInt("ID");
+				Periodical periodical = new Periodical(title.trim(), num.trim(), max);
+				periodical.setId(id);
+				//Add retrieve of Copies
+				periodical.setCopyList(getCopyList(periodical));
+				periodicalList.add(periodical);
 			}
-			return list;
+			if (found) {
+				return periodicalList;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
 		}
 		return null;
 	}
@@ -788,12 +778,6 @@ public class DataAccessDB implements DataAccess {
 	}
 	
 	@Override
-	public CheckoutRecord getCheckoutRecord(){
-		CheckoutRecord checkoutRecord = (CheckoutRecord)readFromStorage(StorageType.CheckoutRecord);
-		return checkoutRecord;		
-	}
-	
-	@Override
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry){
 		try {
 			String insertSQL = "INSERT INTO APP.CHECKOUTRECORD (IDMEM, COPYID, CHECKOUTDATE, DUEDATE) VALUES(?,?,?,?)";
@@ -896,30 +880,4 @@ public class DataAccessDB implements DataAccess {
 		
 		return null;
 	}		
-	
-	public static void saveToStorage(StorageType type, Object ob) {
-		
-	}
-	
-	public static Object readFromStorage(StorageType type) {
-		return null;
-	}
-	
-	public static Object initializeStorage(StorageType type) {
-		Object obj = null;
-		if (type.equals(StorageType.PeriodicalList)) {
-			obj = PeriodicalList.getInstance();
-		} else if (type.equals(StorageType.BookList)) {
-			obj = BookList.getInstance();
-		} else if (type.equals(StorageType.MemberList)) {
-			obj = MemberList.getInstance();
-		} else if (type.equals(StorageType.CheckoutRecord)) {
-			obj = CheckoutRecord.getInstance();
-		} else if (type.equals(StorageType.AuthorList)) {
-			obj = AuthorList.getInstance();
-		}
-
-		return obj;
-	}
-
 }

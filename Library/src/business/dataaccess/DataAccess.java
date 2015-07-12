@@ -24,16 +24,16 @@ public interface DataAccess {
 	public void saveBook(Book book);
 	public void saveUpdateBook(Book book);
 	//public void updateBook(Book book);
-	public Book getBookByTitle(String title);
+	//public Book getBookByTitle(String title);
 	public Book getBookByISBN(String isbn);
-	public BookList getBookList();
+	//public BookList getBookList();
 	public ArrayList<Book> wildSearchBookByTitle(String title);
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN);
 	
 	public void saveAuthor(Author author);
 	public ArrayList<Author> getAuthorList();
 	
-	public PeriodicalList getPeriodicalList();
+	//public PeriodicalList getPeriodicalList();
 	public void savePeriodical(Periodical periodical);
 	public void saveUpdatePeriodical(Periodical periodical);
 	//public void updatePeriodical(Periodical periodical);
@@ -41,7 +41,7 @@ public interface DataAccess {
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title);
 	public ArrayList<Periodical> wildSearchPeriodicalByIssueNo(String issueNo);
 	
-	public CheckoutRecord getCheckoutRecord();
+	//public CheckoutRecord getCheckoutRecord();
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo);
 	public void removeCheckoutRecordEntry(int memberId, Publication pub, Copy copy);
