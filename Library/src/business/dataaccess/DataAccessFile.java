@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,10 @@ public class DataAccessFile implements DataAccess {
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
 			+ "\\src\\business\\dataaccess\\storage";
 	public static final String DATE_PATTERN = "MM/dd/yyyy";
+	
+	@Override
+	public void closeConnection() {
+	}
 	
 	@Override
 	public void saveBook(Book book) {

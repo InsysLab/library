@@ -1,19 +1,16 @@
 package business.dataaccess;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import business.objects.Author;
-import business.objects.AuthorList;
-import business.objects.Publication;
 import business.objects.Book;
-import business.objects.BookList;
+import business.objects.CheckoutRecordEntry;
 import business.objects.Copy;
 import business.objects.LibraryMember;
-import business.objects.MemberList;
 import business.objects.Periodical;
-import business.objects.PeriodicalList;
-import business.objects.CheckoutRecord;
-import business.objects.CheckoutRecordEntry;
+import business.objects.Publication;
 
 public interface DataAccess {
 	
@@ -47,4 +44,6 @@ public interface DataAccess {
 	public void removeCheckoutRecordEntry(int memberId, Publication pub, Copy copy);
 	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String type, String pubNum, String copyNum);
 	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy);
+	//public Connection getConnection();
+	public void closeConnection();
 }

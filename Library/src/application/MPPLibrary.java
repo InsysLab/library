@@ -3,11 +3,15 @@ package application;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import business.dataaccess.DataAccess;
+import business.dataaccess.DataAccessFacade;
 
 public class MPPLibrary extends Application {
     
@@ -19,6 +23,11 @@ public class MPPLibrary extends Application {
 			scene.getStylesheets().add(getClass().getResource("../view/application.css").toExternalForm());
 			primaryStage.setTitle("MPP Library System");
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../view/icon.png")));
+			primaryStage.setOnCloseRequest(evt -> {
+				System.out.println("Stage is closing");
+				DataAccess da = (DataAccessFacade.getDAO());
+				da.closeConnection();
+			});
 			primaryStage.setResizable(true);
 			primaryStage.setScene(scene);
 			primaryStage.show();

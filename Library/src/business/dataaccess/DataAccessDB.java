@@ -32,10 +32,15 @@ public class DataAccessDB implements DataAccess {
 			System.out.println("Cannot get connection...");
 		}
 	}
-	
-	public void closeConnection(Connection con)  throws SQLException {
-		if(con != null && !con.isClosed()) {
-			con.close();
+
+	@Override
+	public void closeConnection() {
+		try {
+			if(conn != null && !conn.isClosed()) {
+				conn.close();
+			}
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
 		}
 	}
 	
