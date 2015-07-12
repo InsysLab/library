@@ -68,6 +68,12 @@
       </font>
     </Label>
     <Button fx:id="btnUpdate" disable="false" layoutX="284.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleUpdateMemberBtnAction" prefHeight="25.0" prefWidth="102.0" text="Update" />
+      <HBox fx:id="hbSearchResult" layoutX="20.0" layoutY="326.0" prefHeight="257.0" prefWidth="561.0" />
+      <Label layoutX="37.0" layoutY="300.0" text="Checkout Records">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
   </children>
   <padding>
     <Insets />
