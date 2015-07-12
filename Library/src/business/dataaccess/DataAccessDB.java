@@ -779,8 +779,8 @@ public class DataAccessDB implements DataAccess {
 		try {
 			String updateSQL = "UPDATE APP.ADDRESS SET STREET=?, CITY=?, STATE=?, ZIP=? WHERE ID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
-			preparedStatement.setString(1, addr.getCity());
-			preparedStatement.setString(2, addr.getStreet());
+			preparedStatement.setString(1, addr.getStreet());
+			preparedStatement.setString(2, addr.getCity());
 			preparedStatement.setString(3, addr.getState());
 			preparedStatement.setString(4, addr.getZip());
 			preparedStatement.setInt(5, addr.getId());
