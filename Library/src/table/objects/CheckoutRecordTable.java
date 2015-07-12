@@ -6,7 +6,14 @@ public class CheckoutRecordTable {
 	private String borrowedDate;
 	private String dueDate;
 	private String status;
+	private String copyNum;
 
+	public String getCopyNum() {
+		return copyNum;
+	}
+	public void setCopyNum(String copyNum) {
+		this.copyNum = copyNum;
+	}
 	public String getStatus() {
 		return status;
 	}
