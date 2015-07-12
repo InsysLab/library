@@ -85,31 +85,31 @@ public class AddLibraryMember {
 			errorMessage += "All fields must be nonempty!\n";
 		}
         if (tfID.getLength() > 10) {
-        	errorMessage +="First name must not be greater than 10 characters";  
+        	errorMessage +="First name must not be greater than 10 characters\n";  
 		}
         if (!tfFirstname.getText().matches("[a-zA-Z]*")) {
         	errorMessage +="First name field may not contain spaces or characters other than a-z, A-Z\n";  
 		}
         if (tfFirstname.getLength() > 30) {
-        	errorMessage +="First name must not be greater than 30 characters";  
+        	errorMessage +="First name must not be greater than 30 characters\n";  
 		}        
         if (!tfLastname.getText().matches("[a-zA-Z]*")) {
         	errorMessage +="Last name field may not contain spaces or characters other than a-z, A-Z\n"; 
         }
         if (tfLastname.getLength() > 30) {
-        	errorMessage +="Last name must not be greater than 30 characters";  
+        	errorMessage +="Last name must not be greater than 30 characters\n";  
 		}
         if (!tfPhone.getText().matches("^[0-9]*")) {
             errorMessage += "No valid a valid phone number!\n"; 
         }
         if (tfPhone.getLength() > 12) {
-        	errorMessage +="Phone number must not be greater than 12 characters";  
+        	errorMessage +="Phone number must not be greater than 12 characters\n";  
 		}
         if (!tfStreet.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
             errorMessage += "Street field can only contain spaces or characters a-z, A-Z and 0-9 \n"; 
         }
         if (tfStreet.getLength() > 30) {
-        	errorMessage +="Street must not be greater than 30 characters";  
+        	errorMessage +="Street must not be greater than 30 characters\n";  
 		}
         if (!tfZip.getText().matches("^[0-9]{5,5}")) {
         	errorMessage += "Zip must be numeric with exactly 5 digits\n";  
@@ -118,7 +118,7 @@ public class AddLibraryMember {
             errorMessage += "City must consist of Alphabet characters\n"; 
         }
         if (tfCity.getLength() > 30) {
-        	errorMessage +="City must not be greater than 30 characters";  
+        	errorMessage +="City must not be greater than 30 characters\n";  
 		}
         if (!tfState.getText().matches("[a-zA-Z]*")) {
         	errorMessage += "State must consist of Alphabet characters\n";  
