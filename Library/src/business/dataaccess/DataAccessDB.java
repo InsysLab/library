@@ -409,7 +409,7 @@ public class DataAccessDB implements DataAccess {
 	public ArrayList<Author> getAuthorList() {
 		ArrayList<Author> list = new ArrayList<Author>();
 		try {
-			String selectSQL = "SELECT FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID, BIO FROM APP.AUTHOR";
+			String selectSQL = "SELECT FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID, BIO, ID FROM APP.AUTHOR";
 			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
 			//System.out.println(preparedStatement.);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -420,8 +420,10 @@ public class DataAccessDB implements DataAccess {
 				String tel = rs.getString("TELEPHONE");	
 				int addID = rs.getInt("ADDRESSID");	
 				String bio = rs.getString("BIO");
+				int id = rs.getInt("ID");
 				Address address = this.getAddress(addID+"");
 				Author author = new Author(fName.trim(), lName.trim(), tel.trim(), bio.trim(), address);
+				author.setAuthorID(id);
 				list.add(author);
 				found = true;
 			}
