@@ -93,9 +93,12 @@ public class SearchCheckoutRecordController {
 	   List<CheckoutRecordEntry> checkoutRecord = dao.getCheckoutRecordEntryByMemberID( memberId );
 	   
 	   if(checkoutRecord == null){
-			alert.setContentText("Member has no checkout record");
-			alert.show();		   
-			return;
+		   if (hbSearchResult.getChildren().size() == 1) {
+			   hbSearchResult.getChildren().remove(0);
+		   }
+		   alert.setContentText("Member has no checkout record");
+		   alert.show();		   
+		   return;
 	   }
 	   
 	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();

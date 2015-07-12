@@ -834,7 +834,7 @@ public class DataAccessDB implements DataAccess {
 			return checkoutRecord;
 		}
 		checkoutRecord = getCheckoutRecordEntry(copy);		
-		return null;
+		return checkoutRecord;
 	}
 	
 	@Override
