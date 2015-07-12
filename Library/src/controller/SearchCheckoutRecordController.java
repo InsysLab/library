@@ -193,7 +193,7 @@ public class SearchCheckoutRecordController {
 			    				  row.getItem().getType(), row.getItem().getNumber(), row.getItem().getCopyNum());
 			    		  
 			    		  Publication pub = checkoutRecordEntry.getCopy().getPublication();
-			    		  dao.removeCheckoutRecordEntry(memberId, pub);
+			    		  dao.removeCheckoutRecordEntry(memberId, pub, checkoutRecordEntry.getCopy());
 
 			    		  pub.returnACopy();
 			    		  if(pub.getClass().getName().contains("Book")){

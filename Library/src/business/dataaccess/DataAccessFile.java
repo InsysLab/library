@@ -378,7 +378,7 @@ public class DataAccessFile implements DataAccess {
 	}
 	
 	@Override
-	public void removeCheckoutRecordEntry(int memberId, Publication pub){
+	public void removeCheckoutRecordEntry(int memberId, Publication pub, Copy copy){
 		CheckoutRecord checkoutRecord = getCheckoutRecord();
 		List<CheckoutRecordEntry> entries = new ArrayList<CheckoutRecordEntry>();
 		
