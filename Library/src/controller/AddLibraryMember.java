@@ -40,18 +40,18 @@ public class AddLibraryMember {
 			return;
 		}
 		
-		Address address = new Address(tfStreet.getText(), 
-				  tfCity.getText(), 
-				  tfState.getText(), 
-				  tfZip.getText());
-		
-		LibraryMember member = new LibraryMember( memberID,
-												 tfFirstname.getText(), 
-												 tfLastname.getText(), 
-												 tfPhone.getText(), 
-												 address);
-		
 		if(dao.searchLibraryMemberByID(memberID) == null){
+			Address address = new Address(tfStreet.getText(), 
+					  tfCity.getText(), 
+					  tfState.getText(), 
+					  tfZip.getText());
+			
+			LibraryMember member = new LibraryMember( memberID,
+													 tfFirstname.getText(), 
+													 tfLastname.getText(), 
+													 tfPhone.getText(), 
+													 address);			
+			
 			dao.saveMember(member);
 			Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
 			alert.setTitle("Add Member");
