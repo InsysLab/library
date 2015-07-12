@@ -105,8 +105,8 @@ public class AddLibraryMember {
         if (tfPhone.getLength() > 12) {
         	errorMessage +="Phone number must not be greater than 12 characters\n";  
 		}
-        if (!tfStreet.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
-            errorMessage += "Street field can only contain spaces or characters a-z, A-Z and 0-9 \n"; 
+        if (!tfStreet.getText().matches("^[0-9a-zA-Z. ]+$")) {
+            errorMessage += "Street field can only contain alphanumeric characters \n"; 
         }
         if (tfStreet.getLength() > 30) {
         	errorMessage +="Street must not be greater than 30 characters\n";  
