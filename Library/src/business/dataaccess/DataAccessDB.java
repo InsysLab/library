@@ -71,8 +71,8 @@ public class DataAccessDB implements DataAccess {
 		try {
 			String updateSQL = "INSERT INTO APP.PUBLICATIONAUTHOR (AUTHORID, PUBID) VALUES (?,?)";
 			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
-			preparedStatement.setInt(1, pub);
-			preparedStatement.setInt(2, author);
+			preparedStatement.setInt(1, author);
+			preparedStatement.setInt(2, pub);
 			int rs = preparedStatement.executeUpdate();
 			if (rs == 0) {
 				System.out.println("Cannot add Author record!");
