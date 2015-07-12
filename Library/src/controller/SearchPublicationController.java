@@ -371,6 +371,7 @@ public class SearchPublicationController {
 							    String message = "Copy number " + result.get() + " is " + betweenDates.getDays() + " day(s) overdue\n";
 							    message+= "Member ID " + entry.getMember().getMemberID() + ", " + entry.getMember().getFirstName() + 
 							    " " + entry.getMember().getLastName() + ", has the copy.\n";
+							    message+= "Borrowed date: " + entry.getCheckoutDate() + "\n";
 							    message+= "Due date: " + entry.getDueDate();
 								Alert alert = new Alert(AlertType.WARNING, message, ButtonType.OK);
 								alert.setHeaderText(null);
@@ -380,6 +381,7 @@ public class SearchPublicationController {
 							    String message = "Copy number " + result.get() + " is not available.\n";
 							    message+= "Member ID " + entry.getMember().getMemberID() + ", " + entry.getMember().getFirstName() + 
 							    " " + entry.getMember().getLastName() + ", has the copy.\n";
+							    message+= "Borrowed date: " + entry.getCheckoutDate() + "\n";
 							    message+= "Due date: " + entry.getDueDate();
 								Alert alert = new Alert(AlertType.INFORMATION, message, ButtonType.OK);
 								alert.setHeaderText(null);

@@ -97,8 +97,10 @@ public class CheckoutDialogController {
 		} else {
 			dao.saveUpdatePeriodical( (Periodical)pub );
 		}
-	
-		Alert alert = new Alert(AlertType.INFORMATION, "Checkout successful!", ButtonType.OK);
+		String message = "Checkout successful! \n";
+	    message+= "Borrowed date: " + entry.getCheckoutDate() + "\n";
+	    message+= "Due date: " + entry.getDueDate();
+		Alert alert = new Alert(AlertType.INFORMATION, message, ButtonType.OK);
 		alert.setHeaderText(null);
 		alert.setTitle("Checkout");
 		alert.show();
