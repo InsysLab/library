@@ -386,7 +386,7 @@ public class DataAccessFile implements DataAccess {
 			if( recEntry.getMember().getMemberID() == memberId ){
 				Publication p = recEntry.getCopy().getPublication();
 			
-				if(pub.getClass().getName().contains("Book")){
+				if(pub instanceof Book){
 					Book b1 = (Book)pub;
 					Book b2 = (Book)p;
 					if( ! b1.getISBN().equals(b2.getISBN()) ){
