@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="587.0" prefWidth="562.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.CheckoutController">
+<AnchorPane prefHeight="587.0" prefWidth="562.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CheckoutController">
   <!-- TODO Add Nodes -->
   <children>
     <GridPane hgap="5.0" layoutX="53.0" layoutY="79.0" prefHeight="24.0" prefWidth="422.0" vgap="10.0">
@@ -25,7 +25,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <GridPane hgap="15.0" layoutX="34.0" layoutY="107.0" prefHeight="109.0" prefWidth="452.0" vgap="10.0">
+    <GridPane hgap="15.0" layoutX="24.0" layoutY="107.0" prefHeight="109.0" prefWidth="462.0" vgap="10.0">
       <children>
         <Label alignment="CENTER_RIGHT" contentDisplay="LEFT" prefHeight="24.0" prefWidth="95.0" text="ISBN" textAlignment="RIGHT" wrapText="false" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
           <font>
@@ -33,13 +33,13 @@
           </font>
         </Label>
         <TextField fx:id="tfISBN" editable="true" prefHeight="33.0" prefWidth="246.0" promptText="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label alignment="CENTER_RIGHT" font="$x1" prefWidth="145.0" text="Book Title" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+        <Label alignment="CENTER_RIGHT" font="$x1" prefHeight="17.0" prefWidth="101.0" text="Book Title" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
         <TextField fx:id="tfBookTitle" prefHeight="33.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label alignment="CENTER_RIGHT" font="$x1" prefWidth="145.0" text="Periodical Issue #" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+        <Label alignment="CENTER_RIGHT" font="$x1" prefHeight="17.0" prefWidth="101.0" text="Periodical Issue #" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
         <TextField fx:id="tfIssueNumber" prefHeight="33.0" prefWidth="197.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       </children>
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="94.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="104.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="346.0" minWidth="10.0" prefWidth="323.0" />
       </columnConstraints>
       <padding>
