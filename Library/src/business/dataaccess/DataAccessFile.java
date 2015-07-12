@@ -365,7 +365,7 @@ public class DataAccessFile implements DataAccess {
 	}
 	
 	@Override
-	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String pubNum, String copyNum){
+	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String type, String pubNum, String copyNum){
 		List<CheckoutRecordEntry> checkoutRecord = getCheckoutRecordEntryByMemberID(memberId);
 		
 		for(CheckoutRecordEntry recEntry : checkoutRecord){

@@ -113,7 +113,11 @@ public class SearchCheckoutRecordController {
 		   } else {
 			   chkRec.setStatus("");
 		   }
-		   
+		   if (ce.getCopy().getPublication() instanceof Book) {
+			   chkRec.setType("book");
+		   } else {
+			   chkRec.setType("periodical");
+		   }
 		   list.add(chkRec);
 	   }
 
@@ -139,27 +143,32 @@ public class SearchCheckoutRecordController {
                 new PropertyValueFactory<CheckoutRecordTable, String>("title"));
 		
 		TableColumn colISBN = new TableColumn("ISBN/Issue #");
-		colISBN.setPrefWidth(50);
+		colISBN.setPrefWidth(55);
 		colISBN.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("number"));
 		
 		TableColumn colCopy = new TableColumn("Copy Number");
-		colCopy.setPrefWidth(50);
+		colCopy.setPrefWidth(55);
 		colCopy.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("copyNum"));
+
+		TableColumn colType = new TableColumn("Type");
+		colType.setPrefWidth(55);
+		colType.setCellValueFactory(
+                new PropertyValueFactory<CheckoutRecordTable, String>("type"));
 		
 		TableColumn colBorrowedDate = new TableColumn("Borrowed");
-		colBorrowedDate.setPrefWidth(70);
+		colBorrowedDate.setPrefWidth(50);
 		colBorrowedDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("borrowedDate"));
 		
 		TableColumn colDueDate = new TableColumn("Due");
-		colDueDate.setPrefWidth(70);
+		colDueDate.setPrefWidth(50);
 		colDueDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));	
 		
 		TableColumn colStatus = new TableColumn("Status");
-		colStatus.setPrefWidth(125);
+		colStatus.setPrefWidth(100);
 		colStatus.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("status"));					
 		
@@ -180,7 +189,8 @@ public class SearchCheckoutRecordController {
 			    	  Optional<ButtonType> result = alert.showAndWait();
 			    	  if (result.isPresent() && result.get() == ButtonType.OK) {
 			    		  int memberId = Integer.parseInt(tfSearchID.getText());
-			    		  CheckoutRecordEntry checkoutRecordEntry = dao.getCheckoutRecordEntryById(memberId, row.getItem().getNumber(), row.getItem().getCopyNum());
+			    		  CheckoutRecordEntry checkoutRecordEntry = dao.getCheckoutRecordEntryById(memberId, 
+			    				  row.getItem().getType(), row.getItem().getNumber(), row.getItem().getCopyNum());
 			    		  
 			    		  Publication pub = checkoutRecordEntry.getCopy().getPublication();
 			    		  dao.removeCheckoutRecordEntry(memberId, pub);
@@ -210,7 +220,7 @@ public class SearchCheckoutRecordController {
 		ObservableList<CheckoutRecordTable> data = FXCollections.observableArrayList();
 		data.addAll(list);
 		table.setItems(data);
-		table.getColumns().addAll(colTitle,colISBN, colCopy,colBorrowedDate, colDueDate, colStatus);
+		table.getColumns().addAll(colTitle, colType, colISBN, colCopy,colBorrowedDate, colDueDate, colStatus);
 		
 		return table;
 	}
