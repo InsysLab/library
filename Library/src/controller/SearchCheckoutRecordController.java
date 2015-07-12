@@ -180,7 +180,7 @@ public class SearchCheckoutRecordController {
 			    	  Optional<ButtonType> result = alert.showAndWait();
 			    	  if (result.isPresent() && result.get() == ButtonType.OK) {
 			    		  int memberId = Integer.parseInt(tfSearchID.getText());
-			    		  CheckoutRecordEntry checkoutRecordEntry = dao.getCheckoutRecordEntryById(memberId, row.getItem().getNumber());
+			    		  CheckoutRecordEntry checkoutRecordEntry = dao.getCheckoutRecordEntryById(memberId, row.getItem().getNumber(), row.getItem().getCopyNum());
 			    		  
 			    		  Publication pub = checkoutRecordEntry.getCopy().getPublication();
 			    		  dao.removeCheckoutRecordEntry(memberId, pub);

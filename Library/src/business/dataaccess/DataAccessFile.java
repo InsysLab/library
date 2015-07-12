@@ -365,11 +365,11 @@ public class DataAccessFile implements DataAccess {
 	}
 	
 	@Override
-	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String idNum){
+	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String pubNum, String copyNum){
 		List<CheckoutRecordEntry> checkoutRecord = getCheckoutRecordEntryByMemberID(memberId);
 		
 		for(CheckoutRecordEntry recEntry : checkoutRecord){
-			if( recEntry.getCopy().getPublication().getNumber().equals(idNum) ){
+			if( recEntry.getCopy().getPublication().getNumber().equals(pubNum) && recEntry.getCopy().getCopyNo().equals(copyNum)){
 				return recEntry;
 			}
 		}

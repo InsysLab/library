@@ -45,6 +45,6 @@ public interface DataAccess {
 	public void saveCheckoutRecordEntry(CheckoutRecordEntry entry);
 	public ArrayList<CheckoutRecordEntry> getCheckoutRecordEntryByMemberID(int idNo);
 	public void removeCheckoutRecordEntry(int memberId, Publication pub);
-	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String idNum);
+	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String pubNum, String copyNum);
 	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy);
 }
