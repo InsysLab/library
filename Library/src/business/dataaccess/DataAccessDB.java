@@ -69,6 +69,60 @@ public class DataAccessDB implements DataAccess {
 		}	
 	}
 	
+	private ArrayList<Author> getAuthorListByPublication(Publication pub) {
+		ArrayList<Author> list = new ArrayList<Author>();
+		try {
+			String selectSQL = "SELECT AUTHORID FROM APP.PUBLICATIONAUTHOR WHERE PUBID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, pub.getId());
+			//System.out.println(preparedStatement.);
+			ResultSet rs = preparedStatement.executeQuery();
+			boolean found = false;
+			while (rs.next()) {
+				int authorID = rs.getInt("AUTHORID");
+				Author author = getAuthorByDBID(authorID);
+				if (author != null) {
+					list.add(author);
+					found = true;
+				}
+			}
+			if (found) { 
+				return list;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return null;
+	}
+	
+	private Author getAuthorByDBID(int dbID) {
+		Author author = null;
+		try {
+			String selectSQL = "SELECT FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID, BIO, ID FROM APP.AUTHOR WHERE ID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, dbID);
+			ResultSet rs = preparedStatement.executeQuery();
+			//boolean found = false;
+			if (rs.next()) {
+				String fName = rs.getString("FIRSTNAME");
+				String lName = rs.getString("LASTNAME");
+				String tel = rs.getString("TELEPHONE");	
+				int addID = rs.getInt("ADDRESSID");	
+				String bio = rs.getString("BIO");
+				int id = rs.getInt("ID");
+				Address address = this.getAddress(addID+"");
+				author = new Author(fName.trim(), lName.trim(), tel.trim(), bio.trim(), address);
+				author.setAuthorID(id);
+				return author;
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
+		return null;
+	}
+	
 	private Publication getPublicationByDBID(int id) {
 		Publication pub = null;
 		try {
@@ -125,6 +179,8 @@ public class DataAccessDB implements DataAccess {
 				book.setId(id);
 				//Add retrieve of Copies
 				book.setCopyList(getCopyList(book));
+				List<Author> list = getAuthorListByPublication(book);
+				book.setAuthorlist(list);
 			}
 			if (found) {
 				return book;

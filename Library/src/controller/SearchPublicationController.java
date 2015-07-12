@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javafx.beans.binding.Bindings;
@@ -16,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
@@ -26,7 +28,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -35,6 +36,7 @@ import javafx.util.Callback;
 import table.objects.SearchPublicationTable;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
+import business.objects.Author;
 import business.objects.Book;
 import business.objects.CheckoutRecordEntry;
 import business.objects.Copy;
@@ -223,7 +225,20 @@ public class SearchPublicationController {
 			      }
 			    });
 			    
-			    rowMenu.getItems().addAll(checkoutItem, addCopy, checkCopy);
+			    MenuItem viewAuthors = new MenuItem("View Authors");
+			    viewAuthors.setOnAction(new EventHandler<ActionEvent>() {
+			      @Override
+			      public void handle(ActionEvent event) {
+			    	  List<Author> list = new ArrayList<Author>();
+			    	  if (isBook) {
+			    		  Book book = dao.getBookByISBN(row.getItem().getNumber());
+			    		  list = book.getAuthorlist() == null ? list : book.getAuthorlist();
+			    	  }
+			    	  showAuthorListDialog(list, event);
+			      }
+			    });
+			    
+			    rowMenu.getItems().addAll(checkoutItem, addCopy, checkCopy, viewAuthors);
 
 			    // only display context menu for non-null items:
 			    row.contextMenuProperty().bind(
@@ -397,5 +412,30 @@ public class SearchPublicationController {
 				}
 			}
 		}
+	}
+	
+	public boolean showAuthorListDialog(List<Author> authors, ActionEvent event) {
+		try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/AuthorList.fxml"));
+    		Parent root = loader.load();
+    	    Stage dialogStage = new Stage();
+    	    dialogStage.setTitle("Author's List");
+    	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.setResizable(false);
+    	    dialogStage.initOwner(this.root.getScene().getWindow());
+    	    Scene scene = new Scene(root);
+    	    dialogStage.setScene(scene);
+
+    	    // Set the Publication into the controller
+    	    AuthorListController controller = loader.getController();
+    	    //controller.setDialogStage(dialogStage);
+    	    controller.loadTable(authors);
+    	    // Show the dialog and wait until the user closes it
+    	    dialogStage.showAndWait();
+    	    //return controller.isCheckout();
+    	} catch (IOException io) {
+    		System.out.println(io.getStackTrace());
+    	}
+		return false;
 	}
 }
