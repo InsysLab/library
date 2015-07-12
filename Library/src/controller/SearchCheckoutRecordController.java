@@ -287,6 +287,11 @@ public class SearchCheckoutRecordController {
 			
 			System.out.println();
 			System.out.println(hBar);
+			
+		    Alert alert = new Alert(AlertType.INFORMATION, "Done printing!", ButtonType.OK);
+		    alert.setHeaderText(null);
+		    alert.setTitle("Print Checkout Record");		
+		    alert.show();
 		}
 	}
 
