@@ -106,10 +106,10 @@ public class DataAccessDB implements DataAccess {
 			boolean found = false;
 			if (rs.next()) {
 				found = true;
-				String title = rs.getString("TITLE");
-				String num = rs.getString("ISBN_ISSUENUM");	
+				String title = rs.getString("TITLE").trim();
+				String num = rs.getString("ISBN_ISSUENUM").trim();	
 				int max = rs.getInt("MAXCHECKOUTLENGTH");
-				String type = rs.getString("PUBTYPE");
+				String type = rs.getString("PUBTYPE").trim();
 				if (type.equals("book")) {
 					pub = new Book(num.trim(), max, title.trim());
 					pub.setId(id);
@@ -304,7 +304,7 @@ public class DataAccessDB implements DataAccess {
 		return copy;
 	}
 	
-	private int getCopyID(Copy copy) {
+	private int getCopyDBID(Copy copy) {
 		int copyID = 0;
 		try {
 			String selectSQL = "SELECT ID FROM APP.PUBCOPY WHERE PUBID = ? AND COPYNUMBER = ?";
@@ -794,7 +794,7 @@ public class DataAccessDB implements DataAccess {
 			String insertSQL = "INSERT INTO APP.CHECKOUTRECORD (IDMEM, COPYID, CHECKOUTDATE, DUEDATE) VALUES(?,?,?,?)";
 			PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, getLibraryMemberDBID(entry.getMember().getMemberID()));
-			preparedStatement.setInt(2, getCopyID(entry.getCopy()));
+			preparedStatement.setInt(2, getCopyDBID(entry.getCopy()));
 			preparedStatement.setDate(3, Date.valueOf(entry.getCheckoutDate()));
 			preparedStatement.setDate(4, Date.valueOf(entry.getDueDate()));
 			//System.out.println(preparedStatement.);
@@ -840,13 +840,32 @@ public class DataAccessDB implements DataAccess {
 	@Override
 	public void removeCheckoutRecordEntry(int memberId, Publication pub, Copy copy){
 		int memDBID = getLibraryMemberDBID(memberId);
-
+		int copyDBID = getCopyDBID(copy);
+		if (copyDBID == 0) {
+			System.out.println("Cannot find copy " + copy.getCopyNo() + " of publication id +" + pub.getId());
+			return;
+		}
+		try {
+			String deleteSQL = "DELETE FROM APP.CHECKOUTRECORD WHERE COPYID = ? AND IDMEM=?";
+			PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL);
+			preparedStatement.setInt(1, copyDBID);
+			preparedStatement.setInt(2, memDBID);
+			//System.out.println(preparedStatement.);
+			int rs = preparedStatement.executeUpdate();
+			//boolean found = false;
+			if (rs == 0) {
+				System.out.println("Cannot find copy " + copy.getCopyNo() + " of publication id +" + pub.getId());
+			}
+		} catch (SQLException sqe) {
+			//System.out.println();
+			sqe.printStackTrace();
+		}
 	}		
 	
 	@Override
 	public CheckoutRecordEntry getCheckoutRecordEntry(Copy copy) {
 		CheckoutRecordEntry entry = null;
-		int id = getCopyID(copy);
+		int id = getCopyDBID(copy);
 		if (id == 0) return null;
 		try {
 			String selectSQL = "SELECT IDMEM, COPYID, CHECKOUTDATE, DUEDATE FROM APP.CHECKOUTRECORD WHERE COPYID = ?";
