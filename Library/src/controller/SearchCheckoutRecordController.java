@@ -1,11 +1,13 @@
 package controller;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -20,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -52,11 +55,14 @@ public class SearchCheckoutRecordController {
 	@FXML private TextField tfMemberName;
 	@FXML private Label lblSearchStatus;
 	@FXML private HBox hbSearchResult;
+	@FXML private Button btnPrint;
 	private Parent root;
+	
+	TableView table = new TableView();
 	
     @FXML // This method is called by the FXMLLoader when initialization is complete
    void initialize() {
-
+    	btnPrint.setVisible(false);
    }
 	
    @FXML protected void onSearchBtnAction(ActionEvent event) {
@@ -102,29 +108,7 @@ public class SearchCheckoutRecordController {
 		   return;
 	   }
 	   
-	   ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
-	 
-	   for(CheckoutRecordEntry ce: checkoutRecord){
-		   CheckoutRecordTable chkRec = new CheckoutRecordTable();
-		   chkRec.setTitle(ce.getCopy().getPublication().getTitle());
-		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
-		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		   chkRec.setCopyNum(ce.getCopy().getCopyNo());
-		   if(ce.getDueDate().isBefore(LocalDate.now())){
-			    //Period betweenDates = Period.between(ce.getDueDate(), LocalDate.now());
-			   long dayDiff = ChronoUnit.DAYS.between(ce.getDueDate(), LocalDate.now());
-			    chkRec.setStatus(dayDiff + " day(s) overdue");
-		   } else {
-			   chkRec.setStatus("");
-		   }
-		   if (ce.getCopy().getPublication() instanceof Book) {
-			   chkRec.setType("book");
-		   } else {
-			   chkRec.setType("periodical");
-		   }
-		   list.add(chkRec);
-	   }
+	   ArrayList<CheckoutRecordTable> list = this.getTableList(checkoutRecord);
 
 	   if (hbSearchResult.getChildren().size() == 1) {
 			hbSearchResult.getChildren().remove(0);
@@ -132,15 +116,46 @@ public class SearchCheckoutRecordController {
 		if (list!=null && list.size() > 0) {
 			lblSearchStatus.setText("Search result...");
 			hbSearchResult.getChildren().add(getCheckoutTable(list));
+			btnPrint.setVisible(true);
 		} else {
 			lblSearchStatus.setText("Search did not find anything...");
+			btnPrint.setVisible(false);
 		}
 	}
 	
+    private ArrayList<CheckoutRecordTable> getTableList(List<CheckoutRecordEntry> checkoutRecord){
+    	ArrayList<CheckoutRecordTable> list = new ArrayList<CheckoutRecordTable>();
+   	 
+ 	   for(CheckoutRecordEntry ce: checkoutRecord){
+ 		   CheckoutRecordTable chkRec = new CheckoutRecordTable();
+ 		   chkRec.setTitle(ce.getCopy().getPublication().getTitle());
+ 		   chkRec.setNumber(ce.getCopy().getPublication().getNumber());
+ 		   chkRec.setBorrowedDate(ce.getCheckoutDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+ 		   chkRec.setDueDate(ce.getDueDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+ 		   chkRec.setCopyNum(ce.getCopy().getCopyNo());
+ 		   
+ 		   if(ce.getDueDate().isBefore(LocalDate.now())){
+ 			    //Period betweenDates = Period.between(ce.getDueDate(), LocalDate.now());
+ 			   long dayDiff = ChronoUnit.DAYS.between(ce.getDueDate(), LocalDate.now());
+ 			    chkRec.setStatus(dayDiff + " OD "); // Overdue days
+ 		   } else {
+ 			   chkRec.setStatus("");
+ 		   }
+ 		   
+ 		   if (ce.getCopy().getPublication() instanceof Book) {
+ 			   chkRec.setType("B");
+ 		   } else {
+ 			   chkRec.setType("P");
+ 		   }
+ 		   
+ 		   list.add(chkRec);
+ 	   }
+ 	   
+ 	   return list;
+    }
 	
 	private TableView getCheckoutTable(ArrayList<CheckoutRecordTable> list) {
-		TableView table = new TableView();
-		table.setPrefWidth(600);
+		table.setPrefWidth(800);
 
 		TableColumn colTitle = new TableColumn("Title");
 		colTitle.setPrefWidth(125);
@@ -148,27 +163,27 @@ public class SearchCheckoutRecordController {
                 new PropertyValueFactory<CheckoutRecordTable, String>("title"));
 		
 		TableColumn colISBN = new TableColumn("ISBN/Issue #");
-		colISBN.setPrefWidth(55);
+		colISBN.setPrefWidth(80);
 		colISBN.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("number"));
 		
-		TableColumn colCopy = new TableColumn("Copy Number");
-		colCopy.setPrefWidth(55);
+		TableColumn colCopy = new TableColumn("Copy #");
+		colCopy.setPrefWidth(50);
 		colCopy.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("copyNum"));
 
 		TableColumn colType = new TableColumn("Type");
-		colType.setPrefWidth(55);
+		colType.setPrefWidth(40);
 		colType.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("type"));
 		
 		TableColumn colBorrowedDate = new TableColumn("Borrowed");
-		colBorrowedDate.setPrefWidth(50);
+		colBorrowedDate.setPrefWidth(80);
 		colBorrowedDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("borrowedDate"));
 		
 		TableColumn colDueDate = new TableColumn("Due");
-		colDueDate.setPrefWidth(50);
+		colDueDate.setPrefWidth(80);
 		colDueDate.setCellValueFactory(
                 new PropertyValueFactory<CheckoutRecordTable, String>("dueDate"));	
 		
@@ -229,5 +244,51 @@ public class SearchCheckoutRecordController {
 		
 		return table;
 	}
+
+	@FXML protected void onPrintBtnAction(ActionEvent event) {
+		int memberId = Integer.parseInt(tfSearchID.getText());
+		List<CheckoutRecordEntry> checkoutRecord = dao.getCheckoutRecordEntryByMemberID( memberId );
+		
+		if(checkoutRecord != null){
+			ArrayList<CheckoutRecordTable> list = this.getTableList(checkoutRecord);
+			
+			char[] chars = new char[110];
+			Arrays.fill(chars, '-');
+			String hBar = new String(chars);			
+			
+			System.out.println();
+			System.out.println("Member Checkout Record");
+			System.out.println("ID #: " + memberId);
+			System.out.println("Name: " + tfMemberName.getText());
+			System.out.println(hBar);
+			
+			System.out.format("%-30s | %-10s | %-15s | %-10s | %-10s | %-10s | %-15s", 
+								"Title", 
+								"Type",
+								"ISBN/Issue #", 
+								"Copy #",
+								"Borrowed",
+								"Due",
+								"Status");
+			System.out.println();
+			System.out.println(hBar);
+			
+			for(CheckoutRecordTable entry: list){
+				System.out.println();
+				System.out.format("%-30s | %-10s | %-15s | %-10s | %-10s | %-10s | %-15s", 
+								entry.getTitle(), 
+								entry.getType(), 
+								entry.getNumber(),
+								entry.getCopyNum(),
+								entry.getBorrowedDate(),
+								entry.getDueDate(),
+								entry.getStatus());
+			}
+			
+			System.out.println();
+			System.out.println(hBar);
+		}
+	}
+
 
 }
