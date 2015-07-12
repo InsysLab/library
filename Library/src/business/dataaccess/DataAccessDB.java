@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -817,14 +816,24 @@ public class DataAccessDB implements DataAccess {
 	
 	@Override
 	public CheckoutRecordEntry getCheckoutRecordEntryById(int memberId, String type, String pubNum, String copyNum){
-		List<CheckoutRecordEntry> checkoutRecord = getCheckoutRecordEntryByMemberID(memberId);
-		
-		for(CheckoutRecordEntry recEntry : checkoutRecord){
-			if( recEntry.getCopy().getPublication().getNumber().equals(pubNum) ){
-				return recEntry;
-			}
+		CheckoutRecordEntry checkoutRecord = null;
+		Publication pub = null;
+		if (type.equals("book")) {
+			pub = getBookByISBN(pubNum);
+		} else {
+			pub = searchPeriodicalByIssueNo(pubNum);
 		}
 		
+		if (pub == null) {
+			return checkoutRecord;
+		}
+		
+		Copy copy = getCopy(pub, Integer.parseInt(copyNum));
+		
+		if (copy == null) {
+			return checkoutRecord;
+		}
+		checkoutRecord = getCheckoutRecordEntry(copy);		
 		return null;
 	}
 	
