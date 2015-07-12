@@ -62,7 +62,7 @@ public class DataAccessDB implements DataAccess {
 		List<Author> authors = book.getAuthorlist();
 		if (authors != null) {
 			for (Author auth: authors) {
-				//saveAddpublicationAuthor(pubid, auth.getAuthorID());
+				saveAddpublicationAuthor(pubid, auth.getAuthorID());
 			}
 		}
 	}
@@ -74,6 +74,9 @@ public class DataAccessDB implements DataAccess {
 			preparedStatement.setInt(1, pub);
 			preparedStatement.setInt(2, author);
 			int rs = preparedStatement.executeUpdate();
+			if (rs == 0) {
+				System.out.println("Cannot add Author record!");
+			}
 			conn.commit();
 		} catch (SQLException sqe) {
 			//System.out.println();
