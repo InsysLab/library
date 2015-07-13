@@ -16,7 +16,7 @@ public final class MemberValidator {
 			errorMessage +="Member ID must be a number!\n";
 		}
         if (id.length() > 10) {
-        	errorMessage +="First name must not be greater than 10 characters\n";  
+        	errorMessage +="Member ID must not be greater than 10 characters\n";  
 		}
         return errorMessage;
 	}
