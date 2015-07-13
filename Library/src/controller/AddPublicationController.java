@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import validator.AddressValidator;
+import validator.MemberValidator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +29,7 @@ import business.objects.Author;
 import business.objects.Book;
 import business.objects.Copy;
 import business.objects.Periodical;
+import validator.PublicationValidator;
 
 public class AddPublicationController {
 	private final DataAccess dao = DataAccessFacade.getDAO();
@@ -49,6 +52,11 @@ public class AddPublicationController {
 			alert.show();
 			return;
 		}
+		
+		if( ! isPeriodicalInputValid() ){
+			return;
+		}		
+		
 		Periodical periodical = new Periodical(perTitle.getText(), perIssueNum.getText(), Integer.parseInt(perMaxCODays.getText()));
 		periodical.addCopy();		
 		
@@ -68,6 +76,11 @@ public class AddPublicationController {
 			alert.show();
 			return;
 		}
+		
+		if( ! isBookInputValid() ){
+			return;
+		}
+		
 		Book book = new Book(tfISBN.getText(), Integer.parseInt(tfBookMaxCODays.getText()), tfBookTitle.getText());
 		List<Author> alist = new ArrayList<>();
 		for(Author a: authorList.getItems())		
@@ -119,4 +132,61 @@ public class AddPublicationController {
     	}
 		return null;
 	}
+	
+	private boolean isBookInputValid() {
+        String errorMessage = "";
+        if (tfBookTitle.getText().trim().isEmpty() || tfISBN.getText().trim().isEmpty() || 
+        	tfBookMaxCODays.getText().trim().isEmpty() || authorList.getItems().isEmpty()) {
+        	
+			errorMessage += "All fields must be nonempty!\n";
+		}
+        
+        int maxLength = (tfBookMaxCODays.getText().length() > 0)? Integer.parseInt(tfBookMaxCODays.getText()) : 0;
+        errorMessage += PublicationValidator.validateBook(tfBookTitle.getText(), 
+        										  		  tfISBN.getText(), 
+        												  maxLength, 
+        												  authorList.getItems().size());
+      
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
+	}	
+	
+	private boolean isPeriodicalInputValid() {
+        String errorMessage = "";
+        if (perTitle.getText().trim().isEmpty() || perIssueNum.getText().trim().isEmpty() || 
+        	tfBookMaxCODays.getText().trim().isEmpty() || authorList.getItems().isEmpty()) {
+        	
+			errorMessage += "All fields must be nonempty!\n";
+		}
+        
+        int maxLength = (tfBookMaxCODays.getText().length() > 0)? Integer.parseInt(tfBookMaxCODays.getText()) : 0;
+        errorMessage += PublicationValidator.validatePeriodical(perTitle.getText(), 
+        												  perIssueNum.getText(), 
+        												  maxLength);
+      
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
+	}		
 }

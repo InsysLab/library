@@ -45,6 +45,11 @@ public class CheckoutController {
 	@FXML private Button btnSubmitCheckout;
 	@FXML private HBox hbSearchResult;
 	
+	@FXML // This method is called by the FXMLLoader when initialization is complete
+	void initialize() {
+
+	}
+	
 	@FXML protected void handleSearchBtnAction(ActionEvent event) {
 		int memberId = Integer.parseInt(tfMemberID.getText());
 		String isbn = tfISBN.getText();

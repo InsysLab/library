@@ -190,7 +190,8 @@ public class AuthorController implements Initializable{
             errorMessage += "No valid bio!\n"; 
         }
         
-        if (!street.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
+        //if (!street.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
+        if (!street.getText().matches("^[0-9a-zA-Z. ]+$")) {
             errorMessage += "Street field can contain spaces or characters a-z, A-Z and 0-9 \n"; 
         }
 
@@ -199,10 +200,10 @@ public class AuthorController implements Initializable{
 		} 
 
         if (!city.getText().matches("[a-zA-Z]*")) {
-            errorMessage += "No valid city!\n"; 
+            errorMessage += "Not valid city!\n"; 
         }
 
-        if (!state.getText().matches("^[A-Z][A-Z]$")) {
+        if (!state.getText().matches("^[a-zA-Z][a-zA-Z]$")) {
         	errorMessage += "State must have exactly two characters in the range A-Z!\n";  
 		}
 
