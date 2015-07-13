@@ -69,6 +69,11 @@
                      </children>
                   </VBox>
                </children></HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="412.0">
+               <children>
+                  <Label text="MUM MSCS MPP Project - Copyright 2015 " />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>
