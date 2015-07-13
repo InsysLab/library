@@ -1,5 +1,7 @@
 package business.dataaccess;
+
 import static java.util.stream.Collectors.toList;
+import lambda.LambdaLibrary;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -82,10 +84,9 @@ public class DataAccessFile implements DataAccess {
 		BookList bookList =  getBookList();
 		Book bk = null;
 		
-		for (Book book: (ArrayList<Book>) bookList.getBooks()) {
-			if (book.getISBN().equals(isbn)) {
-				bk = book;					
-			}
+		Optional<Book> book = LambdaLibrary.SearchBookByISBN.apply(bookList.getBooks(), isbn);
+		if(book.isPresent()){
+			return book.get();
 		}
 
 		return bk;		
@@ -122,10 +123,7 @@ public class DataAccessFile implements DataAccess {
 	public ArrayList<Book> wildSearchBookByTitle(String title) {
 		List<Book> bookList = getBookList().getBooks();
 		if (bookList != null && bookList.size() > 0) {
-			List<Book> list = bookList.stream()
-									  .filter( b -> b.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1 )
-									  .collect(toList());
-			
+			List<Book> list = LambdaLibrary.WildSearchBookByTitle.apply(bookList, title);
 			return new ArrayList<Book>(list);
 		}
 		
@@ -136,10 +134,7 @@ public class DataAccessFile implements DataAccess {
 	public ArrayList<Book> wildSearchBookByISBN(String ISBN) {
 		List<Book> bookList = getBookList().getBooks();
 		if (bookList != null && bookList.size() > 0) {
-			List<Book> list = bookList.stream()
-									  .filter( b -> b.getISBN().indexOf(ISBN.toUpperCase())!=-1 )
-									  .collect(toList());
-			
+			List<Book> list = LambdaLibrary.WildSearchBookByISBN.apply(bookList, ISBN);
 			return new ArrayList<Book>(list);
 		}
 		
@@ -240,10 +235,7 @@ public class DataAccessFile implements DataAccess {
 	public Periodical searchPeriodicalByIssueNo(String issueNo){
 		List<Periodical> periodicalList = getPeriodicalList().getPeriodicals();
 		if (periodicalList != null && periodicalList.size() > 0) {
-			Optional<Periodical> periodical = periodicalList.stream()
-												  .filter( p -> p.getIssueNo().equals(issueNo))
-												  .findFirst();
-			
+			Optional<Periodical> periodical = LambdaLibrary.SearchPeriodicalByIssueNo.apply(periodicalList, issueNo);
 			if(periodical.isPresent()){
 				return periodical.get();
 			}
@@ -256,13 +248,8 @@ public class DataAccessFile implements DataAccess {
 	public ArrayList<Periodical> wildSearchPeriodicalByTitle(String title) {
 		PeriodicalList periodicalList =  getPeriodicalList();
 		if (periodicalList != null && periodicalList.getPeriodicals().size() > 0) {
-			ArrayList<Periodical> list = new ArrayList<Periodical>();
-			for (Periodical periodical: (ArrayList<Periodical>) periodicalList.getPeriodicals()) {
-				if (periodical.getTitle().toUpperCase().indexOf(title.toUpperCase())!=-1) {
-					list.add(periodical);					
-				}
-			}
-			return list;
+			List<Periodical> list = LambdaLibrary.WildSearchPeriodicalByTitle.apply(periodicalList.getPeriodicals(), title);
+			return new ArrayList<Periodical>(list);
 		}
 		return null;
 	}
