@@ -112,6 +112,7 @@ public class AddPublicationController {
     	    Stage dialogStage = new Stage();
     	    dialogStage.setTitle("Select Author");
     	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.setResizable(false);
     	    dialogStage.initOwner(((Node)event.getTarget()).getScene().getWindow());
     	    dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("../view/author.png")));
     	    
