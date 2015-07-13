@@ -47,10 +47,11 @@ public class AddLibraryMember {
 			return;
 		}
 		
+		if (!isInputValid()) {
+			return;
+		}
+		
 		if(dao.searchLibraryMemberByID(memberID) == null){
-			if (!isInputValid()) {
-				return;
-			}
 			Address address = new Address(tfStreet.getText(), 
 					  tfCity.getText(), 
 					  tfState.getText(), 
