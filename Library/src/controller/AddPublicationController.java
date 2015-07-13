@@ -153,7 +153,7 @@ public class AddPublicationController {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setHeaderText(null);
             alert.setContentText(errorMessage);
 
             alert.showAndWait();
@@ -181,7 +181,7 @@ public class AddPublicationController {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setHeaderText(null);
             alert.setContentText(errorMessage);
 
             alert.showAndWait();

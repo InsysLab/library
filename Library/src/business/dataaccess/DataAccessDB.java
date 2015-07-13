@@ -424,12 +424,13 @@ public class DataAccessDB implements DataAccess {
 	public void saveAuthor(Author author) {
 		try {
 			int address = saveAddress(author.getAddress());
-			String updateSQL = "INSERT INTO APP.AUTHOR (FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID) VALUES (?,?,?,?)";
+			String updateSQL = "INSERT INTO APP.AUTHOR (FIRSTNAME, LASTNAME, TELEPHONE, ADDRESSID, BIO) VALUES (?,?,?,?,?)";
 			PreparedStatement preparedStatement = conn.prepareStatement(updateSQL, PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, author.getFirstName());
 			preparedStatement.setString(2, author.getLastName());
 			preparedStatement.setString(3, author.getPhone());
 			preparedStatement.setInt(4, address);
+			preparedStatement.setString(5, author.getBio());
 			//System.out.println(preparedStatement.);
 			int row = preparedStatement.executeUpdate();
 			conn.commit();

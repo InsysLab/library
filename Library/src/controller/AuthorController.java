@@ -186,9 +186,10 @@ public class AuthorController implements Initializable{
         if (!phone.getText().matches("^[0-9]*")) {
             errorMessage += "No valid first name!\n"; 
         }
-        if (!bio.getText().matches("[a-zA-Z]*")) {
-            errorMessage += "No valid bio!\n"; 
-        }
+
+        if (bio.getText().length() < 10) {
+            errorMessage += "Bio is too short!\n"; 
+        }        
         
         //if (!street.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
         if (!street.getText().matches("^[0-9a-zA-Z. ]+$")) {
@@ -214,7 +215,7 @@ public class AuthorController implements Initializable{
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setHeaderText(null);
             alert.setContentText(errorMessage);
 
             alert.showAndWait();
