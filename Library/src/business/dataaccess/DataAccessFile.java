@@ -7,12 +7,15 @@ import java.io.ObjectOutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+import business.objects.Address;
 import business.objects.Author;
 import business.objects.AuthorList;
 import business.objects.Book;
@@ -465,4 +468,84 @@ public class DataAccessFile implements DataAccess {
 		return obj;
 	}
 
+	public static void main(String args[]) {
+		Address add1 = new Address("4", "Iowa City", "Iowa", "52555");
+		LibraryMember mem1 = new LibraryMember(1, "Jesus", "Sadang", "8808000", add1);
+		Address add2 = new Address("5", "Fairfield City", "Iowa", "52557");
+		LibraryMember mem2 = new LibraryMember(2, "Mark", "Pit", "7707000", add2);
+		Address add3 = new Address("6", "San Francisco", "CA", "52887");
+		LibraryMember mem3 = new LibraryMember(3, "Boldkhu", "Dar", "6606000", add3);
+		Address add4 = new Address("7", "LA", "CA", "52899");
+		LibraryMember mem4 = new LibraryMember(4, "Bill", "Gates", "5505000", add4);
+		
+		MemberList mL = MemberList.getInstance();
+		mL.getMembers().clear();
+		mL.addMember(mem1);mL.addMember(mem2);mL.addMember(mem3);mL.addMember(mem4);
+		saveToStorage(StorageType.MemberList, mL);
+		
+		Book book1 = new Book("1111", 2, "Java Book");
+		book1.addCopy(); book1.addCopy();
+		Book book2 = new Book("2222", 3, "C++ Book");
+		book2.addCopy(); book2.addCopy();
+		Book book3 = new Book("3333", 4, "Perl Book");
+		book3.addCopy();
+		Book book4 = new Book("4444", 5, "Python Book");
+		book4.addCopy();
+
+		Author a1 = new Author("Mark", "Markus", "8808000", "The quick brown fox", add1);
+		book1.addAuthor(a1);
+		Author a2 = new Author("Luke", "Lukas", "7707000", "The quick brown fox", add2);
+		book2.addAuthor(a2);
+		Author a3 = new Author("John", "Johnnie", "6606000", "The quick brown fox", add3);
+		book3.addAuthor(a3);
+		Author a4 = new Author("Dan", "Dantes", "5505000", "The quick brown fox", add4);
+		book4.addAuthor(a4);
+		
+		AuthorList aL = AuthorList.getInstance();
+		aL.getAuthors().clear();
+		aL.addAuthor(a1); aL.addAuthor(a2);aL.addAuthor(a3);aL.addAuthor(a4);
+		saveToStorage(StorageType.AuthorList, aL);	
+		
+		Periodical p1 = new Periodical("Time", "1234", 2);
+		p1.addCopy(); p1.addCopy();
+		Periodical p2 = new Periodical("Newsweek", "5678", 3);
+		p2.addCopy(); p2.addCopy();
+		Periodical p3 = new Periodical("Nat Geo", "9101", 4);
+		p3.addCopy(); p3.addCopy();
+		
+		LocalDate dueDate = LocalDate.of(2015, 5, 1).plusDays(book1.getMaxCheckoutLength());
+		CheckoutRecordEntry entry1 = new CheckoutRecordEntry(book1.getAvailableCopy(), LocalDate.of(2015, 5, 1), dueDate);
+		entry1.setMember(mem1);
+		LocalDate dueDate2 = LocalDate.of(2015, 6, 1).plusDays(book2.getMaxCheckoutLength());
+		CheckoutRecordEntry entry2 = new CheckoutRecordEntry(book2.getAvailableCopy(), LocalDate.of(2015, 6, 1), dueDate2);
+		entry2.setMember(mem2);
+		LocalDate dueDate3 = LocalDate.now().plusDays(book3.getMaxCheckoutLength());
+		CheckoutRecordEntry entry3 = new CheckoutRecordEntry(book3.getAvailableCopy(), LocalDate.now(), dueDate3);
+		entry3.setMember(mem3);
+		LocalDate dueDate4 = LocalDate.now().plusDays(book4.getMaxCheckoutLength());
+		CheckoutRecordEntry entry4 = new CheckoutRecordEntry(book4.getAvailableCopy(), LocalDate.now(), dueDate4);
+		entry4.setMember(mem4);
+		LocalDate dueDatea = LocalDate.now().plusDays(p1.getMaxCheckoutLength());
+		CheckoutRecordEntry entrya = new CheckoutRecordEntry(p1.getAvailableCopy(), LocalDate.now(), dueDatea);
+		entrya.setMember(mem1);
+		LocalDate dueDateb = LocalDate.of(2015, 6, 1).plusDays(p2.getMaxCheckoutLength());
+		CheckoutRecordEntry entryb = new CheckoutRecordEntry(p2.getAvailableCopy(), LocalDate.of(2015, 6, 1), dueDateb);
+		entryb.setMember(mem2);
+		LocalDate dueDatec = LocalDate.now().plusDays(p3.getMaxCheckoutLength());
+		CheckoutRecordEntry entryc = new CheckoutRecordEntry(p3.getAvailableCopy(), LocalDate.now(), dueDatec);
+		entryc.setMember(mem3);
+		
+		CheckoutRecord checkoutRecord = CheckoutRecord.getInstance();
+		checkoutRecord.addEntry(entry1); checkoutRecord.addEntry(entry2);checkoutRecord.addEntry(entry3);checkoutRecord.addEntry(entry4);
+		checkoutRecord.addEntry(entrya); checkoutRecord.addEntry(entryb);checkoutRecord.addEntry(entryc);
+		saveToStorage(StorageType.CheckoutRecord, checkoutRecord);	
+		
+		BookList bL = BookList.getInstance();
+		bL.addBook(book1);bL.addBook(book2);bL.addBook(book3);bL.addBook(book4);
+		saveToStorage(StorageType.BookList, bL);
+		
+		PeriodicalList pL = PeriodicalList.getInstance();
+		pL.addPeriodical(p1);pL.addPeriodical(p2);pL.addPeriodical(p3);
+		saveToStorage(StorageType.PeriodicalList, pL);	
+	}
 }
