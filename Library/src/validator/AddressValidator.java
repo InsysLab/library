@@ -26,7 +26,7 @@ public final class AddressValidator {
 	
 	public static String city(String city) {
 		String errorMessage = "";
-		if (!city.matches("[a-zA-Z]*")) {
+		if (!city.matches("[a-zA-Z ]*")) {
             errorMessage += "City must consist of Alphabet characters\n"; 
         }
         if (city.length() > 30) {
