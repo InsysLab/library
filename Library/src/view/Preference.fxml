@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane hgap="10.0" prefHeight="342.0" prefWidth="462.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PreferenceController">
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <children>
+      <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#handleSaveSettings" prefHeight="26.0" prefWidth="151.0" text="Save Configuration" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+      <Pane fx:id="fieldPane" prefHeight="146.0" prefWidth="418.0" GridPane.columnSpan="4" GridPane.rowIndex="3" GridPane.rowSpan="4">
+         <children>
+            <TextField fx:id="dbuser" layoutX="212.0" layoutY="49.0" />
+            <TextField fx:id="contStr" layoutX="212.0" layoutY="14.0" />
+            <TextField fx:id="dbpass" layoutX="212.0" layoutY="83.0" />
+            <Label layoutX="90.0" layoutY="19.0" text="Connection String:" />
+            <Label layoutX="90.0" layoutY="54.0" text="DB Username:" />
+            <Label layoutX="90.0" layoutY="88.0" text="DB Password:" />
+         </children>
+      </Pane>
+      <Label prefHeight="16.0" prefWidth="211.0" text="Select Database Type" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <RadioButton fx:id="radioFile" mnemonicParsing="false" onAction="#handleSetFile" text="File" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <RadioButton fx:id="radioDB" mnemonicParsing="false" onAction="#handleSetDB" text="Database" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+   </children>
+</GridPane>

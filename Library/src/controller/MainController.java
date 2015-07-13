@@ -78,6 +78,23 @@ public class MainController {
 		vBoxWorkArea.getChildren().add(memberCheckout);
 	}	
 	
+	@FXML protected void handlePreferenceBtnAction(ActionEvent event) {
+		try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Preference.fxml"));
+    		Parent root = loader.load();
+    	    Stage dialogStage = new Stage();
+    	    dialogStage.setTitle("System Settings");
+    	    dialogStage.initModality(Modality.WINDOW_MODAL);
+    	    dialogStage.setResizable(false);
+    	    dialogStage.initOwner(this.root.getScene().getWindow());
+    	    Scene scene = new Scene(root);
+    	    dialogStage.setScene(scene);
+    	    dialogStage.showAndWait();
+    	} catch (IOException io) {
+    		System.out.println(io.getStackTrace());
+    	}
+	}
+	
 	@FXML protected void handleAboutBtnAction(ActionEvent event) {
 		try {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/About.fxml"));
