@@ -3092,6 +3092,53 @@
 									},
 									"lineStyle": 1,
 									"points": "593:289;549:312"
+								},
+								{
+									"_type": "UMLNoteView",
+									"_id": "AAAAAAFOhWSekuvGXqM=",
+									"_parent": {
+										"$ref": "AAAAAAFOgn6aAtNBeWA="
+									},
+									"visible": true,
+									"enabled": true,
+									"lineColor": "#000000",
+									"fillColor": "#ffffff",
+									"fontColor": "#000000",
+									"font": "Arial;13;0",
+									"showShadow": true,
+									"containerChangeable": false,
+									"containerExtending": false,
+									"left": 256,
+									"top": 396,
+									"width": 157,
+									"height": 25,
+									"autoResize": false,
+									"text": "if author does not exist",
+									"wordWrap": true
+								},
+								{
+									"_type": "UMLNoteLinkView",
+									"_id": "AAAAAAFOhWWIkuvSxIU=",
+									"_parent": {
+										"$ref": "AAAAAAFOgn6aAtNBeWA="
+									},
+									"visible": true,
+									"enabled": true,
+									"lineColor": "#000000",
+									"fillColor": "#ffffff",
+									"fontColor": "#000000",
+									"font": "Arial;13;0",
+									"showShadow": true,
+									"containerChangeable": false,
+									"containerExtending": false,
+									"head": {
+										"$ref": "AAAAAAFOhQfeq+sCt9A="
+									},
+									"tail": {
+										"$ref": "AAAAAAFOhWSekuvGXqM="
+									},
+									"lineStyle": 1,
+									"points": "359:395;381:384"
 								}
 							],
 							"showSequenceNumber": true,
