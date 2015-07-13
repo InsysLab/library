@@ -38,6 +38,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import table.objects.CheckoutRecordTable;
+import validator.MemberValidator;
 import business.dataaccess.DataAccess;
 import business.dataaccess.DataAccessFacade;
 import business.objects.Address;
@@ -70,29 +71,28 @@ public class SearchCheckoutRecordController {
 	   if( tfSearchID.getText().isEmpty() ){
 		   return;
 	   }
-	   
-	   Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
-	   alert.setHeaderText(null);
-	   alert.setTitle("Checkout Record");
-	   
-	   int memberId = -1;
-	   try {
-		   memberId = Integer.parseInt(tfSearchID.getText());
-	   } catch (NumberFormatException nfe) {
+	   String emessage = MemberValidator.id(tfSearchID.getText());
+	   if (!emessage.equals("")) {
+		   Alert alert = new Alert(AlertType.ERROR, emessage, ButtonType.OK);
+		   alert.setHeaderText(null);
+		   alert.setTitle("Checkout Record");
 		   alert.show();
 		   return;
 	   }
 	   
+	   int memberId = Integer.parseInt(tfSearchID.getText());
+
 	   LibraryMember member = dao.searchLibraryMemberByID(memberId);
-	   
-	   if( member == null ){
-			alert.setContentText("Member ID does not exist");
-			alert.show();
-			
-			tfMemberName.clear();
-			hbSearchResult.getChildren().clear();
-			lblSearchStatus.setText("");
-			return;
+	   Alert alert = new Alert(AlertType.ERROR, "", ButtonType.OK);
+	   alert.setHeaderText(null);
+	   alert.setTitle("Checkout Record");	   
+	   if( member == null ){		  
+		   alert.setContentText("Member ID does not exist");
+		   alert.show();
+		   tfMemberName.clear();
+		   hbSearchResult.getChildren().clear();
+		   lblSearchStatus.setText("");
+		   return;
 	   }
 	   
 	   tfMemberName.setText(member.getFirstName() + " " + member.getLastName());
