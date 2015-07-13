@@ -79,14 +79,14 @@ public class PreferencesController {
 			String message = "Configuration is saved.\nRestart application for configuration to take effect...\n";
 			Alert alert = new Alert(AlertType.INFORMATION, message, ButtonType.OK);
 			alert.setHeaderText(null);
-			alert.setTitle("Set Configuration");
+			alert.setTitle("System Settings");
 			alert.show();
 			isConfigSave = true;
 		} else {
 			String message = "Problem encountered.\nConfiguration is not saved.\n";
 			Alert alert = new Alert(AlertType.ERROR, message, ButtonType.OK);
 			alert.setHeaderText(null);
-			alert.setTitle("Set Configuration");
+			alert.setTitle("System Settings");
 			alert.show();
 			isConfigSave = true;
 		}

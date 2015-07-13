@@ -80,7 +80,7 @@ public class MainController {
 	
 	@FXML protected void handlePreferenceBtnAction(ActionEvent event) {
 		try {
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Preference.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Preferences.fxml"));
     		Parent root = loader.load();
     	    Stage dialogStage = new Stage();
     	    dialogStage.setTitle("System Settings");
@@ -89,6 +89,8 @@ public class MainController {
     	    dialogStage.initOwner(this.root.getScene().getWindow());
     	    Scene scene = new Scene(root);
     	    dialogStage.setScene(scene);
+    	    PreferencesController controller = loader.getController();
+    	    controller.setDialogStage(dialogStage);
     	    dialogStage.showAndWait();
     	} catch (IOException io) {
     		System.out.println(io.getStackTrace());
