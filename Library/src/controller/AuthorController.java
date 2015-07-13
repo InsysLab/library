@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import validator.AddressValidator;
+import validator.AuthorValidator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -61,10 +64,13 @@ public class AuthorController implements Initializable{
 	}
 
 	@FXML protected void handleSaveAuthor(ActionEvent event) {
+		if (!isInputValid()) {
+			return;
+		}
+		
 		Address addr = null;
 		Author author = null;
 		
-		if(isInputValid()){
 		
 				addr = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
 				author = new Author(firstName.getText(), lastName.getText(), phone.getText(), bio.getText(),addr);
@@ -73,10 +79,22 @@ public class AuthorController implements Initializable{
 					dao.saveAuthor(author);
 					reflist();				
 					paneAuthor.setVisible(false);
+					
+					Alert alert = new Alert(AlertType.INFORMATION, "", ButtonType.OK);
+					alert.setTitle("Add Author");
+					alert.setHeaderText(null);
+					alert.setContentText(firstName.getText() + " is now saved!");
+					alert.show();
+					
 				}
-				
-		}
-		
+				else {
+				Alert alert = new Alert(AlertType.ERROR, "", ButtonType.OK);
+				alert.setTitle("Add Author");
+				alert.setHeaderText(null);
+				alert.setContentText(firstName.getText() + " author already exist!");
+				alert.show();	
+			}
+
 	}
 	
 	private boolean checkExist(Author value)
@@ -85,7 +103,8 @@ public class AuthorController implements Initializable{
 		for(Author a: fullListAuthor.getItems())
 		{
 			if(value.getFirstName().toUpperCase().equals(a.getFirstName().toUpperCase()) && 
-			   value.getLastName().toUpperCase().equals(a.getLastName().toUpperCase())) {
+			   value.getLastName().toUpperCase().equals(a.getLastName().toUpperCase()) &&
+			   value.getPhone().toUpperCase().equals(a.getPhone().toUpperCase())) {
 				nonExistUser =false;
 				break;
 			}
@@ -172,50 +191,21 @@ public class AuthorController implements Initializable{
 	
 	private boolean isInputValid() {
         String errorMessage = "";
-        if (firstName.getText().trim().isEmpty() || lastName.getText().trim().isEmpty() || phone.getText().trim().isEmpty() ||
-        		bio.getText().trim().isEmpty() || street.getText().trim().isEmpty()  || city.getText().trim().isEmpty() || state.getText().trim().isEmpty() || zip.getText().trim().isEmpty()) {
+        if (firstName.getText().trim().isEmpty() || lastName.getText().trim().isEmpty() || street.getText().trim().isEmpty() ||
+        		city.getText().trim().isEmpty() || state.getText().trim().isEmpty()  || zip.getText().trim().isEmpty() || phone.getText().trim().isEmpty()) {
 			errorMessage += "All fields must be nonempty!\n";
 		}
-
-        if (!firstName.getText().matches("[a-zA-Z]*")) {
-        	errorMessage +="First name field may not contain spaces or characters other than a-z, A-Z\n";  
-		}
-        if (!lastName.getText().matches("[a-zA-Z]*")) {
-        	errorMessage +="Last name field may not contain spaces or characters other than a-z, A-Z\n"; 
-        }
-        if (!phone.getText().matches("^[0-9]*")) {
-            errorMessage += "No valid first name!\n"; 
-        }
-
-        if (bio.getText().length() < 10) {
-            errorMessage += "Bio is too short!\n"; 
-        }        
-        
-        //if (!street.getText().matches("((?=.*[0-9])(?=.*[a-zA-Z]))")) {
-        if (!street.getText().matches("^[0-9a-zA-Z. ]+$")) {
-            errorMessage += "Street field can contain spaces or characters a-z, A-Z and 0-9 \n"; 
-        }
-
-        if (!zip.getText().matches("^[0-9]{5,5}")) {
-        	errorMessage += "Zip must be numeric with exactly 5 digits!\n";  
-		} 
-
-        if (!city.getText().matches("[a-zA-Z]*")) {
-            errorMessage += "Not valid city!\n"; 
-        }
-
-        if (!state.getText().matches("^[a-zA-Z][a-zA-Z]$")) {
-        	errorMessage += "State must have exactly two characters in the range A-Z!\n";  
-		}
+        errorMessage+=AuthorValidator.validateAuthor(bio.getText(), firstName.getText(), lastName.getText(), phone.getText());
+        errorMessage+=AddressValidator.validateAddress(street.getText(), city.getText(), state.getText(), zip.getText());        
 
         if (errorMessage.length() == 0) {
             return true;
         } else {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
+            //alert.initOwner(root.getScene().getWindow());
             alert.setTitle("Invalid Fields");
-            alert.setHeaderText(null);
+            alert.setHeaderText("Please correct invalid fields");
             alert.setContentText(errorMessage);
 
             alert.showAndWait();
@@ -224,3 +214,13 @@ public class AuthorController implements Initializable{
         }
 	}
 }
+
+
+
+
+	
+
+	
+	
+	
+	
