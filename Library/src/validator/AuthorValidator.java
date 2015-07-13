@@ -59,8 +59,8 @@ public final class AuthorValidator {
 	
 	public static String phone(String phone) {
 		String errorMessage = "";
-		if (!phone.matches("^[0-9]*")) {
-            errorMessage += "No valid a valid phone number!\n"; 
+		if (!phone.matches("^[0-9-]*")) {
+            errorMessage += "Not a valid phone number!\n"; 
         }
         if (phone.length() > 12) {
         	errorMessage +="Phone number must not be greater than 12 characters\n";  
