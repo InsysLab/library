@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 
+import validator.MemberValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -49,11 +50,9 @@ public class CheckoutDialogController {
 		this.dialogStage = dialogStage;
 	}
 	@FXML protected void handleCheckoutBtnAction(ActionEvent event) {
-		int memberId = 0;
-		try {
-			memberId = Integer.parseInt(tfMemberID.getText());
-		} catch (NumberFormatException nfe) {
-			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic!", ButtonType.OK);
+		String emessage = MemberValidator.id(tfMemberID.getText());
+		if (!emessage.equals("")) {
+			Alert alert = new Alert(AlertType.ERROR, emessage, ButtonType.OK);
 			alert.setHeaderText(null);
 			alert.setTitle("Checkout Record");
 			alert.show();
@@ -61,6 +60,8 @@ public class CheckoutDialogController {
 			tfName.setText("");
 			return;
 		}
+		
+		int memberId = Integer.parseInt(tfMemberID.getText());
 		String number = tfNumber.getText();
 
 		LibraryMember member = dao.searchLibraryMemberByID(memberId);
@@ -113,11 +114,9 @@ public class CheckoutDialogController {
 		dialogStage.close();
 	}
 	@FXML protected void handleOnKeyTyped(ActionEvent event) {
-		int memberid = 0;
-		try {
-			memberid = Integer.parseInt(tfMemberID.getText());
-		} catch (NumberFormatException nfe) {
-			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic!", ButtonType.OK);
+		String emessage = MemberValidator.id(tfMemberID.getText());
+		if (!emessage.equals("")) {
+			Alert alert = new Alert(AlertType.ERROR, emessage, ButtonType.OK);
 			alert.setHeaderText(null);
 			alert.setTitle("Checkout Record");
 			alert.show();
@@ -125,6 +124,7 @@ public class CheckoutDialogController {
 			tfName.setText("");
 			return;
 		}
+		int memberid = Integer.parseInt(tfMemberID.getText());
 		LibraryMember member = dao.searchLibraryMemberByID(memberid);
 		
 		if (member != null) {
