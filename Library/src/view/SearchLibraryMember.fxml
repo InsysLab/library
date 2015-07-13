@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchLibraryMemberController">
+<AnchorPane prefHeight="516.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchLibraryMemberController">
   <!-- TODO Add Nodes -->
   <children>
     <GridPane hgap="10.0" layoutX="31.0" layoutY="66.0" prefHeight="25.0" prefWidth="247.0">
@@ -68,7 +68,7 @@
       </font>
     </Label>
     <Button fx:id="btnUpdate" disable="false" layoutX="284.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleUpdateMemberBtnAction" prefHeight="25.0" prefWidth="102.0" text="Update" />
-      <HBox fx:id="hbSearchResult" layoutX="20.0" layoutY="326.0" prefHeight="257.0" prefWidth="561.0" />
+      <HBox fx:id="hbSearchResult" layoutX="20.0" layoutY="326.0" prefHeight="190.0" prefWidth="561.0" />
       <Label layoutX="37.0" layoutY="300.0" text="Checkout Records">
          <font>
             <Font name="System Bold" size="16.0" />

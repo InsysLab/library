@@ -31,6 +31,7 @@ import business.objects.Periodical;
 import business.objects.PeriodicalList;
 import business.objects.Copy;
 import table.objects.CheckoutRecordTable;
+import validator.MemberValidator;
 
 public class CheckoutController {
 	private final DataAccess dao = DataAccessFacade.getDAO();
@@ -51,6 +52,14 @@ public class CheckoutController {
 	}
 	
 	@FXML protected void handleSearchBtnAction(ActionEvent event) {
+		String emessage = MemberValidator.id(tfMemberID.getText());
+		if (!emessage.equals("")) {
+			Alert alert = new Alert(AlertType.ERROR, emessage, ButtonType.OK);
+			alert.setHeaderText(null);
+			alert.setTitle("Checkout");
+			alert.show();
+			return;
+		}
 		int memberId = Integer.parseInt(tfMemberID.getText());
 		String isbn = tfISBN.getText();
 		String title = tfBookTitle.getText();

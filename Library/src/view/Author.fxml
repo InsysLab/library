@@ -37,7 +37,7 @@
             <TextField fx:id="city" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <TextField fx:id="state" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <TextField fx:id="zip" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Label text="Credentials:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label text="Bio:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
             <Label text="LastName:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <Label text="FirstName:" GridPane.columnIndex="0" GridPane.rowIndex="1" />

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 import table.objects.CheckoutRecordTable;
+import validator.AddressValidator;
+import validator.MemberValidator;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,16 +54,15 @@ public class SearchLibraryMemberController {
 	@FXML private HBox hbSearchResult;
 	
 	@FXML protected void handleSearchMemberBtnAction(ActionEvent event) {
-
-		try {
-			Integer.parseInt(tfMemberID.getText());
-		} catch (NumberFormatException nfe) {
-			Alert alert = new Alert(AlertType.ERROR, "Member ID should be numberic", ButtonType.OK);
+		String emessage = MemberValidator.id(tfMemberID.getText());
+		if (!emessage.equals("")) {
+			Alert alert = new Alert(AlertType.ERROR, emessage, ButtonType.OK);
 			alert.setHeaderText(null);
 			alert.setTitle("Checkout Record");
 			alert.show();
 			return;
 		}
+
 		LibraryMember member = dao.searchLibraryMemberByID(Integer.parseInt(tfMemberID.getText()));
 		
 		if (member != null) {
@@ -104,12 +105,10 @@ public class SearchLibraryMemberController {
 	}
 	
 	@FXML protected void handleUpdateMemberBtnAction(ActionEvent event) {
-		int id = -1;
-		try {
-			 id = Integer.parseInt(tfMemberID.getText());
-		} catch (NumberFormatException nfe) {
+		if (!isInputValid()) {
 			return;
 		}
+		int id = Integer.parseInt(tfMemberID.getText());
 		
 		if( this.memberId != id ){
 			Alert alert = new Alert(AlertType.ERROR, "Member ID is not editable", ButtonType.OK);
@@ -135,6 +134,31 @@ public class SearchLibraryMemberController {
 			alert.setTitle("Update Library Member");
 			alert.show();
 		} 
+	}
+	
+	private boolean isInputValid() {
+        String errorMessage = "";
+        if (tfFirstName.getText().trim().isEmpty() || tfLastName.getText().trim().isEmpty() || tfStreet.getText().trim().isEmpty() ||
+        		tfCity.getText().trim().isEmpty() || tfState.getText().trim().isEmpty()  || tfZip.getText().trim().isEmpty() || tfPhone.getText().trim().isEmpty()) {
+			errorMessage += "All fields must be nonempty!\n";
+		}
+        errorMessage+=MemberValidator.validateMember(tfMemberID.getText(), tfFirstName.getText(), tfLastName.getText(), tfPhone.getText());
+        errorMessage+=AddressValidator.validateAddress(tfStreet.getText(), tfCity.getText(), tfState.getText(), tfZip.getText());        
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(AlertType.ERROR);
+            //alert.initOwner(root.getScene().getWindow());
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
 	}
 	
 	private void processShowCheckoutRecord() {
