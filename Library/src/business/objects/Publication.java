@@ -55,9 +55,11 @@ public abstract class Publication implements Serializable {
 	}
 
 	public Copy getAvailableCopy(){
-		for(Copy c : copyList){
-			if( c.isAvailable() ){
-				return c;
+		if( copyList != null ){
+			for(Copy c : copyList){
+				if( c.isAvailable() ){
+					return c;
+				}
 			}
 		}
 		
