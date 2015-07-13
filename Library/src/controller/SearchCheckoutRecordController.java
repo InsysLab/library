@@ -155,6 +155,7 @@ public class SearchCheckoutRecordController {
     }
 	
 	private TableView getCheckoutTable(ArrayList<CheckoutRecordTable> list) {
+		table.getColumns().clear();
 		table.setPrefWidth(800);
 
 		TableColumn colTitle = new TableColumn("Title");
@@ -249,51 +250,51 @@ public class SearchCheckoutRecordController {
 		int memberId = Integer.parseInt(tfSearchID.getText());
 		List<CheckoutRecordEntry> checkoutRecord = dao.getCheckoutRecordEntryByMemberID( memberId );
 		
-		if(checkoutRecord != null){
-			ArrayList<CheckoutRecordTable> list = this.getTableList(checkoutRecord);
-			
-			char[] chars = new char[110];
-			Arrays.fill(chars, '-');
-			String hBar = new String(chars);			
-			
+		if(checkoutRecord == null) return;
+	
+		ArrayList<CheckoutRecordTable> list = this.getTableList(checkoutRecord);
+		
+		char[] chars = new char[110];
+		Arrays.fill(chars, '-');
+		String hBar = new String(chars);			
+		
+		System.out.println();
+		System.out.println("Member Checkout Record");
+		System.out.println("ID #: " + memberId);
+		System.out.println("Name: " + tfMemberName.getText());
+		System.out.println(hBar);
+		
+		System.out.format("%-30s | %-10s | %-15s | %-10s | %-10s | %-10s | %-15s", 
+							"Title", 
+							"Type",
+							"ISBN/Issue #", 
+							"Copy #",
+							"Borrowed",
+							"Due",
+							"Status");
+		
+		System.out.println();
+		System.out.println(hBar);
+		
+		for(CheckoutRecordTable entry: list){
 			System.out.println();
-			System.out.println("Member Checkout Record");
-			System.out.println("ID #: " + memberId);
-			System.out.println("Name: " + tfMemberName.getText());
-			System.out.println(hBar);
-			
 			System.out.format("%-30s | %-10s | %-15s | %-10s | %-10s | %-10s | %-15s", 
-								"Title", 
-								"Type",
-								"ISBN/Issue #", 
-								"Copy #",
-								"Borrowed",
-								"Due",
-								"Status");
-			System.out.println();
-			System.out.println(hBar);
-			
-			for(CheckoutRecordTable entry: list){
-				System.out.println();
-				System.out.format("%-30s | %-10s | %-15s | %-10s | %-10s | %-10s | %-15s", 
-								entry.getTitle(), 
-								entry.getType(), 
-								entry.getNumber(),
-								entry.getCopyNum(),
-								entry.getBorrowedDate(),
-								entry.getDueDate(),
-								entry.getStatus());
-			}
-			
-			System.out.println();
-			System.out.println(hBar);
-			
-		    Alert alert = new Alert(AlertType.INFORMATION, "Done printing!", ButtonType.OK);
-		    alert.setHeaderText(null);
-		    alert.setTitle("Print Checkout Record");		
-		    alert.show();
+							entry.getTitle(), 
+							entry.getType(), 
+							entry.getNumber(),
+							entry.getCopyNum(),
+							entry.getBorrowedDate(),
+							entry.getDueDate(),
+							entry.getStatus());
 		}
+		
+		System.out.println();
+		System.out.println(hBar);
+		
+	    Alert alert = new Alert(AlertType.INFORMATION, "Done printing!", ButtonType.OK);
+	    alert.setHeaderText(null);
+	    alert.setTitle("Print Checkout Record");		
+	    alert.show();
 	}
-
 
 }
